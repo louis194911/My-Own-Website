@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bofeng Li | Personal Space</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid #334155;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--bg-color);
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 0 0 4px var(--accent-color);
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .link-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: transparent;
+            color: var(--text-color);
+            text-decoration: none;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .link-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 如果你有真实头像，可以把下面这个 div 换成 <img src="your-photo.jpg" class="avatar"> -->
+        <div class="avatar">B.L</div>
+        
+        <h1>Bofeng Li</h1>
+        
+        <p class="subtitle">
+            Senior Student in <span class="highlight">Systems & Software Engineering</span><br>
+            Current Location: LUT University, Finland
+        </p>
+
+        <div class="links-container">
+            <a href="#" class="link-btn">Welcome to my Digital Garden 🌱</a>
+            <a href="https://github.com/" target="_blank" class="link-btn">GitHub Profile 💻</a>
+            <a href="#" class="link-btn">Currently under construction 🚧</a>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Bofeng Li. All rights reserved.
+        </div>
+    </div>
+
+</body>
+</html>
