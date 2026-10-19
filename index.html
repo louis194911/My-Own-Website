@@ -13,6 +13,8 @@
             --panel-bg: #1e293b;
             --border-color: #334155;
             --input-bg: #0f172a;
+            --error-color: #f87171;
+            --success-color: #4ade80;
         }
 
         *, *::before, *::after {
@@ -31,7 +33,6 @@
             min-height: 100vh;
         }
 
-        /* 核心响应式布局容器：电脑端左右双栏，手机端上下单栏 */
         .main-wrapper {
             width: 100%;
             max-width: 1050px;
@@ -172,6 +173,12 @@
             gap: 0.8rem;
         }
 
+        /* 蜜罐字段：对真人完全隐藏，专门诱捕自动填表机器人 */
+        .honeypot-field {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
         .input-field {
             width: 100%;
             padding: 0.8rem 1rem;
@@ -194,8 +201,28 @@
             min-height: 80px;
         }
 
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-msg {
+            font-size: 0.85rem;
+            color: var(--muted-color);
+        }
+
+        .status-msg.error {
+            color: var(--error-color);
+        }
+
+        .status-msg.success {
+            color: var(--success-color);
+        }
+
         .submit-btn {
-            padding: 0.8rem 1.2rem;
+            padding: 0.75rem 1.4rem;
             background-color: var(--accent-color);
             color: var(--bg-color);
             border: none;
@@ -204,11 +231,17 @@
             font-size: 0.95rem;
             cursor: pointer;
             transition: opacity 0.2s, transform 0.2s;
+            white-space: nowrap;
         }
 
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
             opacity: 0.9;
             transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* 留言列表与滚动条样式 */
@@ -216,10 +249,10 @@
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
-            max-height: 260px;
+            max-height: 280px;
             overflow-y: auto;
             padding-right: 0.3rem;
-            margin-top: 0.5rem;
+            margin-top: 0.2rem;
             border-top: 1px solid var(--border-color);
             padding-top: 1rem;
         }
@@ -239,6 +272,11 @@
             border-radius: 8px;
             padding: 0.9rem 1rem;
             text-align: left;
+        }
+
+        .message-card.pinned {
+            border-color: rgba(56, 189, 248, 0.4);
+            background-color: rgba(56, 189, 248, 0.05);
         }
 
         .message-meta {
@@ -267,7 +305,6 @@
             word-wrap: break-word;
         }
 
-        /* 底部版权声明横跨两栏 */
         .footer {
             grid-column: 1 / -1;
             text-align: center;
@@ -276,7 +313,6 @@
             color: #64748b;
         }
 
-        /* 手机端响应式适配：当屏幕宽度小于等于 768px 时改为上下排列 */
         @media (max-width: 768px) {
             .main-wrapper {
                 grid-template-columns: 1fr;
@@ -293,7 +329,7 @@
 <body>
 
     <div class="main-wrapper">
-        <!-- 左侧（手机端在上方）：个人信息与实时状态 -->
+        <!-- 左侧：个人信息与实时状态 -->
         <div class="profile-section">
             <img src="IMG_4999.JPG" class="avatar" alt="Louis">
             
@@ -316,21 +352,28 @@
             </div>
         </div>
 
-        <!-- 右侧（手机端在最下方）：留言板 -->
+        <!-- 右侧：云端同步留言板 -->
         <div class="guestbook-section">
             <div class="guestbook-header">
                 <h2>Guestbook 💬</h2>
-                <p>Leave a comment, say hi, or share your thoughts!</p>
+                <p>Leave a comment, say hi, or share your thoughts! (No links allowed)</p>
             </div>
 
             <form class="guestbook-form" id="guestbook-form">
+                <!-- 蜜罐防机器人隐藏输入框 -->
+                <input type="text" id="bot-trap" class="honeypot-field" tabindex="-1" autocomplete="off">
+                
                 <input type="text" id="guest-name" class="input-field" placeholder="Your Name (optional)" maxlength="30">
                 <textarea id="guest-message" class="input-field" placeholder="Write your message here..." required maxlength="250"></textarea>
-                <button type="submit" class="submit-btn">Post Message</button>
+                
+                <div class="form-footer">
+                    <span id="form-status" class="status-msg"></span>
+                    <button type="submit" id="submit-btn" class="submit-btn">Post Message</button>
+                </div>
             </form>
 
             <div class="messages-list" id="messages-list">
-                <!-- 留言将通过 JS 动态渲染到这里 -->
+                <!-- 留言列表由 JS 渲染 -->
             </div>
         </div>
 
@@ -340,6 +383,12 @@
     </div>
 
     <script>
+        // ==========================================
+        // 【核心配置】：在这里填入你的 Supabase URL 和 Anon Key
+        // ==========================================
+        const SUPABASE_URL = '[https://rtbqbzwglptrhxovxhsu.supabase.co](https://rtbqbzwglptrhxovxhsu.supabase.co)'; 
+        const SUPABASE_KEY = 'sb_publishable_ROta0E-2deJ-I9QnZ0GMyA_vtmAb51z';
+
         // 1. 芬兰时间与日期更新
         function updateTime() {
             const timeElement = document.getElementById('finland-time');
@@ -348,18 +397,12 @@
             
             const dateOptions = { 
                 timeZone: 'Europe/Helsinki',
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                weekday: 'long'
+                year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
             };
             
             const timeOptions = { 
                 timeZone: 'Europe/Helsinki',
-                hour12: false,
-                hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit'
+                hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
             };
             
             dateElement.textContent = now.toLocaleDateString('en-US', dateOptions);
@@ -405,73 +448,153 @@
         fetchWeather();
         setInterval(fetchWeather, 1800000);
 
-        // 3. 留言板交互逻辑 (基于浏览器本地存储 + 防 XSS 注入处理)
+        // 3. 云端留言板逻辑 (含防刷与安全过滤)
         const form = document.getElementById('guestbook-form');
+        const botTrap = document.getElementById('bot-trap');
         const nameInput = document.getElementById('guest-name');
         const messageInput = document.getElementById('guest-message');
+        const submitBtn = document.getElementById('submit-btn');
+        const statusMsg = document.getElementById('form-status');
         const messagesList = document.getElementById('messages-list');
 
-        const defaultMessages = [
-            {
-                name: "Louis",
-                text: "Welcome to my personal space! Feel free to leave a message below.",
-                time: "Pinned"
-            }
-        ];
+        // 固定在最顶部的欢迎卡片
+        const pinnedMessage = {
+            name: "Louis",
+            message: "Welcome to my personal space! Feel free to leave a message below.",
+            time: "📌 Pinned",
+            isPinned: true
+        };
 
-        function loadMessages() {
-            const saved = localStorage.getItem('louis_guestbook');
-            const messages = saved ? JSON.parse(saved) : defaultMessages;
-            renderMessages(messages);
+        function setStatus(text, type = '') {
+            statusMsg.textContent = text;
+            statusMsg.className = `status-msg ${type}`;
         }
 
-        function renderMessages(messages) {
+        function createCardElement(msg) {
+            const card = document.createElement('div');
+            card.className = msg.isPinned ? 'message-card pinned' : 'message-card';
+
+            const meta = document.createElement('div');
+            meta.className = 'message-meta';
+
+            const author = document.createElement('span');
+            author.className = 'message-author';
+            author.textContent = msg.name || 'Anonymous'; // textContent 徹底杜绝 XSS 脚本注入
+
+            const time = document.createElement('span');
+            time.className = 'message-time';
+            time.textContent = msg.time;
+
+            const text = document.createElement('p');
+            text.className = 'message-text';
+            text.textContent = msg.message;
+
+            meta.appendChild(author);
+            meta.appendChild(time);
+            card.appendChild(meta);
+            card.appendChild(text);
+            return card;
+        }
+
+        async function loadMessages() {
             messagesList.innerHTML = '';
-            messages.forEach(msg => {
-                const card = document.createElement('div');
-                card.className = 'message-card';
+            messagesList.appendChild(createCardElement(pinnedMessage));
 
-                const meta = document.createElement('div');
-                meta.className = 'message-meta';
+            // 如果还没填密钥，提示待配置状态
+            if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+                setStatus('Cloud DB pending setup...', '');
+                return;
+            }
 
-                const author = document.createElement('span');
-                author.className = 'message-author';
-                author.textContent = msg.name || 'Anonymous'; // 使用 textContent 防止 XSS 攻击
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook?select=*&order=created_at.desc&limit=50`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
 
-                const time = document.createElement('span');
-                time.className = 'message-time';
-                time.textContent = msg.time;
-
-                const text = document.createElement('p');
-                text.className = 'message-text';
-                text.textContent = msg.text;
-
-                meta.appendChild(author);
-                meta.appendChild(time);
-                card.appendChild(meta);
-                card.appendChild(text);
-                messagesList.appendChild(card);
-            });
+                if (res.ok) {
+                    const data = await res.json();
+                    data.forEach(row => {
+                        const dateStr = new Date(row.created_at).toLocaleDateString('en-US', {
+                            month: 'short', day: 'numeric', year: 'numeric'
+                        });
+                        messagesList.appendChild(createCardElement({
+                            name: row.name,
+                            message: row.message,
+                            time: dateStr
+                        }));
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to fetch messages:', err);
+            }
         }
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            // 防线 1：蜜罐检测（如果隐藏字段被填了，说明是机器人，直接静默拦截）
+            if (botTrap.value) {
+                form.reset();
+                setStatus('Message posted!', 'success');
+                return;
+            }
+
+            // 防线 2：60秒发送冷却检测
+            const lastPostTime = localStorage.getItem('last_post_timestamp');
+            const now = Date.now();
+            if (lastPostTime && now - parseInt(lastPostTime) < 60000) {
+                const waitSec = Math.ceil((60000 - (now - parseInt(lastPostTime))) / 1000);
+                setStatus(`Please wait ${waitSec}s before posting again.`, 'error');
+                return;
+            }
+
             const text = messageInput.value.trim();
+            const name = nameInput.value.trim() || 'Anonymous';
             if (!text) return;
 
-            const name = nameInput.value.trim() || 'Anonymous';
-            const now = new Date();
-            const timeStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            // 防线 3：前端链接拦截
+            const linkRegex = /(http:\/\/|https:\/\/|www\.|\.com|\.cn|\.net)/i;
+            if (linkRegex.test(text) || linkRegex.test(name)) {
+                setStatus('Links are not allowed in messages.', 'error');
+                return;
+            }
 
-            const saved = localStorage.getItem('louis_guestbook');
-            const messages = saved ? JSON.parse(saved) : [...defaultMessages];
+            if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+                setStatus('Please configure Supabase URL & Key first.', 'error');
+                return;
+            }
 
-            // 将新留言插入到最上方
-            messages.unshift({ name, text, time: timeStr });
-            localStorage.setItem('louis_guestbook', JSON.stringify(messages));
+            submitBtn.disabled = true;
+            setStatus('Posting...', '');
 
-            renderMessages(messages);
-            messageInput.value = '';
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ name: name, message: text })
+                });
+
+                if (res.ok) {
+                    localStorage.setItem('last_post_timestamp', Date.now().toString());
+                    messageInput.value = '';
+                    setStatus('Message posted successfully!', 'success');
+                    await loadMessages();
+                } else {
+                    setStatus('Failed to post. Content rejected.', 'error');
+                }
+            } catch (err) {
+                setStatus('Network error. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+            }
         });
 
         loadMessages();
