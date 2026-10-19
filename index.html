@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
             --bg-color: #0f172a;
             --text-color: #f8fafc;
             --accent-color: #38bdf8;
-            --card-bg: #1e293b;
+            --panel-bg: #1e293b;
         }
 
         body {
@@ -25,37 +25,34 @@
         }
 
         .container {
-            background-color: var(--card-bg);
-            padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box; 
+            padding: 3rem 1.5rem;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
-            border: 1px solid #334155;
+            max-width: 600px;
+            width: 100%;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             margin: 0 auto 1.5rem;
             display: block;
-            border: 4px solid var(--card-bg);
+            border: 4px solid var(--panel-bg);
             box-shadow: 0 0 0 4px var(--accent-color);
             object-fit: cover;
         }
 
         h1 {
             margin: 0 0 0.5rem 0;
-            font-size: 1.8rem;
+            font-size: 2rem;
             letter-spacing: 1px;
         }
 
         .subtitle {
             color: #94a3b8;
-            font-size: 1rem;
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
             line-height: 1.5;
         }
 
@@ -64,35 +61,34 @@
             font-weight: 500;
         }
         
-        /* 时间与天气展示区样式 */
         .widget-panel {
-            background-color: rgba(15, 23, 42, 0.6);
+            background-color: var(--panel-bg);
             border-radius: 12px;
-            padding: 1.2rem;
+            padding: 1.5rem;
             margin-bottom: 2rem;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            border: 1px solid #475569;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        /* 新增：日期显示样式 */
         .date-display {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--accent-color);
             font-weight: 500;
         }
 
         .time-display {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 600;
             font-variant-numeric: tabular-nums;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             margin-bottom: 0.5rem;
         }
 
         .weather-display {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #cbd5e1;
             display: flex;
             align-items: center;
@@ -108,14 +104,16 @@
 
         .link-btn {
             display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background-color: transparent;
+            padding: 1rem 1.5rem;
+            background-color: var(--panel-bg);
             color: var(--text-color);
             text-decoration: none;
-            border: 1px solid #475569;
+            border: 1px solid #334155;
             border-radius: 8px;
             font-weight: 500;
+            font-size: 1.1rem;
             transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .link-btn:hover {
@@ -126,8 +124,8 @@
         }
         
         .footer {
-            margin-top: 2rem;
-            font-size: 0.8rem;
+            margin-top: 3rem;
+            font-size: 0.85rem;
             color: #64748b;
         }
     </style>
@@ -135,7 +133,6 @@
 <body>
 
     <div class="container">
-        <!-- 保持你的头像 -->
         <img src="IMG_4999.JPG" class="avatar" alt="Louis">
         
         <h1>Louis</h1>
@@ -144,18 +141,15 @@
             <span class="highlight">Software and Systems Engineering</span>
         </p>
 
-        <!-- 实时时间与天气面板 -->
         <div class="widget-panel">
-            <!-- 新增：日期显示元素 -->
-            <div class="date-display" id="finland-date">正在获取日期...</div>
+            <div class="date-display" id="finland-date">Fetching date...</div>
             <div class="time-display" id="finland-time">00:00:00</div>
             <div class="weather-display" id="finland-weather">
-                <span>📍 Lahti, Finland | 正在获取天气...</span>
+                <span>📍 Lahti, Finland | Fetching weather...</span>
             </div>
         </div>
 
         <div class="links-container">
-            <!-- 仅保留 GitHub 入口 -->
             <a href="https://github.com/louis194911" target="_blank" class="link-btn">GitHub Profile 💻</a>
         </div>
 
@@ -165,13 +159,11 @@
     </div>
 
     <script>
-        // 1. 实时更新芬兰的日期和时间 (Europe/Helsinki 时区)
         function updateTime() {
             const timeElement = document.getElementById('finland-time');
             const dateElement = document.getElementById('finland-date');
             const now = new Date();
             
-            // 配置芬兰时区的日期格式 (如: 2026年10月19日 星期一)
             const dateOptions = { 
                 timeZone: 'Europe/Helsinki',
                 year: 'numeric', 
@@ -180,7 +172,6 @@
                 weekday: 'long'
             };
             
-            // 配置芬兰时区的时间格式 (如: 23:12:19)
             const timeOptions = { 
                 timeZone: 'Europe/Helsinki',
                 hour12: false,
@@ -189,60 +180,34 @@
                 second: '2-digit'
             };
             
-            // 更新页面元素
-            dateElement.textContent = now.toLocaleDateString('zh-CN', dateOptions);
-            timeElement.textContent = now.toLocaleTimeString('zh-CN', timeOptions);
+            // 使用 'en-US' 将时间格式化为英文 (例如: Monday, October 19, 2026)
+            dateElement.textContent = now.toLocaleDateString('en-US', dateOptions);
+            timeElement.textContent = now.toLocaleTimeString('en-US', timeOptions);
         }
 
-        // 初始化并每秒更新时间
         updateTime();
         setInterval(updateTime, 1000);
 
-        // 2. 获取芬兰拉赫蒂 (Lahti) 的天气 (纯文本版)
         async function fetchWeather() {
             const weatherElement = document.getElementById('finland-weather');
             try {
-                // 修改请求参数：format="%C+%t" 
-                // %C 代表纯文本天气状况（如 Clear, Cloudy），%t 代表温度
                 const response = await fetch('https://wttr.in/Lahti?format=%C+%t');
                 if (response.ok) {
-                    let textData = await response.text();
+                    let rawData = await response.text();
                     
-                    // 简单的英文到中文天气状况映射（可视需求自行添加）
-                    const weatherMap = {
-                        "Clear": "晴",
-                        "Sunny": "晴朗",
-                        "Partly cloudy": "多云",
-                        "Cloudy": "阴天",
-                        "Overcast": "阴天",
-                        "Mist": "薄雾",
-                        "Fog": "雾",
-                        "Rain": "雨",
-                        "Light rain": "小雨",
-                        "Heavy rain": "大雨",
-                        "Snow": "雪",
-                        "Light snow": "小雪"
-                    };
-                    
-                    // 尝试翻译天气文本，如果不在此列表中则保持原英文
-                    Object.keys(weatherMap).forEach(eng => {
-                        if(textData.includes(eng)) {
-                            textData = textData.replace(eng, weatherMap[eng]);
-                        }
-                    });
+                    // 剥离 HTML 标签，直接保留接口原生的英文天气文本（如 "Partly cloudy +3°C"）
+                    let textData = rawData.replace(/<[^>]+>/g, '').trim();
 
                     weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>${textData}</span>`;
                 } else {
-                    weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>天气数据暂不可用</span>`;
+                    weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>Weather data unavailable</span>`;
                 }
             } catch (error) {
-                weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>网络请求失败</span>`;
+                weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>Network request failed</span>`;
             }
         }
 
-        // 页面加载时获取一次天气
         fetchWeather();
-        // 设置每半小时 (1800000 毫秒) 刷新一次天气
         setInterval(fetchWeather, 1800000);
     </script>
 </body>
