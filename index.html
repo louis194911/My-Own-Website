@@ -6,13 +6,14 @@
     <title>Louis | Personal Space</title>
     <style>
         :root {
-            --bg-color: #0f172a;
+            --bg-color: #0b1120;
             --text-color: #f8fafc;
             --muted-color: #94a3b8;
             --accent-color: #38bdf8;
-            --panel-bg: #1e293b;
-            --border-color: #334155;
-            --input-bg: #0f172a;
+            --accent-glow: rgba(56, 189, 248, 0.35);
+            --panel-bg: rgba(30, 41, 59, 0.72);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(15, 23, 42, 0.85);
             --error-color: #f87171;
             --success-color: #4ade80;
         }
@@ -24,8 +25,11 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 18% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 82% 80%, rgba(99, 102, 241, 0.07) 0%, transparent 45%);
             color: var(--text-color);
             display: flex;
             justify-content: center;
@@ -34,7 +38,7 @@
             overflow-x: hidden;
         }
 
-        /* 鼠标粒子特效画布：固定在顶层但完全穿透点击事件 */
+        /* 鼠标粒子特效画布 */
         #cursor-canvas {
             position: fixed;
             top: 0;
@@ -45,237 +49,389 @@
             z-index: 9999;
         }
 
+        /* 整体双栏黄金比例容器 */
         .main-wrapper {
             width: 100%;
-            max-width: 1080px;
-            padding: 3rem 2rem;
+            max-width: 1060px;
+            padding: 2.5rem 2rem;
             display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            gap: 3.5rem;
-            align-items: center;
+            grid-template-columns: 440px 1fr;
+            gap: 2.8rem;
+            align-items: stretch;
             position: relative;
             z-index: 1;
         }
 
-        /* 左侧：个人资料与互动区 */
+        /* 左侧栏：垂直均匀分布，与右侧高度对齐 */
         .profile-section {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.1rem;
             width: 100%;
         }
 
+        /* 顶部个人名片头部 */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0.5rem 0 0.2rem;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            margin-bottom: 0.9rem;
+        }
+
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 112px;
+            height: 112px;
             border-radius: 50%;
-            margin: 0 auto 1.2rem;
             display: block;
-            border: 4px solid var(--panel-bg);
-            box-shadow: 0 0 0 4px var(--accent-color);
+            border: 3px solid #1e293b;
+            box-shadow: 0 0 0 3px var(--accent-color), 0 12px 24px rgba(0, 0, 0, 0.4);
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .avatar:hover {
-            transform: scale(1.05) rotate(3deg);
+            transform: scale(1.06) rotate(2deg);
         }
 
         h1 {
-            margin: 0 0 0.4rem 0;
+            margin: 0;
             font-size: 2rem;
-            letter-spacing: 1px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            color: var(--muted-color);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
+        /* 通用毛玻璃卡片质感 */
+        .glass-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.4);
         }
 
-        .highlight {
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-        
+        /* 时间与天气面板 */
         .widget-panel {
-            background-color: var(--panel-bg);
-            border-radius: 12px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 1.2rem;
+            padding: 1.25rem 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            align-items: center;
+            gap: 0.35rem;
         }
 
         .date-display {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--accent-color);
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
         }
 
         .time-display {
-            font-size: 2.3rem;
-            font-weight: 600;
+            font-size: 2.4rem;
+            font-weight: 700;
             font-variant-numeric: tabular-nums;
             letter-spacing: 2px;
-            margin-bottom: 0.3rem;
+            line-height: 1.15;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(56, 189, 248, 0.2);
         }
 
         .weather-display {
-            font-size: 0.95rem;
+            margin-top: 0.2rem;
+            font-size: 0.9rem;
             color: #cbd5e1;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.55);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* 迷你合成器钢琴面板 */
-        .piano-panel {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1rem 1.2rem 1.2rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        /* ==========================================
+           3D 拟物硬件合成器 (Hardware Synth Modeling)
+           ========================================== */
+        .synth-chassis {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.22);
+            border-bottom: 3px solid #020617;
+            border-radius: 16px;
+            padding: 1rem 1.1rem 1.15rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             user-select: none;
             -webkit-user-select: none;
         }
 
-        .piano-header {
+        /* 合成器顶部控制栏 */
+        .synth-control-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.8rem;
-            font-size: 0.8rem;
-            color: var(--muted-color);
+            margin-bottom: 0.85rem;
+            padding: 0 0.2rem;
         }
 
-        .piano-title {
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 0.85rem;
+        .synth-brand {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.55rem;
+        }
+
+        .led-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #38bdf8;
+            box-shadow: 0 0 8px #38bdf8;
+            transition: transform 0.1s, background-color 0.15s, box-shadow 0.15s;
+        }
+
+        .led-dot.playing {
+            background-color: #4ade80;
+            box-shadow: 0 0 12px #4ade80, 0 0 20px #4ade80;
+            transform: scale(1.25);
+        }
+
+        .synth-model-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #e2e8f0;
+            text-transform: uppercase;
+        }
+
+        /* 迷你 LCD 音符显示屏 */
+        .synth-lcd {
+            background: #060a12;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 0.22rem 0.6rem;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.72rem;
+            color: var(--accent-color);
+            letter-spacing: 0.5px;
+            min-width: 88px;
+            text-align: center;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 音色切换胶囊按钮 */
+        .synth-presets {
+            display: flex;
+            background: #090d16;
+            padding: 2px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .preset-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.22rem 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .preset-btn.active {
+            background: #1e293b;
+            color: var(--accent-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 内凹琴床槽 (Recessed Keybed) */
+        .synth-keybed {
+            position: relative;
+            background: #050811;
+            padding: 5px 5px 7px;
+            border-radius: 10px;
+            box-shadow: inset 0 5px 12px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        /* 琴键顶部拟真毡条 (Felt Strip) */
+        .synth-keybed::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0284c7, #38bdf8, #6366f1, #0284c7);
+            z-index: 4;
+            opacity: 0.85;
         }
 
         .piano-keys {
             position: relative;
             display: flex;
-            height: 100px;
-            gap: 4px;
-            justify-content: center;
+            height: 118px;
+            gap: 2px;
+            user-select: none;
         }
 
+        /* 3D 象牙质感白键 */
         .key-white {
             flex: 1;
-            background: linear-gradient(to bottom, #e2e8f0 0%, #f8fafc 100%);
-            border: 1px solid #475569;
+            background: linear-gradient(180deg, #cbd5e1 0%, #f1f5f9 10%, #ffffff 82%, #e2e8f0 100%);
             border-radius: 0 0 6px 6px;
+            border-bottom: 6px solid #94a3b8;
             cursor: pointer;
             position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 8px;
+            box-shadow: 
+                inset 0 4px 6px -2px rgba(0, 0, 0, 0.35),
+                inset 0 -1px 1px rgba(255, 255, 255, 0.8),
+                0 3px 5px rgba(0, 0, 0, 0.5);
+            transition: transform 0.05s ease, border-bottom-width 0.05s ease, background 0.05s ease, box-shadow 0.05s ease;
+        }
+
+        .key-white .key-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+
+        .key-white:active, .key-white.active {
+            transform: translateY(4px);
+            border-bottom-width: 2px;
+            background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 25%, #f0f9ff 100%);
+            box-shadow: 
+                inset 0 3px 8px rgba(2, 132, 199, 0.35),
+                0 1px 2px rgba(0, 0, 0, 0.4),
+                0 0 14px rgba(56, 189, 248, 0.45);
+        }
+
+        .key-white:active .key-label, .key-white.active .key-label {
+            color: #0284c7;
+        }
+
+        /* 3D 乌木倒角黑键 */
+        .key-black {
+            position: absolute;
+            top: 0;
+            width: 8.2%;
+            height: 63%;
+            background: linear-gradient(180deg, #334155 0%, #1e293b 14%, #0f172a 85%, #020617 100%);
+            border-left: 2px solid #334155;
+            border-right: 2px solid #090d16;
+            border-bottom: 7px solid #020617;
+            border-radius: 0 0 5px 5px;
+            z-index: 3;
+            cursor: pointer;
             display: flex;
             align-items: flex-end;
             justify-content: center;
             padding-bottom: 6px;
-            color: #64748b;
-            font-size: 0.7rem;
-            font-weight: 600;
-            transition: all 0.08s ease;
-            box-shadow: 0 4px 0 #94a3b8;
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.22),
+                3px 6px 8px rgba(0, 0, 0, 0.65),
+                -1px 4px 5px rgba(0, 0, 0, 0.5);
+            transition: transform 0.05s ease, border-bottom-width 0.05s ease, background 0.05s ease, box-shadow 0.05s ease;
         }
 
-        .key-white:active, .key-white.active {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #0284c7, 0 0 15px rgba(56, 189, 248, 0.6);
-            border-color: var(--accent-color);
-        }
-
-        .key-black {
-            position: absolute;
-            top: 0;
-            width: 8.5%;
-            height: 60%;
-            background: linear-gradient(to bottom, #1e293b 0%, #0f172a 100%);
-            border: 1px solid #475569;
-            border-top: none;
-            border-radius: 0 0 5px 5px;
-            z-index: 2;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 5px;
+        .key-black .key-label {
+            font-size: 0.58rem;
+            font-weight: 700;
             color: #64748b;
-            font-size: 0.6rem;
-            font-weight: 600;
-            transition: all 0.08s ease;
-            box-shadow: 0 3px 0 #020617;
+            pointer-events: none;
         }
 
         .key-black:active, .key-black.active {
-            background: #0284c7;
-            color: var(--text-color);
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 #020617, 0 0 12px rgba(56, 189, 248, 0.8);
-            border-color: var(--accent-color);
+            transform: translateY(3px);
+            border-bottom-width: 4px;
+            background: linear-gradient(180deg, #0284c7 0%, #0369a1 60%, #075985 100%);
+            border-left-color: #38bdf8;
+            box-shadow: 
+                inset 0 1px 2px rgba(255, 255, 255, 0.4),
+                0 2px 4px rgba(0, 0, 0, 0.7),
+                0 0 12px rgba(56, 189, 248, 0.7);
         }
 
-        /* 黑键精准定位 (对应 C#, D#, F#, G#, A#) */
-        .key-black[data-note="C#4"] { left: 8.2%; }
-        .key-black[data-note="D#4"] { left: 20.8%; }
-        .key-black[data-note="F#4"] { left: 45.8%; }
-        .key-black[data-note="G#4"] { left: 58.3%; }
-        .key-black[data-note="A#4"] { left: 70.8%; }
-
-        .links-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .key-black:active .key-label, .key-black.active .key-label {
+            color: #e0f2fe;
         }
 
+        /* 精密对准 8 个白键 (每个 12.5%) 之间的物理琴缝 */
+        .key-black[data-note="C#4"] { left: 8.4%; }
+        .key-black[data-note="D#4"] { left: 20.9%; }
+        .key-black[data-note="F#4"] { left: 45.9%; }
+        .key-black[data-note="G#4"] { left: 58.4%; }
+        .key-black[data-note="A#4"] { left: 70.9%; }
+
+        /* 底部 GitHub 按钮 */
         .link-btn {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
             padding: 0.9rem 1.5rem;
-            background-color: var(--panel-bg);
             color: var(--text-color);
             text-decoration: none;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 1.05rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            font-size: 0.98rem;
+            letter-spacing: 0.3px;
+            transition: all 0.25s ease;
+        }
+
+        .link-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.25s ease;
         }
 
         .link-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border-color: var(--accent-color);
+            background: rgba(56, 189, 248, 0.14);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: var(--accent-color);
             transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.25);
         }
 
-        /* 右侧：留言板区域 */
+        .link-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================
+           右侧：云端留言板区域
+           ========================================== */
         .guestbook-section {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            padding: 2rem 2.2rem;
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            justify-content: space-between;
+            gap: 1.1rem;
             width: 100%;
         }
 
         .guestbook-header h2 {
-            margin: 0 0 0.3rem 0;
-            font-size: 1.4rem;
+            margin: 0 0 0.35rem 0;
+            font-size: 1.35rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -283,14 +439,14 @@
 
         .guestbook-header p {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--muted-color);
         }
 
         .guestbook-form {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 0.75rem;
         }
 
         .honeypot-field {
@@ -300,24 +456,25 @@
 
         .input-field {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.78rem 1rem;
             background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
             color: var(--text-color);
             font-family: inherit;
-            font-size: 0.95rem;
-            transition: border-color 0.2s;
+            font-size: 0.92rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .input-field:focus {
             outline: none;
             border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
         }
 
         textarea.input-field {
             resize: vertical;
-            min-height: 80px;
+            min-height: 78px;
         }
 
         .form-footer {
@@ -325,37 +482,34 @@
             justify-content: space-between;
             align-items: center;
             gap: 1rem;
+            margin-top: 0.15rem;
         }
 
         .status-msg {
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             color: var(--muted-color);
         }
 
-        .status-msg.error {
-            color: var(--error-color);
-        }
-
-        .status-msg.success {
-            color: var(--success-color);
-        }
+        .status-msg.error { color: var(--error-color); }
+        .status-msg.success { color: var(--success-color); }
 
         .submit-btn {
-            padding: 0.75rem 1.4rem;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
+            padding: 0.72rem 1.4rem;
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            color: #0b1120;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.92rem;
             cursor: pointer;
-            transition: opacity 0.2s, transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
             white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
         }
 
         .submit-btn:hover:not(:disabled) {
-            opacity: 0.9;
             transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4);
         }
 
         .submit-btn:disabled {
@@ -366,43 +520,47 @@
         .messages-list {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            max-height: 310px;
+            gap: 0.75rem;
+            max-height: 255px;
             overflow-y: auto;
-            padding-right: 0.3rem;
-            margin-top: 0.2rem;
-            border-top: 1px solid var(--border-color);
+            padding-right: 0.35rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding-top: 1rem;
         }
 
         .messages-list::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .messages-list::-webkit-scrollbar-thumb {
-            background-color: var(--border-color);
+            background-color: rgba(255, 255, 255, 0.15);
             border-radius: 3px;
         }
 
         .message-card {
-            background-color: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.9rem 1rem;
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
             text-align: left;
+            transition: border-color 0.2s;
+        }
+
+        .message-card:hover {
+            border-color: rgba(255, 255, 255, 0.14);
         }
 
         .message-card.pinned {
-            border-color: rgba(56, 189, 248, 0.4);
-            background-color: rgba(56, 189, 248, 0.05);
+            border-color: rgba(56, 189, 248, 0.35);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
         }
 
         .message-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.4rem;
-            font-size: 0.85rem;
+            margin-bottom: 0.35rem;
+            font-size: 0.82rem;
         }
 
         .message-author {
@@ -417,24 +575,27 @@
 
         .message-text {
             margin: 0;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: #e2e8f0;
-            line-height: 1.4;
+            line-height: 1.45;
             word-wrap: break-word;
         }
 
         .footer {
             grid-column: 1 / -1;
             text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
+            margin-top: 0.2rem;
+            font-size: 0.82rem;
             color: #64748b;
+            letter-spacing: 0.3px;
         }
 
-        @media (max-width: 768px) {
+        /* 移动端自适应 */
+        @media (max-width: 860px) {
             .main-wrapper {
                 grid-template-columns: 1fr;
-                gap: 2.2rem;
+                max-width: 540px;
+                gap: 1.8rem;
                 padding: 2rem 1.2rem;
             }
             
@@ -443,28 +604,26 @@
             }
 
             .key-label {
-                display: none; /* 手机端隐藏键盘字母提示，保持清爽 */
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- 鼠标互动粒子特效画布 -->
     <canvas id="cursor-canvas"></canvas>
 
     <div class="main-wrapper">
-        <!-- 左侧：个人信息 + 实时状态 + 迷你合成器 -->
+        <!-- 左栏：个人形象 + 实时芬兰状态 + 3D 硬件合成器 + GitHub -->
         <div class="profile-section">
-            <img src="IMG_4999.JPG" class="avatar" alt="Louis">
-            
-            <h1>Louis</h1>
-            
-            <p class="subtitle">
-                <span class="highlight">Software and Systems Engineering</span>
-            </p>
+            <div class="profile-header">
+                <div class="avatar-wrapper">
+                    <img src="IMG_4999.JPG" class="avatar" alt="Louis">
+                </div>
+                <h1>Louis</h1>
+            </div>
 
-            <div class="widget-panel">
+            <div class="widget-panel glass-card">
                 <div class="date-display" id="finland-date">Fetching date...</div>
                 <div class="time-display" id="finland-time">00:00:00</div>
                 <div class="weather-display" id="finland-weather">
@@ -472,38 +631,52 @@
                 </div>
             </div>
 
-            <!-- 新增：Web Audio 互动合成器琴键 -->
-            <div class="piano-panel">
-                <div class="piano-header">
-                    <span class="piano-title">🎹 Mini Synth</span>
-                    <span>Click or press keys (A-K)</span>
+            <!-- 3D 硬件合成器 (SYNTH-01) -->
+            <div class="synth-chassis">
+                <div class="synth-control-bar">
+                    <div class="synth-brand">
+                        <span class="led-dot" id="synth-led"></span>
+                        <span class="synth-model-name">SYNTH-01</span>
+                    </div>
+                    <div class="synth-lcd" id="synth-lcd">READY · A-K</div>
+                    <div class="synth-presets" id="synth-presets">
+                        <button type="button" class="preset-btn active" data-preset="warm">Warm</button>
+                        <button type="button" class="preset-btn" data-preset="synth">Synth</button>
+                        <button type="button" class="preset-btn" data-preset="bell">Bell</button>
+                    </div>
                 </div>
-                <div class="piano-keys" id="piano-keys">
-                    <!-- 白键 -->
-                    <div class="key-white" data-note="C4" data-key="a"><span class="key-label">A</span></div>
-                    <div class="key-white" data-note="D4" data-key="s"><span class="key-label">S</span></div>
-                    <div class="key-white" data-note="E4" data-key="d"><span class="key-label">D</span></div>
-                    <div class="key-white" data-note="F4" data-key="f"><span class="key-label">F</span></div>
-                    <div class="key-white" data-note="G4" data-key="g"><span class="key-label">G</span></div>
-                    <div class="key-white" data-note="A4" data-key="h"><span class="key-label">H</span></div>
-                    <div class="key-white" data-note="B4" data-key="j"><span class="key-label">J</span></div>
-                    <div class="key-white" data-note="C5" data-key="k"><span class="key-label">K</span></div>
-                    <!-- 黑键 -->
-                    <div class="key-black" data-note="C#4" data-key="w"><span class="key-label">W</span></div>
-                    <div class="key-black" data-note="D#4" data-key="e"><span class="key-label">E</span></div>
-                    <div class="key-black" data-note="F#4" data-key="t"><span class="key-label">T</span></div>
-                    <div class="key-black" data-note="G#4" data-key="y"><span class="key-label">Y</span></div>
-                    <div class="key-black" data-note="A#4" data-key="u"><span class="key-label">U</span></div>
+
+                <div class="synth-keybed">
+                    <div class="piano-keys" id="piano-keys">
+                        <!-- 白键 -->
+                        <div class="key-white" data-note="C4" data-key="a"><span class="key-label">A</span></div>
+                        <div class="key-white" data-note="D4" data-key="s"><span class="key-label">S</span></div>
+                        <div class="key-white" data-note="E4" data-key="d"><span class="key-label">D</span></div>
+                        <div class="key-white" data-note="F4" data-key="f"><span class="key-label">F</span></div>
+                        <div class="key-white" data-note="G4" data-key="g"><span class="key-label">G</span></div>
+                        <div class="key-white" data-note="A4" data-key="h"><span class="key-label">H</span></div>
+                        <div class="key-white" data-note="B4" data-key="j"><span class="key-label">J</span></div>
+                        <div class="key-white" data-note="C5" data-key="k"><span class="key-label">K</span></div>
+                        <!-- 3D 黑键 -->
+                        <div class="key-black" data-note="C#4" data-key="w"><span class="key-label">W</span></div>
+                        <div class="key-black" data-note="D#4" data-key="e"><span class="key-label">E</span></div>
+                        <div class="key-black" data-note="F#4" data-key="t"><span class="key-label">T</span></div>
+                        <div class="key-black" data-note="G#4" data-key="y"><span class="key-label">Y</span></div>
+                        <div class="key-black" data-note="A#4" data-key="u"><span class="key-label">U</span></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="links-container">
-                <a href="https://github.com/louis194911" target="_blank" class="link-btn">GitHub Profile 💻</a>
-            </div>
+            <a href="https://github.com/louis194911" target="_blank" rel="noopener noreferrer" class="link-btn glass-card">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span>GitHub Profile</span>
+            </a>
         </div>
 
-        <!-- 右侧：云端同步留言板 -->
-        <div class="guestbook-section">
+        <!-- 右栏：云端同步留言板 -->
+        <div class="guestbook-section glass-card">
             <div class="guestbook-header">
                 <h2>Guestbook 💬</h2>
                 <p>Leave a comment, say hi, or share your thoughts! (No links allowed)</p>
@@ -594,13 +767,28 @@
         fetchWeather();
         setInterval(fetchWeather, 1800000);
 
-        // 3. Web Audio 合成器钢琴逻辑 (零外部音频文件)
+        // 3. Web Audio 硬件合成器引擎 (支持 3 种音色预设 + LCD 屏幕反馈)
         let audioCtx = null;
+        let currentPreset = 'warm';
+        const synthLed = document.getElementById('synth-led');
+        const synthLcd = document.getElementById('synth-lcd');
+        let lcdTimeout = null;
+
         const noteFrequencies = {
             'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13,
             'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
             'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88, 'C5': 523.25
         };
+
+        // 音色预设切换
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentPreset = btn.dataset.preset;
+                synthLcd.textContent = `MODE: ${currentPreset.toUpperCase()}`;
+            });
+        });
 
         function playTone(note, keyElement) {
             if (!audioCtx) {
@@ -614,54 +802,84 @@
             if (!freq) return;
 
             const now = audioCtx.currentTime;
-            
-            // 主振荡器（温暖的三角波）+ 泛音振荡器（清脆的正弦波）
             const osc1 = audioCtx.createOscillator();
             const osc2 = audioCtx.createOscillator();
+            const filter = audioCtx.createBiquadFilter();
             const gainNode = audioCtx.createGain();
-
-            osc1.type = 'triangle';
-            osc1.frequency.setValueAtTime(freq, now);
-
-            osc2.type = 'sine';
-            osc2.frequency.setValueAtTime(freq * 2, now); // 高八度泛音
-
             const osc2Gain = audioCtx.createGain();
-            osc2Gain.gain.setValueAtTime(0.15, now);
 
-            // 音量包络 (ADSR)：快速起音，自然指数衰减
-            gainNode.gain.setValueAtTime(0.001, now);
-            gainNode.gain.linearRampToValueAtTime(0.35, now + 0.015);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
+            // 根据不同预设塑造合成器音色
+            if (currentPreset === 'warm') {
+                osc1.type = 'triangle';
+                osc2.type = 'sine';
+                osc1.frequency.setValueAtTime(freq, now);
+                osc2.frequency.setValueAtTime(freq * 2, now);
+                osc2Gain.gain.setValueAtTime(0.14, now);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(2200, now);
+                gainNode.gain.setValueAtTime(0.001, now);
+                gainNode.gain.linearRampToValueAtTime(0.35, now + 0.015);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.25);
+            } else if (currentPreset === 'synth') {
+                osc1.type = 'sawtooth';
+                osc2.type = 'square';
+                osc1.frequency.setValueAtTime(freq, now);
+                osc2.frequency.setValueAtTime(freq * 1.004, now); // 微失谐制造厚重合唱感
+                osc2Gain.gain.setValueAtTime(0.25, now);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3200, now);
+                filter.frequency.exponentialRampToValueAtTime(450, now + 0.7);
+                gainNode.gain.setValueAtTime(0.001, now);
+                gainNode.gain.linearRampToValueAtTime(0.26, now + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+            } else {
+                // Bell 水晶泛音
+                osc1.type = 'sine';
+                osc2.type = 'sine';
+                osc1.frequency.setValueAtTime(freq, now);
+                osc2.frequency.setValueAtTime(freq * 3, now);
+                osc2Gain.gain.setValueAtTime(0.2, now);
+                filter.type = 'highpass';
+                filter.frequency.setValueAtTime(180, now);
+                gainNode.gain.setValueAtTime(0.001, now);
+                gainNode.gain.linearRampToValueAtTime(0.32, now + 0.008);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+            }
 
-            osc1.connect(gainNode);
+            osc1.connect(filter);
             osc2.connect(osc2Gain);
-            osc2Gain.connect(gainNode);
+            osc2Gain.connect(filter);
+            filter.connect(gainNode);
             gainNode.connect(audioCtx.destination);
 
             osc1.start(now);
             osc2.start(now);
-            osc1.stop(now + 1.15);
-            osc2.stop(now + 1.15);
+            osc1.stop(now + 1.65);
+            osc2.stop(now + 1.65);
 
-            // 视觉按下效果与粒子爆发
+            // 更新 LCD 屏幕与 LED 状态灯
+            synthLcd.textContent = `${note} · ${Math.round(freq)}Hz`;
+            synthLed.classList.add('playing');
+            clearTimeout(lcdTimeout);
+            lcdTimeout = setTimeout(() => {
+                synthLed.classList.remove('playing');
+            }, 220);
+
             if (keyElement) {
                 keyElement.classList.add('active');
                 setTimeout(() => keyElement.classList.remove('active'), 160);
                 const rect = keyElement.getBoundingClientRect();
-                spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 10);
+                spawnBurst(rect.left + rect.width / 2, rect.top + rect.height - 15, 10);
             }
         }
 
-        const allKeys = document.querySelectorAll('[data-note]');
-        allKeys.forEach(keyEl => {
+        document.querySelectorAll('[data-note]').forEach(keyEl => {
             keyEl.addEventListener('pointerdown', (e) => {
                 e.preventDefault();
                 playTone(keyEl.dataset.note, keyEl);
             });
         });
 
-        // 键盘按键弹奏支持（在留言框打字时自动禁用，互不干扰）
         window.addEventListener('keydown', (e) => {
             const activeTag = document.activeElement ? document.activeElement.tagName : '';
             if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || e.repeat || e.metaKey || e.ctrlKey) return;
@@ -673,7 +891,7 @@
             }
         });
 
-        // 4. 鼠标星尘拖尾与点击波纹特效 (HTML5 Canvas)
+        // 4. 鼠标星尘拖尾与点击波纹特效
         const canvas = document.getElementById('cursor-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -727,7 +945,6 @@
         function animateCursor() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 绘制平滑跟随的光晕环
             if (mouse.active) {
                 mouse.x += (mouse.targetX - mouse.x) * 0.22;
                 mouse.y += (mouse.targetY - mouse.y) * 0.22;
@@ -739,7 +956,6 @@
                 ctx.stroke();
             }
 
-            // 更新并绘制粒子
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.x += p.vx;
