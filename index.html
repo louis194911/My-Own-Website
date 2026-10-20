@@ -3,38 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOUIS // SYSTEM SPACE</title>
+    <title>Louis | Personal Space</title>
     <style>
         :root {
-            --bg-base: #07090e;
-            --bg-surface: #0c1017;
-            --bg-elevated: #121822;
-            --bg-key-white: #18202c;
-            --bg-key-black: #090c10;
-            --text-main: #f1f5f9;
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-main: #0f172a;
             --text-muted: #64748b;
-            --text-dim: #334155;
-            --border-hairline: #1e293b;
-            --accent: #38bdf8;
-            --accent-dim: rgba(56, 189, 248, 0.12);
-            --danger: #f43f5e;
-            --success: #10b981;
-            --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-
-        /* 主题色动态变量 */
-        [data-theme="amber"] {
-            --accent: #f59e0b;
-            --accent-dim: rgba(245, 158, 11, 0.12);
-        }
-        [data-theme="emerald"] {
-            --accent: #10b981;
-            --accent-dim: rgba(16, 185, 129, 0.12);
-        }
-        [data-theme="orange"] {
-            --accent: #f97316;
-            --accent-dim: rgba(249, 115, 22, 0.12);
+            --accent-color: #0ea5e9;
+            --accent-soft: rgba(14, 165, 233, 0.08);
+            --border-color: #e2e8f0;
+            --shadow-subtle: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0 20px 40px -10px rgba(15, 23, 42, 0.08);
+            --radius-lg: 24px;
+            --radius-md: 16px;
         }
 
         *, *::before, *::after {
@@ -44,594 +26,181 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-base);
-            /* 极简工程蓝图点阵背景 (零 GPU 负担) */
-            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-            background-size: 24px 24px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: var(--font-sans);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 1.5rem;
-            overflow-x: hidden;
+            padding: 2rem 1rem;
         }
 
-        /* 瑞士网格主框架 (Architectural Frame) */
-        .system-frame {
+        /* 优雅流体布局容器 */
+        .page-container {
             width: 100%;
-            max-width: 1220px;
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-hairline);
-            position: relative;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
-        }
-
-        /* 四角工程十字准星装饰 */
-        .crosshair {
-            position: absolute;
-            width: 11px;
-            height: 11px;
-            pointer-events: none;
-            z-index: 10;
-        }
-        .crosshair::before, .crosshair::after {
-            content: '';
-            position: absolute;
-            background-color: var(--accent);
-        }
-        .crosshair::before { top: 5px; left: 0; width: 11px; height: 1px; }
-        .crosshair::after { top: 0; left: 5px; width: 1px; height: 11px; }
-        .ch-tl { top: -6px; left: -6px; }
-        .ch-tr { top: -6px; right: -6px; }
-        .ch-bl { bottom: -6px; left: -6px; }
-        .ch-br { bottom: -6px; right: -6px; }
-
-        /* 顶部系统遥测状态栏 (Top Telemetry Bar) */
-        .telemetry-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.7rem 1.25rem;
-            border-bottom: 1px solid var(--border-hairline);
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.8px;
-            color: var(--text-muted);
-            background-color: var(--bg-base);
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
-
-        .telemetry-left, .telemetry-right {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .sys-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            color: var(--text-main);
-            font-weight: 600;
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-        }
-
-        .hud-btn {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-hairline);
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            padding: 0.2rem 0.55rem;
-            cursor: pointer;
-            transition: border-color 0.15s, color 0.15s;
-        }
-
-        .hud-btn:hover, .hud-btn.active {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .theme-switcher {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .theme-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-            border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-            transition: transform 0.15s;
-        }
-        .theme-dot:hover { transform: scale(1.2); }
-        .theme-dot[data-color="cyan"] { background: #38bdf8; }
-        .theme-dot[data-color="amber"] { background: #f59e0b; }
-        .theme-dot[data-color="emerald"] { background: #10b981; }
-        .theme-dot[data-color="orange"] { background: #f97316; }
-
-        /* 核心 Bento 网格架构 */
-        .bento-grid {
+            max-width: 960px;
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            grid-template-columns: 1fr 1.15fr;
+            gap: 2.5rem;
+            align-items: start;
         }
 
-        /* 通用模块头部标签 */
-        .mod-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.6rem;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
+        /* 通用卡片容器 */
+        .glass-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-subtle);
+            padding: 2.2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .mod-index {
-            color: var(--accent);
-            font-weight: 600;
+        .glass-card:hover {
+            box-shadow: var(--shadow-hover);
         }
 
-        /* 左侧区域容器 (占 7 列) */
-        .left-column {
-            grid-column: span 7;
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            border-right: 1px solid var(--border-hairline);
-        }
-
-        /* 模块 01：个人身份主视觉 (Identity Module - 4 列) */
-        .mod-identity {
-            grid-column: span 4;
-            padding: 1.6rem;
-            border-right: 1px solid var(--border-hairline);
-            border-bottom: 1px solid var(--border-hairline);
+        /* 左侧个人与状态区 */
+        .profile-column {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+
+        .avatar-container {
             position: relative;
-            overflow: hidden;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 1.2rem;
         }
 
-        .identity-body {
-            display: flex;
-            align-items: center;
-            gap: 1.3rem;
-            margin: 0.5rem 0 1.4rem;
-        }
-
-        .avatar-frame {
-            position: relative;
-            width: 88px;
-            height: 88px;
-            padding: 4px;
-            border: 1px solid var(--border-hairline);
-            background: var(--bg-base);
-            flex-shrink: 0;
-        }
-
-        .avatar-frame::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            right: -1px;
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid var(--accent);
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .avatar-img {
+        .avatar {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            display: block;
-            filter: contrast(1.04);
+            border: 4px solid var(--surface-color);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+            transition: transform 0.3s ease;
         }
 
-        .identity-title-group {
+        .avatar:hover {
+            transform: scale(1.04);
+        }
+
+        h1 {
+            margin: 0 0 0.4rem 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        .location-tag {
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background-color: #f1f5f9;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* 实时状态模块 */
+        .status-module {
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
+            gap: 0.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: var(--radius-md);
+            padding: 1.4rem;
+            border: 1px solid #e2e8f0;
         }
 
-        .hero-name {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            line-height: 1;
+        .date-text {
+            font-size: 0.82rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .time-text {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
             color: var(--text-main);
+            font-variant-numeric: tabular-nums;
         }
 
-        .hero-name span {
-            color: var(--accent);
-        }
-
-        .hero-coord {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
+        .weather-text {
+            font-size: 0.9rem;
             color: var(--text-muted);
-            background: var(--bg-base);
-            padding: 0.22rem 0.5rem;
-            border-left: 2px solid var(--accent);
-            display: inline-block;
-            width: fit-content;
+            font-weight: 500;
         }
 
-        /* 极客终端风格 GitHub 按钮 */
-        .terminal-link {
+        /* 优雅的链接按钮 */
+        .external-link {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0.8rem 1rem;
-            background-color: var(--bg-base);
-            border: 1px solid var(--border-hairline);
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             color: var(--text-main);
             text-decoration: none;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
             font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.02);
             transition: all 0.2s ease;
         }
 
-        .terminal-link-left {
-            display: flex;
-            align-items: center;
-            gap: 0.65rem;
-        }
-
-        .terminal-link svg {
+        .external-link svg {
             width: 18px;
             height: 18px;
             fill: currentColor;
         }
 
-        .terminal-arrow {
-            color: var(--accent);
-            transition: transform 0.2s ease;
+        .external-link:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: var(--accent-soft);
+            transform: translateY(-2px);
         }
 
-        .terminal-link:hover {
-            border-color: var(--accent);
-            background-color: var(--accent-dim);
-        }
-
-        .terminal-link:hover .terminal-arrow {
-            transform: translate(3px, -3px);
-        }
-
-        /* 模块 02：芬兰拉赫蒂实时环境遥测 (Telemetry Module - 3 列) */
-        .mod-telemetry {
-            grid-column: span 3;
-            padding: 1.6rem;
-            border-bottom: 1px solid var(--border-hairline);
+        /* 右侧留言板区 */
+        .guestbook-column {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 1.2rem;
         }
 
-        .clock-block {
-            margin: 0.2rem 0 0.8rem;
-        }
-
-        .date-readout {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 0.3rem;
-        }
-
-        .time-readout {
-            font-family: var(--font-mono);
-            font-size: 2.15rem;
+        .section-title {
+            margin: 0 0 0.2rem 0;
+            font-size: 1.3rem;
             font-weight: 700;
-            letter-spacing: -1px;
-            font-variant-numeric: tabular-nums;
-            line-height: 1.1;
+            letter-spacing: -0.3px;
         }
 
-        /* 秒针推进进度条 */
-        .sec-bar-track {
-            width: 100%;
-            height: 3px;
-            background: var(--bg-base);
-            margin-top: 0.55rem;
-            overflow: hidden;
-        }
-
-        .sec-bar-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 0%;
-            transition: width 0.2s linear;
-        }
-
-        /* 气象参数网格 */
-        .weather-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid var(--border-hairline);
-            font-family: var(--font-mono);
-        }
-
-        .w-cell {
-            background: var(--bg-base);
-            padding: 0.5rem 0.65rem;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .w-label {
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 0.15rem;
-        }
-
-        .w-val {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        /* ==========================================
-           模块 03：OP-1 工业级硬件合成器与实时示波器 (7 列全宽)
-           ========================================== */
-        .mod-synth {
-            grid-column: span 7;
-            padding: 1.6rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-            background: linear-gradient(180deg, var(--bg-surface) 0%, #090d14 100%);
-        }
-
-        /* 合成器仪表台：左示波器 + 右控制矩阵 */
-        .synth-deck {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1rem;
-            align-items: center;
-            background: var(--bg-base);
-            border: 1px solid var(--border-hairline);
-            padding: 0.75rem 1rem;
-        }
-
-        .osc-screen-wrap {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            overflow: hidden;
-        }
-
-        #osc-canvas {
-            width: 220px;
-            height: 44px;
-            background: #05070a;
-            border: 1px solid #1e293b;
-            flex-shrink: 0;
-        }
-
-        .osc-telemetry {
-            font-family: var(--font-mono);
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .osc-note {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .osc-freq {
-            font-size: 0.68rem;
+        .section-desc {
+            margin: 0 0 1rem 0;
+            font-size: 0.88rem;
             color: var(--text-muted);
         }
 
-        .synth-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-        }
-
-        .synth-btn {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-hairline);
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.45rem 0.7rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.15s ease;
-        }
-
-        .synth-btn:hover {
-            color: var(--text-main);
-            border-color: #475569;
-        }
-
-        .synth-btn.active {
-            background: var(--accent-dim);
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .arp-btn {
-            border-color: rgba(255, 255, 255, 0.15);
-            color: var(--text-main);
-        }
-
-        .arp-btn.playing {
-            background: var(--accent);
-            color: var(--bg-base);
-            border-color: var(--accent);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
-
-        /* OP-1 风格暗黑机械琴床 */
-        .op1-keybed {
-            position: relative;
-            background: #05070b;
-            border: 1px solid var(--border-hairline);
-            padding: 8px;
-            height: 142px;
-            display: flex;
-            gap: 5px;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        /* 机械白键 (Dark Slate Mechanical Keys) */
-        .op1-key-white {
-            flex: 1;
-            background: linear-gradient(180deg, #161e2b 0%, #111722 100%);
-            border: 1px solid #263244;
-            border-bottom: 4px solid #090d14;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
+        .guestbook-form {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0 9px;
-            transition: transform 0.05s ease, border-color 0.08s ease, background 0.08s ease;
-        }
-
-        /* 机械键帽中心微凹圆盘装饰 */
-        .op1-key-white::before {
-            content: '';
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            background: radial-gradient(circle, rgba(0,0,0,0.25) 0%, transparent 70%);
-            margin-top: auto;
-            margin-bottom: 6px;
-        }
-
-        .key-led {
-            width: 12px;
-            height: 3px;
-            background: #263244;
-            border-radius: 1px;
-            transition: background 0.08s, box-shadow 0.08s;
-        }
-
-        .key-meta {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            font-family: var(--font-mono);
-            pointer-events: none;
-        }
-
-        .key-note-name {
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .key-shortcut {
-            font-size: 0.58rem;
-            color: var(--text-muted);
-        }
-
-        .op1-key-white:active, .op1-key-white.active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-            border-color: var(--accent);
-            background: linear-gradient(180deg, #1e293b 0%, #162030 100%);
-        }
-
-        .op1-key-white:active .key-led, .op1-key-white.active .key-led {
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-        }
-
-        /* 机械黑键 (Elevated Obsidian Switches) */
-        .op1-key-black {
-            position: absolute;
-            top: 8px;
-            width: 8.2%;
-            height: 56%;
-            background: linear-gradient(180deg, #0d121a 0%, #070a0f 100%);
-            border: 1px solid #2d3b4e;
-            border-bottom: 5px solid #020406;
-            border-radius: 4px;
-            z-index: 3;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
-            transition: transform 0.05s ease, border-color 0.08s ease;
-        }
-
-        .op1-key-black:active, .op1-key-black.active {
-            transform: translateY(2px);
-            border-bottom-width: 3px;
-            border-color: var(--accent);
-        }
-
-        .op1-key-black:active .key-led, .op1-key-black.active .key-led {
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-        }
-
-        /* 精准物理八度黑键坐标 */
-        .op1-key-black[data-note="C#4"] { left: 8.6%; }
-        .op1-key-black[data-note="D#4"] { left: 21.0%; }
-        .op1-key-black[data-note="F#4"] { left: 45.7%; }
-        .op1-key-black[data-note="G#4"] { left: 58.1%; }
-        .op1-key-black[data-note="A#4"] { left: 70.5%; }
-
-        /* ==========================================
-           模块 04：右侧云端通信留言板 (5 列全高)
-           ========================================== */
-        .mod-guestbook {
-            grid-column: span 5;
-            padding: 1.6rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-color: var(--bg-surface);
-        }
-
-        .gb-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-            margin-bottom: 1.2rem;
+            gap: 0.8rem;
         }
 
         .honeypot-field {
@@ -639,381 +208,206 @@
             visibility: hidden !important;
         }
 
-        .cyber-input {
+        .input-box {
             width: 100%;
-            background-color: var(--bg-base);
-            border: 1px solid var(--border-hairline);
+            padding: 0.85rem 1rem;
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             color: var(--text-main);
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            padding: 0.75rem 0.9rem;
-            transition: border-color 0.15s;
+            font-family: inherit;
+            font-size: 0.92rem;
+            transition: all 0.2s ease;
         }
 
-        .cyber-input:focus {
+        .input-box:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: var(--accent-color);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px var(--accent-soft);
         }
 
-        textarea.cyber-input {
+        textarea.input-box {
             resize: vertical;
-            min-height: 76px;
-            font-family: var(--font-sans);
-            font-size: 0.88rem;
+            min-height: 85px;
         }
 
-        .gb-actions {
+        .form-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1rem;
+            margin-top: 0.2rem;
         }
 
         .status-msg {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
+            font-weight: 500;
         }
-        .status-msg.error { color: var(--danger); }
-        .status-msg.success { color: var(--success); }
 
-        .transmit-btn {
-            background-color: var(--accent);
-            color: var(--bg-base);
+        .status-msg.error { color: #e11d48; }
+        .status-msg.success { color: #16a34a; }
+
+        .submit-btn {
+            padding: 0.75rem 1.4rem;
+            background-color: var(--text-main);
+            color: #ffffff;
             border: none;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            padding: 0.7rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.92rem;
             cursor: pointer;
-            transition: opacity 0.15s, transform 0.15s;
-            white-space: nowrap;
+            transition: background-color 0.2s, transform 0.2s;
         }
 
-        .transmit-btn:hover:not(:disabled) {
-            opacity: 0.9;
+        .submit-btn:hover:not(:disabled) {
+            background-color: var(--accent-color);
             transform: translateY(-1px);
         }
 
-        .transmit-btn:disabled {
-            opacity: 0.4;
+        .submit-btn:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* 终端日志式留言列表 */
-        .log-stream {
+        /* 留言列表 */
+        .messages-container {
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
-            max-height: 310px;
+            gap: 0.75rem;
+            max-height: 340px;
             overflow-y: auto;
-            padding-right: 0.35rem;
-            border-top: 1px solid var(--border-hairline);
-            padding-top: 1rem;
+            padding-right: 0.3rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.2rem;
         }
 
-        .log-stream::-webkit-scrollbar {
-            width: 4px;
-        }
-        .log-stream::-webkit-scrollbar-thumb {
-            background-color: var(--border-hairline);
+        .messages-container::-webkit-scrollbar {
+            width: 5px;
         }
 
-        .log-entry {
-            background-color: var(--bg-base);
-            border: 1px solid var(--border-hairline);
-            border-left: 2px solid #334155;
-            padding: 0.75rem 0.95rem;
-            transition: border-color 0.15s;
+        .messages-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
         }
 
-        .log-entry:hover {
-            border-left-color: var(--accent);
+        .message-card {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.1rem;
+            transition: border-color 0.2s;
         }
 
-        .log-entry.pinned {
-            border-left: 2px solid var(--accent);
-            background-color: var(--accent-dim);
+        .message-card.pinned {
+            background-color: var(--accent-soft);
+            border-color: rgba(14, 165, 233, 0.3);
         }
 
-        .log-meta {
+        .message-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
         }
 
-        .log-author {
-            color: var(--accent);
+        .message-author {
             font-weight: 600;
-        }
-
-        .log-time {
-            color: var(--text-muted);
-        }
-
-        .log-body {
-            margin: 0;
-            font-size: 0.88rem;
-            line-height: 1.45;
             color: var(--text-main);
+        }
+
+        .message-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .message-text {
+            margin: 0;
+            font-size: 0.92rem;
+            color: #334155;
+            line-height: 1.5;
             word-wrap: break-word;
         }
 
-        /* 底部系统工程状态栏 */
-        .system-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.65rem 1.25rem;
-            border-top: 1px solid var(--border-hairline);
-            background-color: var(--bg-base);
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            flex-wrap: wrap;
-            gap: 0.5rem;
         }
 
-        /* 响应式适配：平板与手机端自动折叠为单列流式架构 */
-        @media (max-width: 980px) {
-            body { padding: 0.75rem; }
-            .left-column {
-                grid-column: span 12;
-                border-right: none;
-            }
-            .mod-guestbook {
-                grid-column: span 12;
-                border-top: 1px solid var(--border-hairline);
-            }
-        }
-
-        @media (max-width: 680px) {
-            .mod-identity, .mod-telemetry {
-                grid-column: span 7;
-                border-right: none;
-            }
-            .synth-deck {
+        /* 移动端自适应 */
+        @media (max-width: 768px) {
+            .page-container {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
-            #osc-canvas {
-                width: 100%;
-            }
-            .key-shortcut {
-                display: none;
+            body {
+                padding: 1rem 0.5rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <main class="system-frame">
-        <!-- 四角工程准星 -->
-        <div class="crosshair ch-tl"></div>
-        <div class="crosshair ch-tr"></div>
-        <div class="crosshair ch-bl"></div>
-        <div class="crosshair ch-br"></div>
-
-        <!-- 顶部实时遥测栏 -->
-        <header class="telemetry-bar">
-            <div class="telemetry-left">
-                <span class="sys-badge">
-                    <span class="status-dot"></span>
-                    LOUIS // OS v2.6
-                </span>
-                <span id="fps-counter">FPS: 60</span>
-            </div>
-            <div class="telemetry-right">
-                <button type="button" class="hud-btn active" id="sfx-toggle" title="Toggle UI Micro-Sounds">SFX: ON</button>
-                <div class="theme-switcher" title="Switch System Accent">
-                    <span class="theme-dot" data-color="cyan"></span>
-                    <span class="theme-dot" data-color="amber"></span>
-                    <span class="theme-dot" data-color="emerald"></span>
-                    <span class="theme-dot" data-color="orange"></span>
+    <div class="page-container">
+        <!-- 左侧栏：个人资料 + 实时状态 + 链接 -->
+        <div class="profile-column">
+            <div class="glass-card profile-header">
+                <div class="avatar-container">
+                    <img src="IMG_4999.JPG" class="avatar" alt="Louis">
                 </div>
-            </div>
-        </header>
-
-        <!-- 主体 Bento 网格 -->
-        <div class="bento-grid">
-            <div class="left-column">
-                <!-- 模块 01：个人身份卡片 -->
-                <section class="mod-identity">
-                    <div class="mod-header">
-                        <span><span class="mod-index">[01]</span> IDENTITY_NODE</span>
-                        <span>STATUS: ACTIVE</span>
-                    </div>
-
-                    <div class="identity-body">
-                        <div class="avatar-frame">
-                            <img src="IMG_4999.JPG" class="avatar-img" alt="Louis">
-                        </div>
-                        <div class="identity-title-group">
-                            <h1 class="hero-name">LOUIS<span>.</span></h1>
-                            <div class="hero-coord">LOC // LAHTI, FINLAND</div>
-                        </div>
-                    </div>
-
-                    <a href="https://github.com/louis194911" target="_blank" rel="noopener noreferrer" class="terminal-link ui-sound">
-                        <span class="terminal-link-left">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                            </svg>
-                            <span>GITHUB // @louis194911</span>
-                        </span>
-                        <span class="terminal-arrow">↗</span>
-                    </a>
-                </section>
-
-                <!-- 模块 02：芬兰时间与气象遥测 -->
-                <section class="mod-telemetry">
-                    <div class="mod-header">
-                        <span><span class="mod-index">[02]</span> TELEMETRY</span>
-                        <span>60.98°N 25.66°E</span>
-                    </div>
-
-                    <div class="clock-block">
-                        <div class="date-readout" id="finland-date">SYNCING DATE...</div>
-                        <div class="time-readout" id="finland-time">00:00:00</div>
-                        <div class="sec-bar-track">
-                            <div class="sec-bar-fill" id="sec-bar"></div>
-                        </div>
-                    </div>
-
-                    <div class="weather-grid">
-                        <div class="w-cell">
-                            <span class="w-label">CONDITION</span>
-                            <span class="w-val" id="w-cond">---</span>
-                        </div>
-                        <div class="w-cell">
-                            <span class="w-label">TEMP / WIND</span>
-                            <span class="w-val" id="w-temp">--°C</span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 模块 03：OP-1 工业合成器与实时示波器 -->
-                <section class="mod-synth">
-                    <div class="mod-header" style="margin-bottom: 0.4rem;">
-                        <span><span class="mod-index">[03]</span> OP-SYNTH // AUDIO ENGINE</span>
-                        <span>KEYBOARD: [A-K] &amp; [W-U]</span>
-                    </div>
-
-                    <div class="synth-deck">
-                        <div class="osc-screen-wrap">
-                            <canvas id="osc-canvas" width="220" height="44"></canvas>
-                            <div class="osc-telemetry">
-                                <span class="osc-note" id="osc-note">STANDBY</span>
-                                <span class="osc-freq" id="osc-freq">0.00 Hz // READY</span>
-                            </div>
-                        </div>
-
-                        <div class="synth-controls">
-                            <button type="button" class="synth-btn active ui-sound" data-preset="warm">WARM</button>
-                            <button type="button" class="synth-btn ui-sound" data-preset="cyber">CYBER</button>
-                            <button type="button" class="synth-btn ui-sound" data-preset="bell">BELL</button>
-                            <button type="button" class="synth-btn arp-btn ui-sound" id="arp-toggle">▶ AUTO ARP</button>
-                        </div>
-                    </div>
-
-                    <div class="op1-keybed" id="piano-keys">
-                        <!-- 8 个暗黑机械白键 -->
-                        <div class="op1-key-white" data-note="C4" data-key="a">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">C4</span><span class="key-shortcut">[A]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="D4" data-key="s">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">D4</span><span class="key-shortcut">[S]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="E4" data-key="d">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">E4</span><span class="key-shortcut">[D]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="F4" data-key="f">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">F4</span><span class="key-shortcut">[F]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="G4" data-key="g">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">G4</span><span class="key-shortcut">[G]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="A4" data-key="h">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">A4</span><span class="key-shortcut">[H]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="B4" data-key="j">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">B4</span><span class="key-shortcut">[J]</span></div>
-                        </div>
-                        <div class="op1-key-white" data-note="C5" data-key="k">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-note-name">C5</span><span class="key-shortcut">[K]</span></div>
-                        </div>
-
-                        <!-- 5 个黑曜石机械升降键 -->
-                        <div class="op1-key-black" data-note="C#4" data-key="w">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-shortcut">W</span></div>
-                        </div>
-                        <div class="op1-key-black" data-note="D#4" data-key="e">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-shortcut">E</span></div>
-                        </div>
-                        <div class="op1-key-black" data-note="F#4" data-key="t">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-shortcut">T</span></div>
-                        </div>
-                        <div class="op1-key-black" data-note="G#4" data-key="y">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-shortcut">Y</span></div>
-                        </div>
-                        <div class="op1-key-black" data-note="A#4" data-key="u">
-                            <span class="key-led"></span>
-                            <div class="key-meta"><span class="key-shortcut">U</span></div>
-                        </div>
-                    </div>
-                </section>
+                <h1>Louis</h1>
+                <div class="location-tag">📍 Lahti, Finland</div>
             </div>
 
-            <!-- 模块 04：右侧云端通信留言板 -->
-            <section class="mod-guestbook">
-                <div>
-                    <div class="mod-header">
-                        <span><span class="mod-index">[04]</span> COMMS_LOG // GUESTBOOK</span>
-                        <span>SUPABASE_CLOUD</span>
-                    </div>
+            <div class="glass-card status-module">
+                <div class="date-text" id="finland-date">Syncing date...</div>
+                <div class="time-text" id="finland-time">00:00:00</div>
+                <div class="weather-text" id="finland-weather">Fetching weather...</div>
+            </div>
 
-                    <form class="gb-form" id="guestbook-form">
-                        <input type="text" id="bot-trap" class="honeypot-field" tabindex="-1" autocomplete="off">
-                        <input type="text" id="guest-name" class="cyber-input" placeholder="IDENTIFIER // Your Name (optional)" maxlength="30">
-                        <textarea id="guest-message" class="cyber-input" placeholder="TRANSMISSION // Leave a message or say hi (No links allowed)..." required maxlength="250"></textarea>
-                        
-                        <div class="gb-actions">
-                            <span id="form-status" class="status-msg">READY_TO_TRANSMIT</span>
-                            <button type="submit" id="submit-btn" class="transmit-btn ui-sound">TRANSMIT ↵</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="log-stream" id="messages-list"></div>
-            </section>
+            <a href="https://github.com/louis194911" target="_blank" rel="noopener noreferrer" class="external-link glass-card" style="padding: 1rem 1.2rem;">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span>GitHub Profile</span>
+            </a>
         </div>
 
-        <!-- 底部工程版权栏 -->
-        <footer class="system-footer">
-            <span>SYS_ARCHITECTURE // MINIMAL_BENTO_GRID</span>
-            <span>&copy; 2026 LOUIS. ALL RIGHTS RESERVED.</span>
-        </footer>
-    </main>
+        <!-- 右侧栏：云端留言板 -->
+        <div class="glass-card guestbook-column">
+            <div>
+                <h2 class="section-title">Guestbook 💬</h2>
+                <p class="section-desc">Leave a comment, say hi, or share your thoughts!</p>
+            </div>
+
+            <form class="guestbook-form" id="guestbook-form">
+                <input type="text" id="bot-trap" class="honeypot-field" tabindex="-1" autocomplete="off">
+                <input type="text" id="guest-name" class="input-box" placeholder="Your Name (optional)" maxlength="30">
+                <textarea id="guest-message" class="input-box" placeholder="Write your message here..." required maxlength="250"></textarea>
+                
+                <div class="form-footer">
+                    <span id="form-status" class="status-msg"></span>
+                    <button type="submit" id="submit-btn" class="submit-btn">Post Message</button>
+                </div>
+            </form>
+
+            <div class="messages-container" id="messages-list"></div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Louis. All rights reserved.
+        </div>
+    </div>
 
     <script>
         // ==========================================
-        // 0. 核心配置：Supabase 云端密钥
+        // 核心配置：Supabase 数据库连接
         // ==========================================
         const SUPABASE_URL = 'https://rtbqbzwglptrhxovxhsu.supabase.co'; 
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ0YnFiendnbHB0cmh4b3Z4aHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0Mzk1NzksImV4cCI6MjEwODAxNTU3OX0.pezdCfM4yhS4wtEb6hX40P_YIwjdyuCaV2UWDcbw00k';
@@ -1030,341 +424,54 @@
             return headers;
         }
 
-        // ==========================================
-        // 1. 顶部实时 FPS 监测与主题色切换
-        // ==========================================
-        const fpsElem = document.getElementById('fps-counter');
-        let frameCount = 0;
-        let lastFpsTime = performance.now();
-
-        function monitorFps(now) {
-            frameCount++;
-            if (now - lastFpsTime >= 1000) {
-                fpsElem.textContent = `FPS: ${frameCount}`;
-                frameCount = 0;
-                lastFpsTime = now;
-            }
-            requestAnimationFrame(monitorFps);
-        }
-        requestAnimationFrame(monitorFps);
-
-        // 主题颜色切换
-        document.querySelectorAll('.theme-dot').forEach(dot => {
-            dot.addEventListener('click', () => {
-                const color = dot.dataset.color;
-                if (color === 'cyan') {
-                    document.documentElement.removeAttribute('data-theme');
-                } else {
-                    document.documentElement.setAttribute('data-theme', color);
-                }
-                playUiTick(900);
-            });
-        });
-
-        // ==========================================
-        // 2. 芬兰时间与 Open-Meteo 气象遥测
-        // ==========================================
+        // 1. 芬兰时间与日期更新
         function updateTime() {
             const timeElement = document.getElementById('finland-time');
             const dateElement = document.getElementById('finland-date');
-            const secBar = document.getElementById('sec-bar');
             const now = new Date();
             
             dateElement.textContent = now.toLocaleDateString('en-US', { 
-                timeZone: 'Europe/Helsinki', weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+                timeZone: 'Europe/Helsinki', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
             });
-            const timeStr = now.toLocaleTimeString('en-US', { 
+            timeElement.textContent = now.toLocaleTimeString('en-US', { 
                 timeZone: 'Europe/Helsinki', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
             });
-            timeElement.textContent = timeStr;
-
-            const seconds = parseInt(timeStr.split(':')[2], 10) || 0;
-            secBar.style.width = `${(seconds / 59) * 100}%`;
         }
         updateTime();
         setInterval(updateTime, 1000);
 
+        // 2. Open-Meteo 天气获取
         async function fetchWeather() {
-            const condEl = document.getElementById('w-cond');
-            const tempEl = document.getElementById('w-temp');
+            const weatherElement = document.getElementById('finland-weather');
             try {
                 const url = 'https://api.open-meteo.com/v1/forecast?latitude=60.9827&longitude=25.6615&current_weather=true';
                 const response = await fetch(url);
                 if (response.ok) {
                     const data = await response.json();
                     const temp = Math.round(data.current_weather.temperature);
-                    const wind = Math.round(data.current_weather.windspeed);
                     const code = data.current_weather.weathercode;
                     const weatherCodes = {
-                        0: "CLEAR SKY", 1: "MAINLY CLEAR", 2: "PARTLY CLOUDY", 3: "OVERCAST",
-                        45: "FOG", 48: "RIME FOG", 51: "LIGHT DRIZZLE", 53: "DRIZZLE",
-                        55: "DENSE DRIZZLE", 61: "SLIGHT RAIN", 63: "RAIN", 65: "HEAVY RAIN",
-                        71: "SLIGHT SNOW", 73: "SNOW", 75: "HEAVY SNOW", 77: "SNOW GRAINS",
-                        80: "SHOWERS", 81: "SHOWERS", 82: "HEAVY SHOWERS",
-                        85: "SNOW SHOWERS", 86: "SNOW SHOWERS", 95: "THUNDERSTORM"
+                        0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+                        45: "Fog", 48: "Rime fog", 51: "Light drizzle", 53: "Moderate drizzle",
+                        55: "Dense drizzle", 61: "Slight rain", 63: "Moderate rain", 65: "Heavy rain",
+                        71: "Slight snow", 73: "Moderate snow", 75: "Heavy snow", 77: "Snow grains",
+                        80: "Rain showers", 81: "Moderate showers", 82: "Violent showers",
+                        85: "Snow showers", 86: "Heavy snow showers", 95: "Thunderstorm"
                     };
-                    condEl.textContent = weatherCodes[code] || "CLOUDY";
+                    const condition = weatherCodes[code] || "Cloudy";
                     const tempStr = temp > 0 ? `+${temp}°C` : `${temp}°C`;
-                    tempEl.textContent = `${tempStr} / ${wind}km/h`;
+                    weatherElement.textContent = `${condition} · ${tempStr}`;
                 } else {
-                    condEl.textContent = "OFFLINE";
+                    weatherElement.textContent = "Weather unavailable";
                 }
             } catch (error) {
-                condEl.textContent = "NET_ERR";
+                weatherElement.textContent = "Weather network error";
             }
         }
         fetchWeather();
         setInterval(fetchWeather, 1800000);
 
-        // ==========================================
-        // 3. Web Audio 合成器 + 实时声波示波器 + 自动琶音器
-        // ==========================================
-        let audioCtx = null;
-        let masterAnalyser = null;
-        let currentPreset = 'warm';
-        let sfxEnabled = true;
-        let oscAnimationId = null;
-        let activeVoices = 0;
-
-        const oscCanvas = document.getElementById('osc-canvas');
-        const oscCtx = oscCanvas.getContext('2d');
-        const oscNoteEl = document.getElementById('osc-note');
-        const oscFreqEl = document.getElementById('osc-freq');
-
-        const noteFrequencies = {
-            'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13,
-            'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
-            'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88, 'C5': 523.25
-        };
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                masterAnalyser = audioCtx.createAnalyser();
-                masterAnalyser.fftSize = 256;
-                masterAnalyser.connect(audioCtx.destination);
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        // 极简机械微动反馈音效 (2ms 脉冲)
-        function playUiTick(freq = 1200) {
-            if (!sfxEnabled) return;
-            initAudio();
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, now);
-            gain.gain.setValueAtTime(0.03, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 0.02);
-        }
-
-        document.getElementById('sfx-toggle').addEventListener('click', function() {
-            sfxEnabled = !sfxEnabled;
-            this.textContent = `SFX: ${sfxEnabled ? 'ON' : 'OFF'}`;
-            this.classList.toggle('active', sfxEnabled);
-            if (sfxEnabled) playUiTick(1400);
-        });
-
-        document.querySelectorAll('.ui-sound').forEach(el => {
-            el.addEventListener('pointerenter', () => playUiTick(1100));
-        });
-
-        // 静态待机网格线绘制
-        function drawIdleOscilloscope() {
-            const w = oscCanvas.width;
-            const h = oscCanvas.height;
-            oscCtx.clearRect(0, 0, w, h);
-            oscCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-            oscCtx.lineWidth = 1;
-            oscCtx.beginPath();
-            oscCtx.moveTo(0, h / 2);
-            oscCtx.lineTo(w, h / 2);
-            oscCtx.stroke();
-        }
-        drawIdleOscilloscope();
-
-        // 实时音频波形渲染（仅在发声时运行，零空闲资源占用）
-        function renderOscilloscope() {
-            if (!masterAnalyser || activeVoices <= 0) {
-                drawIdleOscilloscope();
-                oscAnimationId = null;
-                return;
-            }
-            const bufferLength = masterAnalyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            masterAnalyser.getByteTimeDomainData(dataArray);
-
-            const w = oscCanvas.width;
-            const h = oscCanvas.height;
-            oscCtx.clearRect(0, 0, w, h);
-
-            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#38bdf8';
-            oscCtx.lineWidth = 1.6;
-            oscCtx.strokeStyle = accentColor;
-            oscCtx.beginPath();
-
-            const sliceWidth = w / bufferLength;
-            let x = 0;
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0;
-                const y = (v * h) / 2;
-                if (i === 0) oscCtx.moveTo(x, y);
-                else oscCtx.lineTo(x, y);
-                x += sliceWidth;
-            }
-            oscCtx.stroke();
-            oscAnimationId = requestAnimationFrame(renderOscilloscope);
-        }
-
-        function playTone(note, keyElement) {
-            initAudio();
-            const freq = noteFrequencies[note];
-            if (!freq) return;
-
-            const now = audioCtx.currentTime;
-            const osc1 = audioCtx.createOscillator();
-            const osc2 = audioCtx.createOscillator();
-            const filter = audioCtx.createBiquadFilter();
-            const gainNode = audioCtx.createGain();
-            const osc2Gain = audioCtx.createGain();
-
-            let duration = 1.1;
-
-            if (currentPreset === 'warm') {
-                osc1.type = 'triangle';
-                osc2.type = 'sine';
-                osc1.frequency.setValueAtTime(freq, now);
-                osc2.frequency.setValueAtTime(freq * 2, now);
-                osc2Gain.gain.setValueAtTime(0.15, now);
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(2200, now);
-                gainNode.gain.setValueAtTime(0.001, now);
-                gainNode.gain.linearRampToValueAtTime(0.32, now + 0.015);
-                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
-                duration = 1.15;
-            } else if (currentPreset === 'cyber') {
-                osc1.type = 'sawtooth';
-                osc2.type = 'square';
-                osc1.frequency.setValueAtTime(freq, now);
-                osc2.frequency.setValueAtTime(freq * 1.005, now);
-                osc2Gain.gain.setValueAtTime(0.22, now);
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(3400, now);
-                filter.frequency.exponentialRampToValueAtTime(380, now + 0.65);
-                gainNode.gain.setValueAtTime(0.001, now);
-                gainNode.gain.linearRampToValueAtTime(0.24, now + 0.01);
-                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
-                duration = 0.9;
-            } else {
-                osc1.type = 'sine';
-                osc2.type = 'sine';
-                osc1.frequency.setValueAtTime(freq, now);
-                osc2.frequency.setValueAtTime(freq * 3, now);
-                osc2Gain.gain.setValueAtTime(0.18, now);
-                filter.type = 'highpass';
-                filter.frequency.setValueAtTime(200, now);
-                gainNode.gain.setValueAtTime(0.001, now);
-                gainNode.gain.linearRampToValueAtTime(0.3, now + 0.008);
-                gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
-                duration = 1.45;
-            }
-
-            osc1.connect(filter);
-            osc2.connect(osc2Gain);
-            osc2Gain.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(masterAnalyser);
-
-            activeVoices++;
-            if (!oscAnimationId) {
-                oscAnimationId = requestAnimationFrame(renderOscilloscope);
-            }
-
-            osc1.start(now);
-            osc2.start(now);
-            osc1.stop(now + duration);
-            osc2.stop(now + duration);
-
-            setTimeout(() => {
-                activeVoices = Math.max(0, activeVoices - 1);
-            }, duration * 1000);
-
-            oscNoteEl.textContent = `NOTE // ${note}`;
-            oscFreqEl.textContent = `${freq.toFixed(2)} Hz // ${currentPreset.toUpperCase()}`;
-
-            if (keyElement) {
-                keyElement.classList.add('active');
-                setTimeout(() => keyElement.classList.remove('active'), 160);
-            }
-        }
-
-        // 预设音色切换
-        document.querySelectorAll('[data-preset]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('[data-preset]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentPreset = btn.dataset.preset;
-                oscFreqEl.textContent = `ENGINE // ${currentPreset.toUpperCase()}`;
-            });
-        });
-
-        // 绑定琴键点击与键盘按键
-        document.querySelectorAll('[data-note]').forEach(keyEl => {
-            keyEl.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                playTone(keyEl.dataset.note, keyEl);
-            });
-        });
-
-        window.addEventListener('keydown', (e) => {
-            const activeTag = document.activeElement ? document.activeElement.tagName : '';
-            if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || e.repeat || e.metaKey || e.ctrlKey) return;
-            const pressed = e.key.toLowerCase();
-            const targetKey = document.querySelector(`[data-key="${pressed}"]`);
-            if (targetKey) {
-                playTone(targetKey.dataset.note, targetKey);
-            }
-        });
-
-        // 自动琶音器 (Auto-Arpeggiator Sequencer)
-        const arpBtn = document.getElementById('arp-toggle');
-        const arpSequence = ['C4', 'E4', 'G4', 'B4', 'C5', 'B4', 'G4', 'E4', 'D4', 'F4', 'A4', 'C5', 'A4', 'F4', 'D4', 'E4'];
-        let arpTimer = null;
-        let arpIndex = 0;
-
-        arpBtn.addEventListener('click', () => {
-            if (arpTimer) {
-                clearInterval(arpTimer);
-                arpTimer = null;
-                arpBtn.classList.remove('playing');
-                arpBtn.textContent = '▶ AUTO ARP';
-                oscNoteEl.textContent = 'STANDBY';
-            } else {
-                arpIndex = 0;
-                arpBtn.classList.add('playing');
-                arpBtn.textContent = '■ STOP ARP';
-                const triggerNext = () => {
-                    const note = arpSequence[arpIndex % arpSequence.length];
-                    const keyEl = document.querySelector(`[data-note="${note}"]`);
-                    playTone(note, keyEl);
-                    arpIndex++;
-                };
-                triggerNext();
-                arpTimer = setInterval(triggerNext, 220);
-            }
-        });
-
-        // ==========================================
-        // 4. Supabase 云端同步留言板
-        // ==========================================
+        // 3. 云端留言板逻辑
         const form = document.getElementById('guestbook-form');
         const botTrap = document.getElementById('bot-trap');
         const nameInput = document.getElementById('guest-name');
@@ -1374,10 +481,9 @@
         const messagesList = document.getElementById('messages-list');
 
         const pinnedMessage = {
-            index: "PIN",
             name: "Louis",
             message: "Welcome to my personal space! Feel free to leave a message below.",
-            time: "SYS_PINNED",
+            time: "Pinned",
             isPinned: true
         };
 
@@ -1386,35 +492,35 @@
             statusMsg.className = `status-msg ${type}`;
         }
 
-        function createLogElement(msg) {
-            const entry = document.createElement('div');
-            entry.className = msg.isPinned ? 'log-entry pinned' : 'log-entry';
+        function createCardElement(msg) {
+            const card = document.createElement('div');
+            card.className = msg.isPinned ? 'message-card pinned' : 'message-card';
 
             const meta = document.createElement('div');
-            meta.className = 'log-meta';
+            meta.className = 'message-meta';
 
             const author = document.createElement('span');
-            author.className = 'log-author';
-            author.textContent = `[${msg.index}] ${msg.name || 'Anonymous'}`;
+            author.className = 'message-author';
+            author.textContent = msg.name || 'Anonymous';
 
             const time = document.createElement('span');
-            time.className = 'log-time';
+            time.className = 'message-time';
             time.textContent = msg.time;
 
-            const body = document.createElement('p');
-            body.className = 'log-body';
-            body.textContent = msg.message;
+            const text = document.createElement('p');
+            text.className = 'message-text';
+            text.textContent = msg.message;
 
             meta.appendChild(author);
             meta.appendChild(time);
-            entry.appendChild(meta);
-            entry.appendChild(body);
-            return entry;
+            card.appendChild(meta);
+            card.appendChild(text);
+            return card;
         }
 
         async function loadMessages() {
             messagesList.innerHTML = '';
-            messagesList.appendChild(createLogElement(pinnedMessage));
+            messagesList.appendChild(createCardElement(pinnedMessage));
 
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook?select=*&order=created_at.desc&limit=50`, {
@@ -1423,13 +529,11 @@
 
                 if (res.ok) {
                     const data = await res.json();
-                    data.forEach((row, idx) => {
+                    data.forEach(row => {
                         const dateStr = new Date(row.created_at).toLocaleDateString('en-US', {
                             month: 'short', day: 'numeric', year: 'numeric'
                         });
-                        const numStr = String(data.length - idx).padStart(2, '0');
-                        messagesList.appendChild(createLogElement({
-                            index: `#${numStr}`,
+                        messagesList.appendChild(createCardElement({
                             name: row.name,
                             message: row.message,
                             time: dateStr
@@ -1446,7 +550,7 @@
 
             if (botTrap.value) {
                 form.reset();
-                setStatus('TRANSMISSION_OK', 'success');
+                setStatus('Message posted!', 'success');
                 return;
             }
 
@@ -1454,7 +558,7 @@
             const now = Date.now();
             if (lastPostTime && now - parseInt(lastPostTime) < 60000) {
                 const waitSec = Math.ceil((60000 - (now - parseInt(lastPostTime))) / 1000);
-                setStatus(`COOLDOWN // WAIT ${waitSec}S`, 'error');
+                setStatus(`Please wait ${waitSec}s.`, 'error');
                 return;
             }
 
@@ -1464,12 +568,12 @@
 
             const linkRegex = /(https?:\/\/|www\.|[a-zA-Z0-9-]+\.(com|cn|net|org|io|xyz|top|me|info))/i;
             if (linkRegex.test(text) || linkRegex.test(name)) {
-                setStatus('ERR // LINKS_FORBIDDEN', 'error');
+                setStatus('Links not allowed.', 'error');
                 return;
             }
 
             submitBtn.disabled = true;
-            setStatus('TRANSMITTING...', '');
+            setStatus('Posting...', '');
 
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook`, {
@@ -1481,16 +585,15 @@
                 if (res.ok) {
                     localStorage.setItem('last_post_timestamp', Date.now().toString());
                     messageInput.value = '';
-                    setStatus('TRANSMISSION_SUCCESS', 'success');
-                    playUiTick(1600);
+                    setStatus('Posted successfully!', 'success');
                     await loadMessages();
                 } else {
                     const errData = await res.json().catch(() => ({}));
-                    const detail = errData.message || errData.error || `HTTP_${res.status}`;
-                    setStatus(`ERR // ${detail}`, 'error');
+                    const detail = errData.message || errData.error || `HTTP ${res.status}`;
+                    setStatus(`Error: ${detail}`, 'error');
                 }
             } catch (err) {
-                setStatus('ERR // NETWORK_FAILURE', 'error');
+                setStatus('Network error.', 'error');
             } finally {
                 submitBtn.disabled = false;
             }
