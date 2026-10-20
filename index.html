@@ -31,45 +31,64 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 鼠标粒子特效画布：固定在顶层但完全穿透点击事件 */
+        #cursor-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
         }
 
         .main-wrapper {
             width: 100%;
-            max-width: 1050px;
+            max-width: 1080px;
             padding: 3rem 2rem;
             display: grid;
             grid-template-columns: 1fr 1.1fr;
             gap: 3.5rem;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
-        /* 左侧：个人资料区 */
+        /* 左侧：个人资料与互动区 */
         .profile-section {
             text-align: center;
             width: 100%;
         }
 
         .avatar {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 1.2rem;
             display: block;
             border: 4px solid var(--panel-bg);
             box-shadow: 0 0 0 4px var(--accent-color);
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05) rotate(3deg);
         }
 
         h1 {
-            margin: 0 0 0.5rem 0;
+            margin: 0 0 0.4rem 0;
             font-size: 2rem;
             letter-spacing: 1px;
         }
 
         .subtitle {
             color: var(--muted-color);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
             line-height: 1.5;
         }
 
@@ -81,37 +100,138 @@
         .widget-panel {
             background-color: var(--panel-bg);
             border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.2rem;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
         .date-display {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--accent-color);
             font-weight: 500;
         }
 
         .time-display {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 600;
             font-variant-numeric: tabular-nums;
             letter-spacing: 2px;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .weather-display {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
         }
+
+        /* 迷你合成器钢琴面板 */
+        .piano-panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem 1.2rem 1.2rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .piano-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+            color: var(--muted-color);
+        }
+
+        .piano-title {
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .piano-keys {
+            position: relative;
+            display: flex;
+            height: 100px;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .key-white {
+            flex: 1;
+            background: linear-gradient(to bottom, #e2e8f0 0%, #f8fafc 100%);
+            border: 1px solid #475569;
+            border-radius: 0 0 6px 6px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 6px;
+            color: #64748b;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: all 0.08s ease;
+            box-shadow: 0 4px 0 #94a3b8;
+        }
+
+        .key-white:active, .key-white.active {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0284c7, 0 0 15px rgba(56, 189, 248, 0.6);
+            border-color: var(--accent-color);
+        }
+
+        .key-black {
+            position: absolute;
+            top: 0;
+            width: 8.5%;
+            height: 60%;
+            background: linear-gradient(to bottom, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #475569;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            z-index: 2;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 5px;
+            color: #64748b;
+            font-size: 0.6rem;
+            font-weight: 600;
+            transition: all 0.08s ease;
+            box-shadow: 0 3px 0 #020617;
+        }
+
+        .key-black:active, .key-black.active {
+            background: #0284c7;
+            color: var(--text-color);
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #020617, 0 0 12px rgba(56, 189, 248, 0.8);
+            border-color: var(--accent-color);
+        }
+
+        /* 黑键精准定位 (对应 C#, D#, F#, G#, A#) */
+        .key-black[data-note="C#4"] { left: 8.2%; }
+        .key-black[data-note="D#4"] { left: 20.8%; }
+        .key-black[data-note="F#4"] { left: 45.8%; }
+        .key-black[data-note="G#4"] { left: 58.3%; }
+        .key-black[data-note="A#4"] { left: 70.8%; }
 
         .links-container {
             display: flex;
@@ -121,14 +241,14 @@
 
         .link-btn {
             display: inline-block;
-            padding: 1rem 1.5rem;
+            padding: 0.9rem 1.5rem;
             background-color: var(--panel-bg);
             color: var(--text-color);
             text-decoration: none;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-weight: 500;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             transition: all 0.2s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -173,7 +293,6 @@
             gap: 0.8rem;
         }
 
-        /* 蜜罐字段：对真人完全隐藏，专门诱捕自动填表机器人 */
         .honeypot-field {
             display: none !important;
             visibility: hidden !important;
@@ -244,12 +363,11 @@
             cursor: not-allowed;
         }
 
-        /* 留言列表与滚动条样式 */
         .messages-list {
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
-            max-height: 280px;
+            max-height: 310px;
             overflow-y: auto;
             padding-right: 0.3rem;
             margin-top: 0.2rem;
@@ -308,7 +426,7 @@
         .footer {
             grid-column: 1 / -1;
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             font-size: 0.85rem;
             color: #64748b;
         }
@@ -316,20 +434,27 @@
         @media (max-width: 768px) {
             .main-wrapper {
                 grid-template-columns: 1fr;
-                gap: 2.5rem;
-                padding: 2.5rem 1.2rem;
+                gap: 2.2rem;
+                padding: 2rem 1.2rem;
             }
             
             .guestbook-section {
                 padding: 1.5rem;
+            }
+
+            .key-label {
+                display: none; /* 手机端隐藏键盘字母提示，保持清爽 */
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- 鼠标互动粒子特效画布 -->
+    <canvas id="cursor-canvas"></canvas>
+
     <div class="main-wrapper">
-        <!-- 左侧：个人信息与实时状态 -->
+        <!-- 左侧：个人信息 + 实时状态 + 迷你合成器 -->
         <div class="profile-section">
             <img src="IMG_4999.JPG" class="avatar" alt="Louis">
             
@@ -347,6 +472,31 @@
                 </div>
             </div>
 
+            <!-- 新增：Web Audio 互动合成器琴键 -->
+            <div class="piano-panel">
+                <div class="piano-header">
+                    <span class="piano-title">🎹 Mini Synth</span>
+                    <span>Click or press keys (A-K)</span>
+                </div>
+                <div class="piano-keys" id="piano-keys">
+                    <!-- 白键 -->
+                    <div class="key-white" data-note="C4" data-key="a"><span class="key-label">A</span></div>
+                    <div class="key-white" data-note="D4" data-key="s"><span class="key-label">S</span></div>
+                    <div class="key-white" data-note="E4" data-key="d"><span class="key-label">D</span></div>
+                    <div class="key-white" data-note="F4" data-key="f"><span class="key-label">F</span></div>
+                    <div class="key-white" data-note="G4" data-key="g"><span class="key-label">G</span></div>
+                    <div class="key-white" data-note="A4" data-key="h"><span class="key-label">H</span></div>
+                    <div class="key-white" data-note="B4" data-key="j"><span class="key-label">J</span></div>
+                    <div class="key-white" data-note="C5" data-key="k"><span class="key-label">K</span></div>
+                    <!-- 黑键 -->
+                    <div class="key-black" data-note="C#4" data-key="w"><span class="key-label">W</span></div>
+                    <div class="key-black" data-note="D#4" data-key="e"><span class="key-label">E</span></div>
+                    <div class="key-black" data-note="F#4" data-key="t"><span class="key-label">T</span></div>
+                    <div class="key-black" data-note="G#4" data-key="y"><span class="key-label">Y</span></div>
+                    <div class="key-black" data-note="A#4" data-key="u"><span class="key-label">U</span></div>
+                </div>
+            </div>
+
             <div class="links-container">
                 <a href="https://github.com/louis194911" target="_blank" class="link-btn">GitHub Profile 💻</a>
             </div>
@@ -360,9 +510,7 @@
             </div>
 
             <form class="guestbook-form" id="guestbook-form">
-                <!-- 蜜罐防机器人隐藏输入框 -->
                 <input type="text" id="bot-trap" class="honeypot-field" tabindex="-1" autocomplete="off">
-                
                 <input type="text" id="guest-name" class="input-field" placeholder="Your Name (optional)" maxlength="30">
                 <textarea id="guest-message" class="input-field" placeholder="Write your message here..." required maxlength="250"></textarea>
                 
@@ -372,9 +520,7 @@
                 </div>
             </form>
 
-            <div class="messages-list" id="messages-list">
-                <!-- 留言列表由 JS 渲染 -->
-            </div>
+            <div class="messages-list" id="messages-list"></div>
         </div>
 
         <div class="footer">
@@ -384,10 +530,22 @@
 
     <script>
         // ==========================================
-        // 【核心配置】：在这里填入你的 Supabase URL 和 Anon Key
+        // 【核心配置】：Supabase URL 和 Key
         // ==========================================
         const SUPABASE_URL = 'https://rtbqbzwglptrhxovxhsu.supabase.co'; 
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ0YnFiendnbHB0cmh4b3Z4aHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0Mzk1NzksImV4cCI6MjEwODAxNTU3OX0.pezdCfM4yhS4wtEb6hX40P_YIwjdyuCaV2UWDcbw00k';
+
+        function getSupabaseHeaders(isPost = false) {
+            const headers = { 'apikey': SUPABASE_KEY.trim() };
+            if (SUPABASE_KEY.trim().startsWith('eyJ')) {
+                headers['Authorization'] = `Bearer ${SUPABASE_KEY.trim()}`;
+            }
+            if (isPost) {
+                headers['Content-Type'] = 'application/json';
+                headers['Prefer'] = 'return=minimal';
+            }
+            return headers;
+        }
 
         // 1. 芬兰时间与日期更新
         function updateTime() {
@@ -395,20 +553,13 @@
             const dateElement = document.getElementById('finland-date');
             const now = new Date();
             
-            const dateOptions = { 
-                timeZone: 'Europe/Helsinki',
-                year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-            };
-            
-            const timeOptions = { 
-                timeZone: 'Europe/Helsinki',
-                hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
-            };
-            
-            dateElement.textContent = now.toLocaleDateString('en-US', dateOptions);
-            timeElement.textContent = now.toLocaleTimeString('en-US', timeOptions);
+            dateElement.textContent = now.toLocaleDateString('en-US', { 
+                timeZone: 'Europe/Helsinki', year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+            });
+            timeElement.textContent = now.toLocaleTimeString('en-US', { 
+                timeZone: 'Europe/Helsinki', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
         }
-
         updateTime();
         setInterval(updateTime, 1000);
 
@@ -418,12 +569,10 @@
             try {
                 const url = 'https://api.open-meteo.com/v1/forecast?latitude=60.9827&longitude=25.6615&current_weather=true';
                 const response = await fetch(url);
-                
                 if (response.ok) {
                     const data = await response.json();
                     const temp = Math.round(data.current_weather.temperature);
                     const code = data.current_weather.weathercode;
-                    
                     const weatherCodes = {
                         0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
                         45: "Fog", 48: "Rime fog", 51: "Light drizzle", 53: "Moderate drizzle",
@@ -432,10 +581,8 @@
                         80: "Rain showers", 81: "Moderate showers", 82: "Violent showers",
                         85: "Snow showers", 86: "Heavy snow showers", 95: "Thunderstorm"
                     };
-
                     const condition = weatherCodes[code] || "Cloudy";
                     const tempStr = temp > 0 ? `+${temp}°C` : `${temp}°C`;
-
                     weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>${condition}, ${tempStr}</span>`;
                 } else {
                     weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>Weather unavailable</span>`;
@@ -444,11 +591,182 @@
                 weatherElement.innerHTML = `<span>📍 Lahti, Finland</span> <span>|</span> <span>Network error</span>`;
             }
         }
-
         fetchWeather();
         setInterval(fetchWeather, 1800000);
 
-        // 3. 云端留言板逻辑 (含防刷与安全过滤)
+        // 3. Web Audio 合成器钢琴逻辑 (零外部音频文件)
+        let audioCtx = null;
+        const noteFrequencies = {
+            'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13,
+            'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
+            'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88, 'C5': 523.25
+        };
+
+        function playTone(note, keyElement) {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const freq = noteFrequencies[note];
+            if (!freq) return;
+
+            const now = audioCtx.currentTime;
+            
+            // 主振荡器（温暖的三角波）+ 泛音振荡器（清脆的正弦波）
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc1.type = 'triangle';
+            osc1.frequency.setValueAtTime(freq, now);
+
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(freq * 2, now); // 高八度泛音
+
+            const osc2Gain = audioCtx.createGain();
+            osc2Gain.gain.setValueAtTime(0.15, now);
+
+            // 音量包络 (ADSR)：快速起音，自然指数衰减
+            gainNode.gain.setValueAtTime(0.001, now);
+            gainNode.gain.linearRampToValueAtTime(0.35, now + 0.015);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
+
+            osc1.connect(gainNode);
+            osc2.connect(osc2Gain);
+            osc2Gain.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc1.start(now);
+            osc2.start(now);
+            osc1.stop(now + 1.15);
+            osc2.stop(now + 1.15);
+
+            // 视觉按下效果与粒子爆发
+            if (keyElement) {
+                keyElement.classList.add('active');
+                setTimeout(() => keyElement.classList.remove('active'), 160);
+                const rect = keyElement.getBoundingClientRect();
+                spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 10);
+            }
+        }
+
+        const allKeys = document.querySelectorAll('[data-note]');
+        allKeys.forEach(keyEl => {
+            keyEl.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                playTone(keyEl.dataset.note, keyEl);
+            });
+        });
+
+        // 键盘按键弹奏支持（在留言框打字时自动禁用，互不干扰）
+        window.addEventListener('keydown', (e) => {
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || e.repeat || e.metaKey || e.ctrlKey) return;
+
+            const pressed = e.key.toLowerCase();
+            const targetKey = document.querySelector(`[data-key="${pressed}"]`);
+            if (targetKey) {
+                playTone(targetKey.dataset.note, targetKey);
+            }
+        });
+
+        // 4. 鼠标星尘拖尾与点击波纹特效 (HTML5 Canvas)
+        const canvas = document.getElementById('cursor-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: -100, y: -100, targetX: -100, targetY: -100, active: false };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createParticle(x, y, isBurst = false) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = isBurst ? (Math.random() * 3.5 + 1) : (Math.random() * 1.2 + 0.2);
+            const colors = ['#38bdf8', '#7dd3fc', '#bae6fd', '#818cf8'];
+            return {
+                x, y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed - (isBurst ? 0 : 0.3),
+                size: isBurst ? (Math.random() * 3 + 2) : (Math.random() * 2.5 + 1),
+                alpha: 1,
+                decay: isBurst ? (Math.random() * 0.02 + 0.02) : (Math.random() * 0.025 + 0.015),
+                color: colors[Math.floor(Math.random() * colors.length)]
+            };
+        }
+
+        function spawnBurst(x, y, count = 14) {
+            for (let i = 0; i < count; i++) {
+                particles.push(createParticle(x, y, true));
+            }
+        }
+
+        window.addEventListener('pointermove', (e) => {
+            mouse.targetX = e.clientX;
+            mouse.targetY = e.clientY;
+            if (!mouse.active) {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                mouse.active = true;
+            }
+            if (particles.length < 90) {
+                particles.push(createParticle(e.clientX, e.clientY, false));
+            }
+        });
+
+        window.addEventListener('pointerdown', (e) => {
+            spawnBurst(e.clientX, e.clientY, 14);
+        });
+
+        function animateCursor() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制平滑跟随的光晕环
+            if (mouse.active) {
+                mouse.x += (mouse.targetX - mouse.x) * 0.22;
+                mouse.y += (mouse.targetY - mouse.y) * 0.22;
+
+                ctx.beginPath();
+                ctx.arc(mouse.x, mouse.y, 12, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+
+            // 更新并绘制粒子
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.shadowColor = p.color;
+                ctx.shadowBlur = 8;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // 5. 云端留言板逻辑
         const form = document.getElementById('guestbook-form');
         const botTrap = document.getElementById('bot-trap');
         const nameInput = document.getElementById('guest-name');
@@ -457,7 +775,6 @@
         const statusMsg = document.getElementById('form-status');
         const messagesList = document.getElementById('messages-list');
 
-        // 固定在最顶部的欢迎卡片
         const pinnedMessage = {
             name: "Louis",
             message: "Welcome to my personal space! Feel free to leave a message below.",
@@ -479,7 +796,7 @@
 
             const author = document.createElement('span');
             author.className = 'message-author';
-            author.textContent = msg.name || 'Anonymous'; // textContent 徹底杜绝 XSS 脚本注入
+            author.textContent = msg.name || 'Anonymous';
 
             const time = document.createElement('span');
             time.className = 'message-time';
@@ -500,18 +817,9 @@
             messagesList.innerHTML = '';
             messagesList.appendChild(createCardElement(pinnedMessage));
 
-            // 如果还没填密钥，提示待配置状态
-            if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
-                setStatus('Cloud DB pending setup...', '');
-                return;
-            }
-
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook?select=*&order=created_at.desc&limit=50`, {
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
-                    }
+                    headers: getSupabaseHeaders(false)
                 });
 
                 if (res.ok) {
@@ -535,14 +843,12 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // 防线 1：蜜罐检测（如果隐藏字段被填了，说明是机器人，直接静默拦截）
             if (botTrap.value) {
                 form.reset();
                 setStatus('Message posted!', 'success');
                 return;
             }
 
-            // 防线 2：60秒发送冷却检测
             const lastPostTime = localStorage.getItem('last_post_timestamp');
             const now = Date.now();
             if (lastPostTime && now - parseInt(lastPostTime) < 60000) {
@@ -555,15 +861,9 @@
             const name = nameInput.value.trim() || 'Anonymous';
             if (!text) return;
 
-            // 防线 3：前端链接拦截
-            const linkRegex = /(http:\/\/|https:\/\/|www\.|\.com|\.cn|\.net)/i;
+            const linkRegex = /(https?:\/\/|www\.|[a-zA-Z0-9-]+\.(com|cn|net|org|io|xyz|top|me|info))/i;
             if (linkRegex.test(text) || linkRegex.test(name)) {
                 setStatus('Links are not allowed in messages.', 'error');
-                return;
-            }
-
-            if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
-                setStatus('Please configure Supabase URL & Key first.', 'error');
                 return;
             }
 
@@ -573,12 +873,7 @@
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook`, {
                     method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
+                    headers: getSupabaseHeaders(true),
                     body: JSON.stringify({ name: name, message: text })
                 });
 
@@ -588,7 +883,9 @@
                     setStatus('Message posted successfully!', 'success');
                     await loadMessages();
                 } else {
-                    setStatus('Failed to post. Content rejected.', 'error');
+                    const errData = await res.json().catch(() => ({}));
+                    const detail = errData.message || errData.error || errData.hint || `HTTP ${res.status}`;
+                    setStatus(`Error: ${detail}`, 'error');
                 }
             } catch (err) {
                 setStatus('Network error. Please try again.', 'error');
