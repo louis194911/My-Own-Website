@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Louis — Personal Space</title>
+    <!-- 预先建立 Google Maps 切片服务器连接，消除缩放时的握手延迟 -->
+    <link rel="preconnect" href="https://mt0.google.com" crossorigin>
+    <link rel="preconnect" href="https://mt1.google.com" crossorigin>
+    <link rel="preconnect" href="https://mt2.google.com" crossorigin>
+    <link rel="preconnect" href="https://mt3.google.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 引入 Leaflet 引擎用于承载 Google Maps 21级高清街道与卫星切片 -->
+    <!-- 引入 Leaflet 引擎承载 Google Maps 21级高清切片 -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <style>
@@ -61,11 +66,11 @@
         .viewport-canvas {
             width: 100vw;
             min-height: 100vh;
-            padding: clamp(1rem, 2vw, 1.8rem) clamp(1.4rem, 3.5vw, 3.6rem);
+            padding: clamp(0.75rem, 1.5vw, 1.35rem) clamp(1.1rem, 2.6vw, 2.6rem);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.15rem;
+            gap: 0.9rem;
             position: relative;
         }
 
@@ -75,15 +80,15 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .brand-pill {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.7rem;
             background: var(--bg-island);
-            padding: 0.52rem 1.1rem;
+            padding: 0.45rem 1.05rem;
             border-radius: 999px;
             border: 1px solid var(--border-organic);
             box-shadow: 0 4px 20px rgba(28, 25, 23, 0.03);
@@ -96,8 +101,8 @@
         }
 
         .eye {
-            width: 18px;
-            height: 22px;
+            width: 17px;
+            height: 21px;
             background: var(--ink-main);
             border-radius: 50%;
             position: relative;
@@ -108,8 +113,8 @@
         }
 
         .pupil {
-            width: 7px;
-            height: 7px;
+            width: 6.5px;
+            height: 6.5px;
             background: var(--bg-island);
             border-radius: 50%;
             transition: transform 0.05s linear;
@@ -117,16 +122,16 @@
 
         .brand-text {
             font-weight: 600;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             letter-spacing: -0.2px;
         }
 
         .top-controls {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.45rem;
             background: var(--bg-island);
-            padding: 0.36rem 0.48rem;
+            padding: 0.32rem 0.45rem;
             border-radius: 999px;
             border: 1px solid var(--border-organic);
         }
@@ -135,10 +140,10 @@
             border: none;
             background: transparent;
             font-family: var(--font-sans);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--ink-muted);
-            padding: 0.36rem 0.85rem;
+            padding: 0.34rem 0.8rem;
             border-radius: 999px;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -153,12 +158,12 @@
             color: var(--bg-island);
         }
 
-        /* 核心全屏双栏舞台 */
+        /* 核心全屏双栏舞台：大幅扩大左侧地球/地图栏比重 (1.52fr : 0.92fr) */
         .stage-grid {
             flex: 1;
             display: grid;
-            grid-template-columns: 1.14fr 1fr;
-            gap: clamp(1.5rem, 2.8vw, 3rem);
+            grid-template-columns: 1.52fr 0.92fr;
+            gap: clamp(1.2rem, 2.2vw, 2.2rem);
             align-items: stretch;
             min-height: 0;
         }
@@ -167,21 +172,22 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.15rem;
+            gap: 0.9rem;
+            min-width: 0;
         }
 
-        /* 左侧主视觉岛屿 */
+        /* 左侧主视觉岛屿：极窄内边距，把空间全部让给地球与地图视窗 */
         .hero-island {
             background: var(--bg-island);
-            border-radius: 40px;
-            padding: 1.4rem 1.6rem 1.5rem;
+            border-radius: 36px;
+            padding: 0.95rem 1.15rem 1.1rem;
             border: 1px solid var(--border-organic);
             box-shadow: 0 18px 45px -15px rgba(28, 25, 23, 0.05);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 1.15rem;
+            gap: 0.8rem;
             flex: 1;
         }
 
@@ -189,21 +195,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
-            padding: 0.1rem 0.3rem;
+            padding: 0.1rem 0.35rem;
         }
 
         .hero-identity {
             display: flex;
             align-items: center;
-            gap: 1.15rem;
+            gap: 0.95rem;
         }
 
         .blob-avatar-wrap {
             position: relative;
-            width: 78px;
-            height: 78px;
+            width: 60px;
+            height: 60px;
             flex-shrink: 0;
         }
 
@@ -213,8 +219,8 @@
             object-fit: cover;
             border-radius: 62% 38% 46% 54% / 60% 63% 37% 40%;
             animation: morphBlob 10s ease-in-out infinite alternate;
-            box-shadow: 0 10px 22px rgba(28, 25, 23, 0.14);
-            border: 3px solid var(--bg-canvas);
+            box-shadow: 0 8px 18px rgba(28, 25, 23, 0.14);
+            border: 2.5px solid var(--bg-canvas);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -230,13 +236,14 @@
 
         .hero-greeting {
             display: flex;
-            flex-direction: column;
+            align-items: baseline;
+            gap: 0.55rem;
         }
 
         .serif-tag {
             font-family: var(--font-serif);
             font-style: italic;
-            font-size: 1.18rem;
+            font-size: 1.15rem;
             color: var(--accent);
             line-height: 1;
         }
@@ -245,9 +252,9 @@
             margin: 0;
             font-family: var(--font-serif);
             font-weight: 400;
-            font-size: clamp(2.4rem, 3.5vw, 3.3rem);
-            line-height: 0.96;
-            letter-spacing: -0.8px;
+            font-size: clamp(2.1rem, 3vw, 2.85rem);
+            line-height: 0.95;
+            letter-spacing: -0.6px;
             color: var(--ink-main);
         }
 
@@ -259,19 +266,19 @@
         .sticker-cloud {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.45rem;
             align-items: center;
         }
 
         .organic-pill {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.38rem;
             background: var(--bg-pill);
             color: var(--ink-main);
-            padding: 0.52rem 0.95rem;
+            padding: 0.46rem 0.9rem;
             border-radius: 999px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
             text-decoration: none;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, color 0.2s;
@@ -285,7 +292,7 @@
         .organic-pill.github-pill {
             background: var(--ink-main);
             color: var(--bg-island);
-            padding: 0.55rem 1.1rem;
+            padding: 0.48rem 1rem;
             cursor: pointer;
         }
 
@@ -296,29 +303,42 @@
         }
 
         .organic-pill svg {
-            width: 15px;
-            height: 15px;
+            width: 14px;
+            height: 14px;
             fill: currentColor;
         }
 
         /* ==========================================
-           全幅 3D 地球 + Google Maps 21级高清街道地图无缝观测舱
+           超大画幅 3D 地球 + Google Maps 极速街道地图观测视窗
            ========================================== */
         .earth-observatory {
             position: relative;
             flex: 1;
-            min-height: clamp(295px, 40vh, 430px);
+            min-height: clamp(390px, 55vh, 620px);
             width: 100%;
-            border-radius: 30px;
+            border-radius: 26px;
             background: radial-gradient(circle at 50% 50%, #152238 0%, #0a101d 64%, #050811 100%);
-            border: 1px solid rgba(28, 25, 23, 0.12);
-            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.65), 0 12px 30px -10px rgba(11, 17, 30, 0.25);
+            border: 1px solid rgba(28, 25, 23, 0.14);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.65), 0 14px 34px -10px rgba(11, 17, 30, 0.28);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
             -webkit-user-select: none;
+            transition: border-radius 0.3s ease;
+        }
+
+        /* 支持一键全屏沉浸展开模式 */
+        .earth-observatory.expanded-fullscreen {
+            position: fixed !important;
+            inset: 18px !important;
+            width: calc(100vw - 36px) !important;
+            height: calc(100vh - 36px) !important;
+            min-height: 0 !important;
+            z-index: 9999 !important;
+            border-radius: 28px !important;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75) !important;
         }
 
         #earth-canvas {
@@ -330,14 +350,14 @@
             cursor: grab;
             touch-action: none;
             z-index: 2;
-            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.32s ease, transform 0.35s ease;
         }
 
         #earth-canvas:active {
             cursor: grabbing;
         }
 
-        /* Google Maps 容器层 */
+        /* Google Maps 容器层：开启 GPU 硬件合成加速 */
         #detail-map {
             position: absolute;
             inset: 0;
@@ -346,8 +366,14 @@
             z-index: 1;
             opacity: 0;
             pointer-events: none;
-            background: #0a101d;
-            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            background: #0d1524;
+            transition: opacity 0.32s ease;
+            will-change: transform, opacity;
+        }
+
+        /* 缩短 Leaflet 缩放动画时间，使瓦片切换更干脆利落 */
+        .leaflet-zoom-anim .leaflet-zoom-animated {
+            transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1) !important;
         }
 
         .earth-observatory.map-mode #detail-map {
@@ -359,7 +385,7 @@
         .earth-observatory.map-mode #earth-canvas {
             opacity: 0;
             pointer-events: none;
-            transform: scale(1.18);
+            transform: scale(1.15);
         }
 
         .leaflet-control-attribution {
@@ -373,7 +399,6 @@
             color: #93c5fd !important;
         }
 
-        /* 芬兰拉赫蒂地图模式下的动态脉冲锚点 */
         .lahti-map-marker {
             width: 16px;
             height: 16px;
@@ -489,18 +514,18 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* 左下角缩放控制胶囊 */
+        /* 左下角缩放与全屏控制胶囊 */
         .zoom-hud-bl {
             position: absolute;
             bottom: 12px;
             left: 14px;
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.28rem;
             background: rgba(15, 23, 42, 0.82);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 0.26rem 0.38rem;
+            padding: 0.26rem 0.4rem;
             border-radius: 999px;
             border: 1px solid rgba(255, 255, 255, 0.14);
             z-index: 6;
@@ -513,7 +538,7 @@
             width: 26px;
             height: 26px;
             border-radius: 50%;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
@@ -531,7 +556,7 @@
             color: #e2e8f0;
             font-size: 0.72rem;
             font-weight: 600;
-            padding: 0 0.55rem;
+            padding: 0 0.5rem;
             font-variant-numeric: tabular-nums;
             cursor: pointer;
         }
@@ -540,7 +565,25 @@
             color: #ffffff;
         }
 
-        /* 右下角控制栏：支持一键切换 Google Satellite 与 Google Streets */
+        .expand-btn {
+            border: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: #f8fafc;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.26rem 0.65rem;
+            border-radius: 999px;
+            cursor: pointer;
+            margin-left: 0.15rem;
+            transition: background 0.2s;
+        }
+
+        .expand-btn:hover {
+            background: var(--accent);
+        }
+
+        /* 右下角控制栏 */
         .earth-controls {
             position: absolute;
             bottom: 12px;
@@ -590,13 +633,13 @@
             display: inline-block;
         }
 
-        /* 芬兰拉赫蒂实时时间与气象岛 */
+        /* 紧凑流线型芬兰时间与气象岛（释放纵向高度给地图） */
         .sky-island {
             background: var(--bg-island);
-            border-radius: 36px;
-            padding: 1.35rem 2.1rem;
+            border-radius: 30px;
+            padding: 0.9rem 1.7rem;
             border: 1px solid var(--border-organic);
-            box-shadow: 0 18px 45px -15px rgba(28, 25, 23, 0.05);
+            box-shadow: 0 14px 35px -15px rgba(28, 25, 23, 0.05);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -608,75 +651,77 @@
 
         .sky-left {
             display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
+            align-items: baseline;
+            gap: 1.1rem;
+            flex-wrap: wrap;
             z-index: 2;
-        }
-
-        .sky-date {
-            font-size: 0.84rem;
-            font-weight: 600;
-            color: var(--ink-muted);
-            letter-spacing: 0.2px;
         }
 
         .sky-time {
             font-family: var(--font-serif);
-            font-size: clamp(2.5rem, 3.6vw, 3.4rem);
+            font-size: clamp(2.1rem, 2.8vw, 2.75rem);
             line-height: 1;
             color: var(--ink-main);
             font-variant-numeric: tabular-nums;
             letter-spacing: -0.5px;
         }
 
+        .sky-date {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--ink-muted);
+            letter-spacing: 0.2px;
+        }
+
         .sky-right {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.35rem;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
             z-index: 2;
         }
 
         .weather-badge {
             background: var(--accent-soft);
             color: var(--accent);
-            padding: 0.45rem 1rem;
+            padding: 0.4rem 0.95rem;
             border-radius: 999px;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
 
         .weather-sub {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: var(--ink-muted);
             font-weight: 500;
         }
 
         .wave-deco {
             position: absolute;
-            bottom: -8px;
+            bottom: -10px;
             left: 0;
             width: 100%;
-            height: 42px;
-            opacity: 0.35;
+            height: 36px;
+            opacity: 0.32;
             pointer-events: none;
         }
 
         /* 右侧：温暖便签式留言墙 */
         .guestbook-island {
             background: var(--bg-island);
-            border-radius: 40px;
-            padding: clamp(1.5rem, 2.4vw, 2.2rem);
+            border-radius: 36px;
+            padding: clamp(1.3rem, 2vw, 1.85rem);
             border: 1px solid var(--border-organic);
             box-shadow: 0 18px 45px -15px rgba(28, 25, 23, 0.05);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.1rem;
+            gap: 1rem;
             height: 100%;
+            min-width: 0;
         }
 
         .gb-header {
@@ -684,13 +729,13 @@
             justify-content: space-between;
             align-items: baseline;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .gb-title {
             margin: 0;
             font-family: var(--font-serif);
-            font-size: 2.3rem;
+            font-size: 2.15rem;
             font-weight: 400;
             line-height: 1;
         }
@@ -702,14 +747,14 @@
 
         .gb-subtitle {
             margin: 0;
-            font-size: 0.84rem;
+            font-size: 0.8rem;
             color: var(--ink-muted);
         }
 
         .gb-form {
             display: flex;
             flex-direction: column;
-            gap: 0.68rem;
+            gap: 0.65rem;
         }
 
         .honeypot-field {
@@ -720,17 +765,17 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0.68rem;
+            gap: 0.65rem;
         }
 
         .organic-input {
             width: 100%;
             background: var(--bg-canvas);
             border: 1.5px solid transparent;
-            border-radius: 20px;
-            padding: 0.82rem 1.15rem;
+            border-radius: 18px;
+            padding: 0.78rem 1.1rem;
             font-family: var(--font-sans);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--ink-main);
             transition: all 0.25s ease;
         }
@@ -748,20 +793,20 @@
 
         textarea.organic-input {
             resize: none;
-            height: 78px;
-            border-radius: 22px;
+            height: 74px;
+            border-radius: 20px;
         }
 
         .form-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
-            padding: 0 0.2rem;
+            gap: 0.8rem;
+            padding: 0 0.15rem;
         }
 
         .status-pill {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--ink-muted);
         }
@@ -774,9 +819,9 @@
             color: #ffffff;
             border: none;
             border-radius: 999px;
-            padding: 0.72rem 1.55rem;
+            padding: 0.68rem 1.45rem;
             font-family: var(--font-sans);
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, opacity 0.2s;
@@ -796,8 +841,8 @@
         .notes-stream {
             display: flex;
             flex-direction: column;
-            gap: 0.72rem;
-            max-height: 320px;
+            gap: 0.68rem;
+            max-height: 360px;
             overflow-y: auto;
             padding: 0.2rem 0.35rem 0.2rem 0.1rem;
         }
@@ -812,8 +857,8 @@
 
         .note-bubble {
             background: var(--bg-canvas);
-            border-radius: 24px;
-            padding: 0.92rem 1.25rem;
+            border-radius: 22px;
+            padding: 0.88rem 1.15rem;
             border: 1px solid var(--border-organic);
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -838,8 +883,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.28rem;
-            font-size: 0.78rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.76rem;
         }
 
         .note-author {
@@ -853,13 +898,13 @@
 
         .note-date {
             color: var(--ink-muted);
-            font-size: 0.74rem;
+            font-size: 0.72rem;
         }
 
         .note-content {
             margin: 0;
-            font-size: 0.9rem;
-            line-height: 1.46;
+            font-size: 0.88rem;
+            line-height: 1.45;
             color: var(--ink-main);
             word-wrap: break-word;
         }
@@ -868,9 +913,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--ink-muted);
-            padding: 0 0.5rem;
+            padding: 0 0.4rem;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
@@ -878,22 +923,22 @@
         .bottom-bar em {
             font-family: var(--font-serif);
             font-style: italic;
-            font-size: 1.02rem;
+            font-size: 1rem;
             color: var(--ink-main);
         }
 
-        @media (max-width: 960px) {
+        @media (max-width: 980px) {
             .stage-grid {
                 grid-template-columns: 1fr;
             }
             .viewport-canvas {
-                padding: 1rem;
+                padding: 0.9rem;
             }
             .hero-island, .sky-island, .guestbook-island {
-                border-radius: 30px;
+                border-radius: 28px;
             }
             .earth-observatory {
-                min-height: 310px;
+                min-height: 360px;
             }
             .local-globe-meta {
                 display: none;
@@ -924,9 +969,8 @@
             </div>
         </header>
 
-        <!-- 中央全屏双栏舞台 -->
+        <!-- 中央全屏双栏舞台（左侧地球与地图占 62% 宽幅主视野） -->
         <main class="stage-grid">
-            <!-- 左侧：个人信息 + 3D地球与 Google Maps 街道级无缝观测舱 + 芬兰实时天气时钟 -->
             <div class="left-stage">
                 <section class="hero-island">
                     <div class="hero-header-bar">
@@ -952,12 +996,9 @@
                         </div>
                     </div>
 
-                    <!-- 全幅 3D 地球 + Google Maps 21级街道地图观测视窗 -->
+                    <!-- 超大画幅 3D 地球 + 极速预加载 Google Maps 街道地图视窗 -->
                     <div class="earth-observatory" id="earth-observatory">
-                        <!-- 3D WebGL 立体地球层 -->
                         <canvas id="earth-canvas"></canvas>
-
-                        <!-- Google Maps 21级高清卫星与街道图层 -->
                         <div id="detail-map"></div>
 
                         <div class="obs-badge-tl">
@@ -974,14 +1015,15 @@
                             </div>
                         </div>
 
-                        <!-- 左下角缩放控制台 -->
+                        <!-- 左下角缩放与一键全屏控制台 -->
                         <div class="zoom-hud-bl">
                             <button type="button" class="zoom-icon-btn" id="zoom-out-btn" title="Zoom Out">−</button>
                             <span class="zoom-readout" id="zoom-readout" title="Click to reset to 3D Globe">1.0x · 3D Orbit</span>
                             <button type="button" class="zoom-icon-btn" id="zoom-in-btn" title="Zoom In">+</button>
+                            <button type="button" class="expand-btn" id="expand-map-btn" title="Toggle Fullscreen View">⛶ Expand</button>
                         </div>
 
-                        <!-- 右下角控制栏：支持 Local 3D Earth、Focus Finland 及地图图层切换 -->
+                        <!-- 右下角控制栏 -->
                         <div class="earth-controls" role="group" aria-label="Earth View Controls">
                             <button type="button" class="earth-view-btn" id="btn-map-layer" title="Switch Google Satellite / Street Map">🗺️ Street Map</button>
                             <button type="button" class="earth-view-btn active" id="btn-local-earth">🌍 Local 3D Earth</button>
@@ -990,11 +1032,11 @@
                     </div>
                 </section>
 
-                <!-- 芬兰拉赫蒂实时时间与气象岛 -->
+                <!-- 紧凑横向排布的芬兰时间与气象岛 -->
                 <section class="sky-island">
                     <div class="sky-left">
-                        <div class="sky-date" id="finland-date">Syncing date...</div>
                         <div class="sky-time" id="finland-time">00:00:00</div>
+                        <div class="sky-date" id="finland-date">Syncing date...</div>
                     </div>
 
                     <div class="sky-right">
@@ -1016,7 +1058,7 @@
                         <p class="gb-subtitle">Say hi or leave a warm note below</p>
                     </div>
 
-                    <form class="gb-form" id="guestbook-form" style="margin-top: 0.9rem;">
+                    <form class="gb-form" id="guestbook-form" style="margin-top: 0.75rem;">
                         <input type="text" id="bot-trap" class="honeypot-field" tabindex="-1" autocomplete="off">
                         <div class="form-row">
                             <input type="text" id="guest-name" class="organic-input" placeholder="Your name (optional)" maxlength="30">
@@ -1093,9 +1135,9 @@
         });
 
         // ==========================================
-        // 3. 天文级太阳直射点计算 + 3D 地球与 Google Maps 21级高清街道地图无缝系统
+        // 3. 天文级太阳直射点计算 + 3D 地球与极速预加载 Google Maps 无缝系统
         // ==========================================
-        (function initEarthAndGoogleMapSystem() {
+        (function initEarthAndFastGoogleMap() {
             const observatoryEl = document.getElementById('earth-observatory');
             const canvas = document.getElementById('earth-canvas');
             const miniCanvas = document.getElementById('mini-globe-canvas');
@@ -1105,8 +1147,8 @@
             const btnLocalEarth = document.getElementById('btn-local-earth');
             const btnFocusFinland = document.getElementById('btn-focus-finland');
             const btnMapLayer = document.getElementById('btn-map-layer');
+            const expandMapBtn = document.getElementById('expand-map-btn');
 
-            // 计算真实天文太阳直射点与访客所在时区经度
             function getRealTimeAstronomy() {
                 const now = new Date();
                 const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
@@ -1142,7 +1184,7 @@
             setInterval(updateViewerLocalClock, 10000);
 
             // ==========================================
-            // 初始化 Google Maps 21级超清混合卫星与街道地图
+            // 极速版 Google Maps 切片配置 (立即并发请求 + 超大内存缓冲 + 预加载下一级切片)
             // ==========================================
             const map = L.map('detail-map', {
                 center: [60.9827, 25.6615],
@@ -1150,24 +1192,30 @@
                 minZoom: 4,
                 maxZoom: 21,
                 zoomControl: false,
-                scrollWheelZoom: false // 由自定义丝滑滚轮控制器统一驱动
+                scrollWheelZoom: false,
+                preferCanvas: true,
+                fadeAnimation: false // 关闭瓦片淡入等待，切片下载完 0 毫秒立刻显示！
             });
 
-            // Google Maps 官方高清混合图层 (lyrs=y: 超清卫星影像 + 街道名称 + 高速路网 + 建筑地标，支持直达 21 级街道特写！)
-            const googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
+            const fastTileOptions = {
                 maxZoom: 21,
                 maxNativeZoom: 20,
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                updateWhenIdle: false,    // 拖动或缩放过程中立即请求切片，绝不等待停止！
+                updateWhenZooming: true,  // 滚轮转动瞬间立即并发拉取新层级瓦片
+                keepBuffer: 8,            // 在内存中保留周围 8 屏的瓦片缓存，来回缩放秒开
                 attribution: 'Map data &copy; Google'
-            }).addTo(map);
+            };
 
-            // Google Maps 官方标准电子街道地图 (lyrs=m: 清晰展示每一条街巷、商铺、建筑轮廓与门牌)
-            const googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}', {
-                maxZoom: 21,
-                maxNativeZoom: 20,
-                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                attribution: 'Map data &copy; Google'
-            });
+            const googleHybridLayer = L.tileLayer(
+                'https://{s}.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+                fastTileOptions
+            ).addTo(map);
+
+            const googleStreetsLayer = L.tileLayer(
+                'https://{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
+                fastTileOptions
+            );
 
             let isStreetLayer = false;
             btnMapLayer.addEventListener('click', () => {
@@ -1181,9 +1229,43 @@
                     googleHybridLayer.addTo(map);
                     btnMapLayer.textContent = '🗺️ Street Map';
                 }
+                prefetchNextZoomTiles();
             });
 
-            // 芬兰拉赫蒂专属脉冲坐标锚点
+            // 核心加速黑科技：自动在后台静默预加载当前视野中心“下一级 (z+1)”和“下两级 (z+2)”的高清切片！
+            function lon2tile(lon, z) {
+                return Math.floor(((lon + 180) / 360) * Math.pow(2, z));
+            }
+            function lat2tile(lat, z) {
+                const rad = (lat * Math.PI) / 180;
+                return Math.floor(((1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2) * Math.pow(2, z));
+            }
+
+            let prefetchTimer = null;
+            function prefetchNextZoomTiles() {
+                clearTimeout(prefetchTimer);
+                prefetchTimer = setTimeout(() => {
+                    const c = map.getCenter();
+                    const curZ = Math.round(map.getZoom());
+                    const lyrs = isStreetLayer ? 'm' : 'y';
+                    // 预加载 z+1 与 z+2 层级中心区域的切片进浏览器缓存
+                    [curZ + 1, curZ + 2].forEach(targetZ => {
+                        if (targetZ > 20) return;
+                        const cx = lon2tile(c.lng, targetZ);
+                        const cy = lat2tile(c.lat, targetZ);
+                        for (let dx = -1; dx <= 1; dx++) {
+                            for (let dy = -1; dy <= 1; dy++) {
+                                const tx = cx + dx;
+                                const ty = cy + dy;
+                                const sub = `mt${Math.abs(tx + ty) % 4}`;
+                                const img = new Image();
+                                img.src = `https://${sub}.google.com/vt/lyrs=${lyrs}&hl=en&x=${tx}&y=${ty}&z=${targetZ}`;
+                            }
+                        }
+                    });
+                }, 60);
+            }
+
             const lahtiIcon = L.divIcon({
                 className: '',
                 html: '<div class="lahti-map-marker" title="Lahti, Finland"></div>',
@@ -1195,7 +1277,7 @@
                 .bindPopup('<b>Lahti, Finland</b><br>60.9827°N, 25.6615°E');
 
             // ==========================================
-            // WebGL 3D 地球渲染管线（主地球 + 右上角 3D 实时缩略球）
+            // WebGL 3D 地球渲染引擎
             // ==========================================
             const vsSource = `
                 attribute vec2 aPos;
@@ -1545,6 +1627,15 @@
                 return { latDeg, lonDeg };
             }
 
+            // 在 3D 地球旋转时，后台静默同步预热底层 Google 地图切片（切换瞬间 0 延迟）
+            let lastBgSyncTime = 0;
+            function silentPrewarmMap(latDeg, lonDeg) {
+                const nowT = performance.now();
+                if (isMapMode || nowT - lastBgSyncTime < 350) return;
+                lastBgSyncTime = nowT;
+                map.setView([latDeg, lonDeg], 6, { animate: false });
+            }
+
             function enterMapMode(latDeg, lonDeg, initialLeafletZoom = 6) {
                 if (isMapMode) return;
                 isMapMode = true;
@@ -1552,6 +1643,7 @@
                 map.invalidateSize();
                 map.setView([latDeg, lonDeg], initialLeafletZoom, { animate: false });
                 updateHudReadout();
+                prefetchNextZoomTiles();
             }
 
             function exitMapMode() {
@@ -1589,9 +1681,31 @@
                 updateHudReadout();
             });
 
-            map.on('zoomend', () => {
+            map.on('moveend zoomend', () => {
                 if (!isMapMode) return;
                 updateHudReadout();
+                prefetchNextZoomTiles();
+            });
+
+            // 一键全屏展开/收起按钮逻辑
+            expandMapBtn.addEventListener('click', () => {
+                const isExpanded = observatoryEl.classList.toggle('expanded-fullscreen');
+                expandMapBtn.textContent = isExpanded ? '✕ Exit Full' : '⛶ Expand';
+                setTimeout(() => {
+                    resize();
+                    map.invalidateSize();
+                }, 50);
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && observatoryEl.classList.contains('expanded-fullscreen')) {
+                    observatoryEl.classList.remove('expanded-fullscreen');
+                    expandMapBtn.textContent = '⛶ Expand';
+                    setTimeout(() => {
+                        resize();
+                        map.invalidateSize();
+                    }, 50);
+                }
             });
 
             function raycastCursorOnGlobe(clientX, clientY) {
@@ -1634,43 +1748,45 @@
                 return { latRad, lonRad };
             }
 
-            // 针对鼠标滚轮与触控板优化的平滑缩放控制（支持一路放大到 21 级街道与建筑特写）
+            // 极速滚轮缩放：零阻塞直接驱动瓦片切换，不再因动画排队卡顿！
             let lastMapWheelTime = 0;
             observatoryEl.addEventListener('wheel', (e) => {
                 e.preventDefault();
 
                 if (isMapMode) {
                     const nowTime = performance.now();
-                    if (nowTime - lastMapWheelTime < 90) return; // 防止高速滚轮跳级过快
+                    if (nowTime - lastMapWheelTime < 45) return;
                     lastMapWheelTime = nowTime;
 
                     const curMapZoom = map.getZoom();
                     if (e.deltaY < 0) {
                         if (curMapZoom < 21) {
-                            map.setZoomAround(map.mouseEventToContainerPoint(e), curMapZoom + 1);
+                            map.setZoomAround(map.mouseEventToContainerPoint(e), curMapZoom + 1, { animate: false });
                         }
                     } else {
                         if (curMapZoom <= 5) {
                             exitMapMode();
                         } else {
-                            map.setZoomAround(map.mouseEventToContainerPoint(e), curMapZoom - 1);
+                            map.setZoomAround(map.mouseEventToContainerPoint(e), curMapZoom - 1, { animate: false });
                         }
                     }
                     return;
                 }
 
-                // 3D 地球模式下的滚轮指哪放哪
                 const hit = raycastCursorOnGlobe(e.clientX, e.clientY);
-                const zoomFactor = e.deltaY < 0 ? 1.22 : (1 / 1.22);
+                const zoomFactor = e.deltaY < 0 ? 1.24 : (1 / 1.24);
 
                 let targetLatDeg = null, targetLonDeg = null;
-                if (e.deltaY < 0 && hit) {
+                if (hit) {
                     targetLatDeg = (hit.latRad * 180) / Math.PI;
                     targetLonDeg = (hit.lonRad * 180) / Math.PI;
-                    const desiredRotX = normalizeAngleDiff(-hit.lonRad, targetRotX);
-                    const desiredRotY = Math.max(-1.32, Math.min(1.32, hit.latRad));
-                    targetRotX += (desiredRotX - targetRotX) * 0.42;
-                    targetRotY += (desiredRotY - targetRotY) * 0.42;
+                    silentPrewarmMap(targetLatDeg, targetLonDeg);
+                    if (e.deltaY < 0) {
+                        const desiredRotX = normalizeAngleDiff(-hit.lonRad, targetRotX);
+                        const desiredRotY = Math.max(-1.32, Math.min(1.32, hit.latRad));
+                        targetRotX += (desiredRotX - targetRotX) * 0.42;
+                        targetRotY += (desiredRotY - targetRotY) * 0.42;
+                    }
                 }
 
                 const nextZoom = targetZoom * zoomFactor;
@@ -1686,10 +1802,9 @@
                 }
             }, { passive: false });
 
-            // 左下角 + / - / Reset 按钮控制
             document.getElementById('zoom-in-btn').addEventListener('click', () => {
                 if (isMapMode) {
-                    map.zoomIn();
+                    map.setZoom(Math.min(21, map.getZoom() + 1), { animate: false });
                 } else {
                     const nextZ = targetZoom * 1.45;
                     if (nextZ >= MAP_TRANSITION_ZOOM) {
@@ -1706,7 +1821,7 @@
                     if (map.getZoom() <= 5) {
                         exitMapMode();
                     } else {
-                        map.zoomOut();
+                        map.setZoom(map.getZoom() - 1, { animate: false });
                     }
                 } else {
                     targetZoom = Math.max(1.0, targetZoom / 1.45);
@@ -1729,7 +1844,6 @@
             btnLocalEarth.addEventListener('click', flyToLocal3DEarth);
             document.getElementById('local-globe-widget').addEventListener('click', flyToLocal3DEarth);
 
-            // Focus Finland 按钮：支持从 3D 芬兰视角一键直达拉赫蒂 16 级高清街道视图
             btnFocusFinland.addEventListener('click', () => {
                 btnFocusFinland.classList.add('active');
                 btnLocalEarth.classList.remove('active');
@@ -1742,7 +1856,7 @@
                 if (!isMapMode && targetZoom > 2.5) {
                     enterMapMode(60.9827, 25.6615, 15);
                 } else if (isMapMode) {
-                    map.flyTo([60.9827, 25.6615], 16, { duration: 1.2 });
+                    map.setView([60.9827, 25.6615], 16, { animate: false });
                 } else {
                     targetZoom = 3.1;
                 }
@@ -1784,6 +1898,7 @@
                         const ns = latD >= 0 ? 'N' : 'S';
                         const ew = lonD >= 0 ? 'E' : 'W';
                         coordReadoutEl.textContent = `CURSOR · ${Math.abs(latD)}°${ns}, ${Math.abs(lonD)}°${ew}`;
+                        silentPrewarmMap( parseFloat(latD), parseFloat(lonD) );
                     } else {
                         coordReadoutEl.textContent = `LAHTI · 60.98°N, 25.66°E`;
                     }
@@ -1826,7 +1941,6 @@
                     gl.drawArrays(gl.TRIANGLES, 0, 6);
                 }
 
-                // 实时渲染右上角的“访客当地时间 3D 立体地球缩略图”
                 if (miniCtx) {
                     const mgl = miniCtx.gl;
                     mgl.useProgram(miniCtx.prog);
