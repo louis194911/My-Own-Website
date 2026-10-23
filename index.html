@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 引入开源 Leaflet 地图引擎用于高倍率无缝卫星与街道地图缩放 -->
+    <!-- 引入 Leaflet 引擎用于承载 Google Maps 21级高清街道与卫星切片 -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <style>
@@ -302,7 +302,7 @@
         }
 
         /* ==========================================
-           全幅 3D 地球 + 高清卫星地图无缝混合观测舱
+           全幅 3D 地球 + Google Maps 21级高清街道地图无缝观测舱
            ========================================== */
         .earth-observatory {
             position: relative;
@@ -330,14 +330,14 @@
             cursor: grab;
             touch-action: none;
             z-index: 2;
-            transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         #earth-canvas:active {
             cursor: grabbing;
         }
 
-        /* 放大到高倍率时丝滑切入的高清卫星地图层 */
+        /* Google Maps 容器层 */
         #detail-map {
             position: absolute;
             inset: 0;
@@ -346,8 +346,8 @@
             z-index: 1;
             opacity: 0;
             pointer-events: none;
-            background: #070b12;
-            transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            background: #0a101d;
+            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .earth-observatory.map-mode #detail-map {
@@ -359,19 +359,18 @@
         .earth-observatory.map-mode #earth-canvas {
             opacity: 0;
             pointer-events: none;
-            transform: scale(1.22);
+            transform: scale(1.18);
         }
 
-        /* 隐藏 Leaflet 默认控件与水印背景，保持观测舱极简视觉 */
         .leaflet-control-attribution {
             font-size: 9px !important;
-            background: rgba(15, 23, 42, 0.5) !important;
-            color: rgba(255, 255, 255, 0.5) !important;
+            background: rgba(15, 23, 42, 0.55) !important;
+            color: rgba(255, 255, 255, 0.65) !important;
             border-radius: 8px 0 0 0;
             padding: 1px 6px !important;
         }
         .leaflet-control-attribution a {
-            color: rgba(255, 255, 255, 0.65) !important;
+            color: #93c5fd !important;
         }
 
         /* 芬兰拉赫蒂地图模式下的动态脉冲锚点 */
@@ -397,7 +396,7 @@
             100% { transform: scale(2.2); opacity: 0; }
         }
 
-        /* 左上角经纬度与高度遥测胶囊 */
+        /* 左上角经纬度遥测胶囊 */
         .obs-badge-tl {
             position: absolute;
             top: 14px;
@@ -405,7 +404,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(15, 23, 42, 0.76);
+            background: rgba(15, 23, 42, 0.78);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             color: #f8fafc;
@@ -434,9 +433,7 @@
             50% { transform: scale(1.4); opacity: 0.65; }
         }
 
-        /* ==========================================
-           右上角：访客当地时间下的 3D 立体地球实时缩略图 (Live 3D Mini-Globe)
-           ========================================== */
+        /* 右上角：观看者当地时间下的 3D 立体地球实时缩略图 */
         .local-globe-widget {
             position: absolute;
             top: 12px;
@@ -444,7 +441,7 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            background: rgba(10, 16, 29, 0.82);
+            background: rgba(10, 16, 29, 0.84);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             padding: 0.35rem 0.8rem 0.35rem 0.4rem;
@@ -458,7 +455,7 @@
 
         .local-globe-widget:hover {
             transform: scale(1.04);
-            border-color: rgba(251, 211, 141, 0.5);
+            border-color: rgba(251, 211, 141, 0.55);
         }
 
         #mini-globe-canvas {
@@ -543,14 +540,14 @@
             color: #ffffff;
         }
 
-        /* 右下角精简控制栏：仅保留 Local 3D Earth 与 Focus Finland */
+        /* 右下角控制栏：支持一键切换 Google Satellite 与 Google Streets */
         .earth-controls {
             position: absolute;
             bottom: 12px;
             right: 14px;
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.28rem;
             background: rgba(15, 23, 42, 0.82);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -564,10 +561,10 @@
             border: none;
             background: transparent;
             font-family: var(--font-sans);
-            font-size: 0.73rem;
+            font-size: 0.72rem;
             font-weight: 600;
             color: #cbd5e1;
-            padding: 0.3rem 0.8rem;
+            padding: 0.3rem 0.75rem;
             border-radius: 999px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -581,6 +578,16 @@
             background: var(--accent);
             color: #ffffff;
             box-shadow: 0 2px 10px rgba(223, 90, 73, 0.45);
+        }
+
+        #btn-map-layer {
+            display: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: #f8fafc;
+        }
+
+        .earth-observatory.map-mode #btn-map-layer {
+            display: inline-block;
         }
 
         /* 芬兰拉赫蒂实时时间与气象岛 */
@@ -919,7 +926,7 @@
 
         <!-- 中央全屏双栏舞台 -->
         <main class="stage-grid">
-            <!-- 左侧：个人信息 + 3D地球与高清地图无缝观测舱 + 芬兰实时天气时钟 -->
+            <!-- 左侧：个人信息 + 3D地球与 Google Maps 街道级无缝观测舱 + 芬兰实时天气时钟 -->
             <div class="left-stage">
                 <section class="hero-island">
                     <div class="hero-header-bar">
@@ -945,12 +952,12 @@
                         </div>
                     </div>
 
-                    <!-- 全幅 3D 地球 + 无限缩放卫星街道地图观测视窗 -->
+                    <!-- 全幅 3D 地球 + Google Maps 21级街道地图观测视窗 -->
                     <div class="earth-observatory" id="earth-observatory">
                         <!-- 3D WebGL 立体地球层 -->
                         <canvas id="earth-canvas"></canvas>
 
-                        <!-- 高倍率无缝衔接的高清卫星与街道地图层 -->
+                        <!-- Google Maps 21级高清卫星与街道图层 -->
                         <div id="detail-map"></div>
 
                         <div class="obs-badge-tl">
@@ -974,8 +981,9 @@
                             <button type="button" class="zoom-icon-btn" id="zoom-in-btn" title="Zoom In">+</button>
                         </div>
 
-                        <!-- 右下角精简控制栏：去掉 Day/Night，保留 Local 3D Earth 与 Focus Finland -->
+                        <!-- 右下角控制栏：支持 Local 3D Earth、Focus Finland 及地图图层切换 -->
                         <div class="earth-controls" role="group" aria-label="Earth View Controls">
+                            <button type="button" class="earth-view-btn" id="btn-map-layer" title="Switch Google Satellite / Street Map">🗺️ Street Map</button>
                             <button type="button" class="earth-view-btn active" id="btn-local-earth">🌍 Local 3D Earth</button>
                             <button type="button" class="earth-view-btn" id="btn-focus-finland">🇫🇮 Focus Finland</button>
                         </div>
@@ -1085,9 +1093,9 @@
         });
 
         // ==========================================
-        // 3. 天文级太阳直射点计算 + 3D 地球与高清卫星地图无缝联动系统
+        // 3. 天文级太阳直射点计算 + 3D 地球与 Google Maps 21级高清街道地图无缝系统
         // ==========================================
-        (function initEarthAndMapSystem() {
+        (function initEarthAndGoogleMapSystem() {
             const observatoryEl = document.getElementById('earth-observatory');
             const canvas = document.getElementById('earth-canvas');
             const miniCanvas = document.getElementById('mini-globe-canvas');
@@ -1096,29 +1104,26 @@
             const viewerClockEl = document.getElementById('viewer-local-clock');
             const btnLocalEarth = document.getElementById('btn-local-earth');
             const btnFocusFinland = document.getElementById('btn-focus-finland');
+            const btnMapLayer = document.getElementById('btn-map-layer');
 
-            // 根据访客当前的系统时间，计算真实天文太阳直射点经纬度 (Subsolar Point) 与访客所在时区中心经度
+            // 计算真实天文太阳直射点与访客所在时区经度
             function getRealTimeAstronomy() {
                 const now = new Date();
                 const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
-                // 太阳直射经度：UTC 12:00 时直射格林威治 0°，每小时西移 15°
                 const sunLonDeg = (12.0 - utcHours) * 15.0;
                 const sunLonRad = sunLonDeg * Math.PI / 180.0;
 
-                // 计算年积日与太阳赤纬角 (季节倾角)
                 const startOfYear = new Date(Date.UTC(now.getUTCFullYear(), 0, 0));
                 const dayOfYear = Math.floor((now - startOfYear) / 86400000);
                 const sunLatDeg = -23.44 * Math.cos((2.0 * Math.PI / 365.0) * (dayOfYear + 10));
                 const sunLatRad = sunLatDeg * Math.PI / 180.0;
 
-                // 地球固定坐标系下的真实太阳方向向量
                 const sunVecEarth = [
                     Math.cos(sunLatRad) * Math.sin(sunLonRad),
                     Math.sin(sunLatRad),
                     Math.cos(sunLatRad) * Math.cos(sunLonRad)
                 ];
 
-                // 访客本地时区对应的中心经度 (例如东八区 +8h -> 120°E，芬兰 +2/+3h -> 30°E/45°E)
                 const tzOffsetHours = -now.getTimezoneOffset() / 60;
                 const viewerLonDeg = tzOffsetHours * 15.0;
                 const viewerLonRad = viewerLonDeg * Math.PI / 180.0;
@@ -1126,7 +1131,6 @@
                 return { sunVecEarth, viewerLonRad, viewerLonDeg, now };
             }
 
-            // 更新右上角访客本地时间读数
             function updateViewerLocalClock() {
                 const now = new Date();
                 const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -1137,30 +1141,49 @@
             updateViewerLocalClock();
             setInterval(updateViewerLocalClock, 10000);
 
-            // 初始化底层 Leaflet 高清卫星 + 街道混合地图 (用于 > 4.5x 深度放大)
+            // ==========================================
+            // 初始化 Google Maps 21级超清混合卫星与街道地图
+            // ==========================================
             const map = L.map('detail-map', {
                 center: [60.9827, 25.6615],
                 zoom: 6,
                 minZoom: 4,
-                maxZoom: 19,
+                maxZoom: 21,
                 zoomControl: false,
-                scrollWheelZoom: false // 由我们自定义滚轮逻辑统一接管，以便在缩小时丝滑切回 3D 地球
+                scrollWheelZoom: false // 由自定义丝滑滚轮控制器统一驱动
             });
 
-            // 1. Esri World Imagery 全球高清卫星影像图层 (最高支持 19 级街道建筑级清晰度)
-            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                maxZoom: 19,
-                attribution: 'Esri Satellite'
+            // Google Maps 官方高清混合图层 (lyrs=y: 超清卫星影像 + 街道名称 + 高速路网 + 建筑地标，支持直达 21 级街道特写！)
+            const googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
+                maxZoom: 21,
+                maxNativeZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: 'Map data &copy; Google'
             }).addTo(map);
 
-            // 2. 叠加高清国家、城市、道路与街名标签图层
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19,
-                subdomains: 'abcd',
-                attribution: '&copy; OpenStreetMap &copy; CARTO'
-            }).addTo(map);
+            // Google Maps 官方标准电子街道地图 (lyrs=m: 清晰展示每一条街巷、商铺、建筑轮廓与门牌)
+            const googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}', {
+                maxZoom: 21,
+                maxNativeZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: 'Map data &copy; Google'
+            });
 
-            // 在拉赫蒂 (60.9827°N, 25.6615°E) 放置专属脉冲坐标点
+            let isStreetLayer = false;
+            btnMapLayer.addEventListener('click', () => {
+                isStreetLayer = !isStreetLayer;
+                if (isStreetLayer) {
+                    map.removeLayer(googleHybridLayer);
+                    googleStreetsLayer.addTo(map);
+                    btnMapLayer.textContent = '🛰️ Satellite';
+                } else {
+                    map.removeLayer(googleStreetsLayer);
+                    googleHybridLayer.addTo(map);
+                    btnMapLayer.textContent = '🗺️ Street Map';
+                }
+            });
+
+            // 芬兰拉赫蒂专属脉冲坐标锚点
             const lahtiIcon = L.divIcon({
                 className: '',
                 html: '<div class="lahti-map-marker" title="Lahti, Finland"></div>',
@@ -1169,9 +1192,11 @@
             });
             L.marker([60.9827, 25.6615], { icon: lahtiIcon })
                 .addTo(map)
-                .bindPopup('<b>Lahti, Finland</b><br>60.98°N, 25.66°E');
+                .bindPopup('<b>Lahti, Finland</b><br>60.9827°N, 25.6615°E');
 
-            // 通用 WebGL 地球着色器构建函数（同时驱动主地球与右上角 3D 实时立体缩略地球）
+            // ==========================================
+            // WebGL 3D 地球渲染管线（主地球 + 右上角 3D 实时缩略球）
+            // ==========================================
             const vsSource = `
                 attribute vec2 aPos;
                 varying vec2 vUv;
@@ -1261,7 +1286,6 @@
                     vec3 rd = normalize(vec3(uv * (0.92 / uZoom), -1.35));
 
                     mat3 globeMat = rotY(uRot.x) * rotX(uRot.y);
-                    // 将地球固定坐标系下的真实天文太阳向量转换到当前相机世界空间，并叠加轻微的鼠标追光偏转
                     vec3 baseSunWorld = uSunEarth * globeMat;
                     vec3 lDir = normalize(baseSunWorld + vec3(uLightOffset.x * 0.38, uLightOffset.y * 0.38, 0.15));
 
@@ -1273,7 +1297,6 @@
                     float c = dot(ro, ro) - R * R;
                     float disc = b * b - c;
 
-                    // 1. 外层 3D 瑞利散射蔚蓝大气辉光
                     float Ra = 1.15;
                     float ca = dot(ro, ro) - Ra * Ra;
                     float discA = b * b - ca;
@@ -1291,7 +1314,6 @@
                         if (uIsMini > 0.5) finalAlpha = glow * 0.85;
                     }
 
-                    // 2. 地球本体表面：3D 地形法线起伏 + 海洋太阳高光 + 极其明亮的夜间万家灯火
                     if (disc > 0.0) {
                         float t = -b - sqrt(disc);
                         vec3 pos = ro + t * rd;
@@ -1301,7 +1323,6 @@
                         vec3 sPos = globeMat * geoNor;
                         vec2 suv = sphereToUv(sPos);
 
-                        // 计算 3D 山脉地形凹凸法线
                         vec3 tangent = normalize(vec3(sPos.z, 0.0, -sPos.x));
                         vec3 bitangent = cross(sPos, tangent);
                         float eps = 0.0042;
@@ -1338,35 +1359,29 @@
 
                         vec3 surfNor = normalize(mix(geoNor, bumpedNor, landMask));
 
-                        // 强烈立体球面光影对比 (3D Spherical Shading)
                         float geoNdotL = dot(geoNor, lDir);
                         float bumpNdotL = dot(surfNor, lDir);
                         float dayDiff = smoothstep(-0.05, 0.80, bumpNdotL);
                         float terminator = exp(-pow((geoNdotL + 0.02) * 5.2, 2.0)) * smoothstep(-0.32, 0.28, bumpNdotL);
 
-                        // 立体感球心环境光遮蔽 (讓球体边缘深邃立体)
                         float sphere3DDepth = pow(max(0.0, dot(geoNor, viewDir)), 0.45);
                         vec3 surfCol = dayAlbedo * (0.03 + 1.18 * dayDiff) * (0.55 + 0.45 * sphere3DDepth);
 
-                        // 海洋太阳镜面高光反射
                         vec3 halfVec = normalize(lDir + viewDir);
                         float oceanSpec = pow(max(0.0, dot(geoNor, halfVec)), 36.0) * (1.0 - landMask);
                         float oceanHotspot = pow(max(0.0, dot(geoNor, halfVec)), 150.0) * (1.0 - landMask);
                         float sunVis = smoothstep(-0.08, 0.25, geoNdotL);
                         surfCol += (vec3(1.0, 0.88, 0.68) * oceanSpec * 0.9 + vec3(1.0) * oceanHotspot * 1.35) * sunVis;
 
-                        // 动态 3D 大气云层
                         vec3 cloudPos = rotY(uTime * 0.02) * sPos;
                         float cloudDensity = smoothstep(0.48, 0.73, fbm(cloudPos * 4.2 + vec3(0.0, uTime * 0.015, 0.0)));
-                        float cloudFade = mix(0.68, 0.15, smoothstep(1.8, 4.2, uZoom));
+                        float cloudFade = mix(0.68, 0.15, smoothstep(1.8, 4.0, uZoom));
                         float cloudLit = smoothstep(-0.12, 0.75, geoNdotL);
                         surfCol *= (1.0 - cloudDensity * 0.35 * dayDiff * cloudFade);
                         surfCol = mix(surfCol, vec3(0.98, 0.99, 1.0) * (0.05 + 1.05 * cloudLit), cloudDensity * cloudFade);
 
-                        // 晨昏线橙红霞光
                         surfCol += vec3(0.98, 0.38, 0.14) * terminator * 0.65;
 
-                        // 黑夜半球：超高亮度的黄金万家灯火 (东/西半球进入黑夜时璀璨夺目！)
                         float nightMask = smoothstep(0.15, -0.22, geoNdotL);
                         float twinkle = 0.88 + 0.12 * sin(uTime * 3.8 + sPos.x * 40.0 + sPos.z * 40.0);
                         float lightIntensity = dot(nightLights, vec3(0.38, 0.38, 0.24));
@@ -1374,12 +1389,10 @@
                         vec3 warmCityGlow = mix(vec3(1.0, 0.58, 0.18), vec3(1.0, 0.95, 0.75), cityCore) * pow(lightIntensity, 1.1) * 3.4 * twinkle;
                         surfCol += warmCityGlow * nightMask * (1.0 - cloudDensity * cloudFade * 0.55);
 
-                        // 北极圈极光带
                         float auroraLat = exp(-pow((abs(sPos.y) - 0.88) * 11.0, 2.0));
                         float auroraCurtain = smoothstep(0.42, 0.78, fbm(vec3(sPos.xz * 8.0, uTime * 0.65)));
                         surfCol += vec3(0.15, 0.96, 0.62) * auroraLat * auroraCurtain * (0.3 + 0.7 * nightMask) * 0.85;
 
-                        // 芬兰拉赫蒂 (60.98°N, 25.66°E) 专属 3D 实时脉冲坐标信标
                         float lahtiLat = 60.98 * PI / 180.0;
                         float lahtiLon = 25.66 * PI / 180.0;
                         vec3 lahtiVec = vec3(
@@ -1395,7 +1408,6 @@
                         surfCol = mix(surfCol, vec3(1.0, 0.36, 0.20), clamp(pinCore + pinRing * 0.85, 0.0, 1.0));
                         surfCol += vec3(1.0, 0.9, 0.8) * smoothstep(0.011 * scalePin, 0.002 * scalePin, distLahti);
 
-                        // 3D 球体边缘菲涅尔蔚蓝大气层包裹高光
                         float fresnel = pow(1.0 - max(0.0, dot(geoNor, viewDir)), 3.0);
                         vec3 rimCol = mix(vec3(0.14, 0.42, 0.82), vec3(0.32, 0.78, 1.0), smoothstep(-0.3, 0.6, geoNdotL));
                         surfCol += rimCol * fresnel * 0.95;
@@ -1409,7 +1421,6 @@
                 }
             `;
 
-            // 创建 WebGL 实例辅助器
             function setupWebGLContext(targetCanvas, isMini) {
                 const gl = targetCanvas.getContext('webgl', { alpha: true, antialias: true });
                 if (!gl) return null;
@@ -1502,18 +1513,16 @@
             loadSharedTexture('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/example/img/earth-night.jpg', 1);
             loadSharedTexture('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/example/img/earth-topology.png', 2);
 
-            // 初始旋转角度：默认对准访客当前所在时区的半球经度！
             const initAstro = getRealTimeAstronomy();
             let rotX = -initAstro.viewerLonRad;
-            let rotY = 0.58; // 北纬 33° 俯瞰视角，完整展现欧亚/东半球或当前时区半球
+            let rotY = 0.58;
             let targetRotX = rotX;
             let targetRotY = rotY;
 
             let zoom = 1.0, targetZoom = 1.0;
             let isMapMode = false;
-            const MAP_TRANSITION_ZOOM = 4.5; // 当 3D 地球放大超过 4.5x 时，丝滑切入高清卫星街道地图！
+            const MAP_TRANSITION_ZOOM = 4.2;
 
-            let autoSpin = false;
             let isDragging = false;
             let lastX = 0, lastY = 0;
             let lightOffsetX = 0.0, lightOffsetY = 0.0;
@@ -1536,7 +1545,6 @@
                 return { latDeg, lonDeg };
             }
 
-            // 切换进入高清卫星街道地图模式
             function enterMapMode(latDeg, lonDeg, initialLeafletZoom = 6) {
                 if (isMapMode) return;
                 isMapMode = true;
@@ -1546,7 +1554,6 @@
                 updateHudReadout();
             }
 
-            // 从高清地图模式丝滑退回 3D 太空地球模式
             function exitMapMode() {
                 if (!isMapMode) return;
                 const center = map.getCenter();
@@ -1556,26 +1563,24 @@
                 rotY = targetRotY;
                 isMapMode = false;
                 observatoryEl.classList.remove('map-mode');
-                targetZoom = 3.6;
-                zoom = 4.2;
+                targetZoom = 3.2;
+                zoom = 3.8;
                 updateHudReadout();
             }
 
             function updateHudReadout() {
                 if (isMapMode) {
                     const mZoom = map.getZoom();
-                    const equivalentZoom = Math.round(Math.pow(2, mZoom - 3.5) * 10) / 10;
-                    zoomReadoutEl.textContent = `${equivalentZoom}x · Satellite Map`;
+                    zoomReadoutEl.textContent = `Lv.${mZoom} · Google Maps`;
                     const c = map.getCenter();
                     const ns = c.lat >= 0 ? 'N' : 'S';
                     const ew = c.lng >= 0 ? 'E' : 'W';
-                    coordReadoutEl.textContent = `MAP · ${Math.abs(c.lat).toFixed(3)}°${ns}, ${Math.abs(c.lng).toFixed(3)}°${ew}`;
+                    coordReadoutEl.textContent = `GOOGLE MAP · ${Math.abs(c.lat).toFixed(4)}°${ns}, ${Math.abs(c.lng).toFixed(4)}°${ew}`;
                 } else {
                     zoomReadoutEl.textContent = `${zoom.toFixed(1)}x · 3D Orbit`;
                 }
             }
 
-            // 监听 Leaflet 地图拖动，实时同步经纬度读数与底层 3D 地球坐标
             map.on('move', () => {
                 if (!isMapMode) return;
                 const c = map.getCenter();
@@ -1589,7 +1594,6 @@
                 updateHudReadout();
             });
 
-            // 3D 地球表面鼠标射线拾取
             function raycastCursorOnGlobe(clientX, clientY) {
                 const rect = canvas.getBoundingClientRect();
                 const vx = ((clientX - rect.left) / rect.width) * 2.0 - 1.0;
@@ -1630,21 +1634,26 @@
                 return { latRad, lonRad };
             }
 
-            // 统一接管整个观测舱的滚轮缩放：实现 3D 地球 <-> 高清卫星街道地图的无缝进出！
+            // 针对鼠标滚轮与触控板优化的平滑缩放控制（支持一路放大到 21 级街道与建筑特写）
+            let lastMapWheelTime = 0;
             observatoryEl.addEventListener('wheel', (e) => {
                 e.preventDefault();
 
                 if (isMapMode) {
+                    const nowTime = performance.now();
+                    if (nowTime - lastMapWheelTime < 90) return; // 防止高速滚轮跳级过快
+                    lastMapWheelTime = nowTime;
+
                     const curMapZoom = map.getZoom();
                     if (e.deltaY < 0) {
-                        // 在地图模式下继续放大：以鼠标位置为中心放大街道细节
-                        map.setZoomAround(map.mouseEventToContainerPoint(e), Math.min(19, curMapZoom + 1));
+                        if (curMapZoom < 21) {
+                            map.setZoomAround(map.mouseEventToContainerPoint(e), curMapZoom + 1);
+                        }
                     } else {
-                        // 在地图模式下缩小：当缩小到 <= 5 级时，自动丝滑切回 3D 太空地球！
                         if (curMapZoom <= 5) {
                             exitMapMode();
                         } else {
-                            map.setZoom(curMapZoom - 1);
+                            map.setZoomAround(map.mouseEventToContainerPoint(e), curMapZoom - 1);
                         }
                     }
                     return;
@@ -1654,18 +1663,24 @@
                 const hit = raycastCursorOnGlobe(e.clientX, e.clientY);
                 const zoomFactor = e.deltaY < 0 ? 1.22 : (1 / 1.22);
 
+                let targetLatDeg = null, targetLonDeg = null;
                 if (e.deltaY < 0 && hit) {
+                    targetLatDeg = (hit.latRad * 180) / Math.PI;
+                    targetLonDeg = (hit.lonRad * 180) / Math.PI;
                     const desiredRotX = normalizeAngleDiff(-hit.lonRad, targetRotX);
                     const desiredRotY = Math.max(-1.32, Math.min(1.32, hit.latRad));
-                    targetRotX += (desiredRotX - targetRotX) * 0.35;
-                    targetRotY += (desiredRotY - targetRotY) * 0.35;
+                    targetRotX += (desiredRotX - targetRotX) * 0.42;
+                    targetRotY += (desiredRotY - targetRotY) * 0.42;
                 }
 
                 const nextZoom = targetZoom * zoomFactor;
                 if (e.deltaY < 0 && nextZoom >= MAP_TRANSITION_ZOOM) {
-                    // 达到阈值，丝滑进入高清卫星街道地图！
-                    const { latDeg, lonDeg } = getCurrentCenterLatLon();
-                    enterMapMode(latDeg, lonDeg, 6);
+                    const fallback = getCurrentCenterLatLon();
+                    enterMapMode(
+                        targetLatDeg !== null ? targetLatDeg : fallback.latDeg,
+                        targetLonDeg !== null ? targetLonDeg : fallback.lonDeg,
+                        6
+                    );
                 } else {
                     targetZoom = Math.max(1.0, Math.min(MAP_TRANSITION_ZOOM, nextZoom));
                 }
@@ -1698,7 +1713,6 @@
                 }
             });
 
-            // 回到访客当地时间下的 3D 立体地球全景
             function flyToLocal3DEarth() {
                 if (isMapMode) {
                     exitMapMode();
@@ -1715,7 +1729,7 @@
             btnLocalEarth.addEventListener('click', flyToLocal3DEarth);
             document.getElementById('local-globe-widget').addEventListener('click', flyToLocal3DEarth);
 
-            // 右下角 Focus Finland 按钮：第一次点击对准芬兰 3D 视角，再次点击直接俯冲进入拉赫蒂高清卫星地图！
+            // Focus Finland 按钮：支持从 3D 芬兰视角一键直达拉赫蒂 16 级高清街道视图
             btnFocusFinland.addEventListener('click', () => {
                 btnFocusFinland.classList.add('active');
                 btnLocalEarth.classList.remove('active');
@@ -1725,12 +1739,12 @@
                 targetRotX = normalizeAngleDiff(-lahtiLonRad, rotX);
                 targetRotY = lahtiLatRad;
 
-                if (!isMapMode && targetZoom > 2.6) {
-                    enterMapMode(60.9827, 25.6615, 12);
+                if (!isMapMode && targetZoom > 2.5) {
+                    enterMapMode(60.9827, 25.6615, 15);
                 } else if (isMapMode) {
-                    map.flyTo([60.9827, 25.6615], 13, { duration: 1.2 });
+                    map.flyTo([60.9827, 25.6615], 16, { duration: 1.2 });
                 } else {
-                    targetZoom = 3.2;
+                    targetZoom = 3.1;
                 }
             });
 
@@ -1750,7 +1764,6 @@
             canvas.addEventListener('pointerdown', (e) => {
                 if (isMapMode) return;
                 isDragging = true;
-                autoSpin = false;
                 lastX = e.clientX;
                 lastY = e.clientY;
                 canvas.setPointerCapture(e.pointerId);
@@ -1801,7 +1814,6 @@
                     lightOffsetY += (targetLightOffsetY - lightOffsetY) * 0.1;
                     updateHudReadout();
 
-                    // 渲染主 3D 地球
                     const gl = mainCtx.gl;
                     gl.useProgram(mainCtx.prog);
                     gl.uniform2f(mainCtx.uRes, canvas.width, canvas.height);
@@ -1814,13 +1826,12 @@
                     gl.drawArrays(gl.TRIANGLES, 0, 6);
                 }
 
-                // 始终实时渲染右上角的“访客当地时间 3D 立体地球缩略图” (展示访客所在半球的实时昼夜与灯火)
+                // 实时渲染右上角的“访客当地时间 3D 立体地球缩略图”
                 if (miniCtx) {
                     const mgl = miniCtx.gl;
                     mgl.useProgram(miniCtx.prog);
                     mgl.uniform2f(miniCtx.uRes, miniCanvas.width, miniCanvas.height);
                     mgl.uniform1f(miniCtx.uTime, now * 0.001);
-                    // 缩略地球始终锁定在访客所在时区的中心经度，并带有轻微呼吸摆动，立体展示当前半球的黑夜灯火或白昼
                     const miniRotX = -astro.viewerLonRad + Math.sin(now * 0.0005) * 0.15;
                     const miniRotY = 0.42;
                     mgl.uniform2f(miniCtx.uRot, miniRotX, miniRotY);
