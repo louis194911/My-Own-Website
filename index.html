@@ -58,11 +58,11 @@
         .viewport-canvas {
             width: 100vw;
             min-height: 100vh;
-            padding: clamp(1rem, 2.2vw, 2rem) clamp(1.5rem, 3.8vw, 4rem);
+            padding: clamp(1rem, 2vw, 1.8rem) clamp(1.4rem, 3.5vw, 3.6rem);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.2rem;
+            gap: 1.15rem;
             position: relative;
         }
 
@@ -80,7 +80,7 @@
             align-items: center;
             gap: 0.75rem;
             background: var(--bg-island);
-            padding: 0.55rem 1.15rem;
+            padding: 0.52rem 1.1rem;
             border-radius: 999px;
             border: 1px solid var(--border-organic);
             box-shadow: 0 4px 20px rgba(28, 25, 23, 0.03);
@@ -123,7 +123,7 @@
             align-items: center;
             gap: 0.5rem;
             background: var(--bg-island);
-            padding: 0.38rem 0.5rem;
+            padding: 0.36rem 0.48rem;
             border-radius: 999px;
             border: 1px solid var(--border-organic);
         }
@@ -135,7 +135,7 @@
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--ink-muted);
-            padding: 0.38rem 0.85rem;
+            padding: 0.36rem 0.85rem;
             border-radius: 999px;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -154,8 +154,8 @@
         .stage-grid {
             flex: 1;
             display: grid;
-            grid-template-columns: 1.12fr 1fr;
-            gap: clamp(1.6rem, 3.2vw, 3.4rem);
+            grid-template-columns: 1.14fr 1fr;
+            gap: clamp(1.5rem, 2.8vw, 3rem);
             align-items: stretch;
             min-height: 0;
         }
@@ -164,57 +164,44 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.25rem;
+            gap: 1.15rem;
         }
 
-        /* 左侧主视觉岛屿 */
+        /* 左侧主视觉岛屿：紧凑头部 + 全幅 3D 地球观测舱 */
         .hero-island {
             background: var(--bg-island);
-            border-radius: 44px;
-            padding: clamp(1.5rem, 2.2vw, 2.2rem) clamp(1.8rem, 2.6vw, 2.5rem);
+            border-radius: 40px;
+            padding: 1.4rem 1.6rem 1.5rem;
             border: 1px solid var(--border-organic);
             box-shadow: 0 18px 45px -15px rgba(28, 25, 23, 0.05);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 1.15rem;
             flex: 1;
         }
 
-        .hero-island::before {
-            content: '';
-            position: absolute;
-            right: -60px;
-            top: -60px;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero-top {
+        /* 顶部个人信息与标签整合栏（左右均衡排布，不留死角） */
+        .hero-header-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
             flex-wrap: wrap;
-            z-index: 3;
-            pointer-events: none;
+            padding: 0.1rem 0.3rem;
         }
 
         .hero-identity {
             display: flex;
             align-items: center;
-            gap: 1.35rem;
-            pointer-events: auto;
+            gap: 1.15rem;
         }
 
         .blob-avatar-wrap {
             position: relative;
-            width: 96px;
-            height: 96px;
+            width: 78px;
+            height: 78px;
             flex-shrink: 0;
         }
 
@@ -224,7 +211,7 @@
             object-fit: cover;
             border-radius: 62% 38% 46% 54% / 60% 63% 37% 40%;
             animation: morphBlob 10s ease-in-out infinite alternate;
-            box-shadow: 0 12px 26px rgba(28, 25, 23, 0.14);
+            box-shadow: 0 10px 22px rgba(28, 25, 23, 0.14);
             border: 3px solid var(--bg-canvas);
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -242,13 +229,12 @@
         .hero-greeting {
             display: flex;
             flex-direction: column;
-            gap: 0.1rem;
         }
 
         .serif-tag {
             font-family: var(--font-serif);
             font-style: italic;
-            font-size: 1.28rem;
+            font-size: 1.18rem;
             color: var(--accent);
             line-height: 1;
         }
@@ -257,9 +243,9 @@
             margin: 0;
             font-family: var(--font-serif);
             font-weight: 400;
-            font-size: clamp(2.8rem, 4.2vw, 4rem);
-            line-height: 0.95;
-            letter-spacing: -1px;
+            font-size: clamp(2.4rem, 3.5vw, 3.3rem);
+            line-height: 0.96;
+            letter-spacing: -0.8px;
             color: var(--ink-main);
         }
 
@@ -268,53 +254,83 @@
             color: var(--accent);
         }
 
-        /* 实时追光提示徽章 */
-        .sun-tracker-badge {
-            pointer-events: auto;
+        .sticker-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .organic-pill {
             display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--ink-muted);
-            background: rgba(244, 239, 230, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 0.42rem 0.9rem;
+            gap: 0.4rem;
+            background: var(--bg-pill);
+            color: var(--ink-main);
+            padding: 0.52rem 0.95rem;
             border-radius: 999px;
-            border: 1px solid var(--border-organic);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, color 0.2s;
+            user-select: none;
         }
 
-        .sun-pulse {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #f59e0b;
-            box-shadow: 0 0 10px #f59e0b;
-            animation: pulseSun 2s infinite ease-in-out;
+        .organic-pill:hover {
+            transform: translateY(-2px);
         }
 
-        @keyframes pulseSun {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.35); opacity: 1; }
+        .organic-pill.github-pill {
+            background: var(--ink-main);
+            color: var(--bg-island);
+            padding: 0.55rem 1.1rem;
+            cursor: pointer;
+        }
+
+        .organic-pill.github-pill:hover {
+            background: var(--accent);
+            color: #ffffff;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .organic-pill svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
         }
 
         /* ==========================================
-           放大 3 倍的巨幅破界 3D WebGL 实时光追星球舞台
+           全幅 3D 地球深空观测视窗 (彻底填满中间空白区域！)
            ========================================== */
-        .planet-stage {
+        .earth-observatory {
             position: relative;
-            width: calc(100% + 2 * clamp(1.8rem, 2.6vw, 2.5rem));
-            margin: -1.2rem calc(-1 * clamp(1.8rem, 2.6vw, 2.5rem)) -0.8rem;
-            height: clamp(310px, 37vh, 410px);
+            flex: 1;
+            min-height: clamp(290px, 39vh, 420px);
+            width: 100%;
+            border-radius: 30px;
+            background: radial-gradient(circle at 50% 50%, #162238 0%, #0b111e 62%, #060911 100%);
+            border: 1px solid rgba(28, 25, 23, 0.12);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.65), 0 12px 30px -10px rgba(11, 17, 30, 0.25);
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
             -webkit-user-select: none;
-            z-index: 2;
         }
 
-        #planet-canvas {
+        /* 观测舱微光星轨装饰圈 */
+        .earth-observatory::before {
+            content: '';
+            position: absolute;
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            border: 1px dashed rgba(148, 163, 184, 0.12);
+            pointer-events: none;
+        }
+
+        #earth-canvas {
             width: 100%;
             height: 100%;
             display: block;
@@ -322,118 +338,127 @@
             touch-action: none;
         }
 
-        #planet-canvas:active {
+        #earth-canvas:active {
             cursor: grabbing;
         }
 
-        /* 星球模式悬浮切换器 */
-        .planet-hud {
+        /* 观测舱四角 HUD 遥测浮层 (填补四角视觉，极具科技与艺术平衡感) */
+        .obs-badge-tl {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.68);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #f8fafc;
+            padding: 0.38rem 0.85rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.73rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .beacon-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6b4a;
+            box-shadow: 0 0 10px #ff6b4a;
+            animation: pulseBeacon 1.8s infinite ease-in-out;
+        }
+
+        @keyframes pulseBeacon {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.65; }
+        }
+
+        .obs-badge-tr {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(15, 23, 42, 0.68);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #fbd38d;
+            padding: 0.38rem 0.85rem;
+            border-radius: 999px;
+            border: 1px solid rgba(251, 211, 141, 0.22);
+            font-size: 0.72rem;
+            font-weight: 600;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .obs-hint-bl {
             position: absolute;
             bottom: 14px;
-            right: clamp(1.8rem, 2.6vw, 2.5rem);
+            left: 16px;
+            color: rgba(226, 232, 240, 0.72);
+            font-size: 0.72rem;
+            font-weight: 500;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(6px);
+            padding: 0.32rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        /* 地球视角与光照模式切换器 */
+        .earth-controls {
+            position: absolute;
+            bottom: 12px;
+            right: 14px;
             display: flex;
             align-items: center;
-            gap: 0.3rem;
-            background: rgba(251, 249, 245, 0.86);
+            gap: 0.28rem;
+            background: rgba(15, 23, 42, 0.78);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 0.32rem 0.42rem;
+            padding: 0.28rem 0.35rem;
             border-radius: 999px;
-            border: 1px solid var(--border-organic);
-            box-shadow: 0 8px 24px rgba(28, 25, 23, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
             z-index: 4;
         }
 
-        .planet-mode-btn {
+        .earth-view-btn {
             border: none;
             background: transparent;
             font-family: var(--font-sans);
-            font-size: 0.74rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            color: var(--ink-muted);
-            padding: 0.3rem 0.75rem;
+            color: #cbd5e1;
+            padding: 0.28rem 0.7rem;
             border-radius: 999px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .planet-mode-btn:hover {
-            color: var(--ink-main);
+        .earth-view-btn:hover {
+            color: #ffffff;
         }
 
-        .planet-mode-btn.active {
-            background: var(--ink-main);
-            color: var(--bg-island);
-        }
-
-        .planet-hint {
-            position: absolute;
-            bottom: 18px;
-            left: clamp(1.8rem, 2.6vw, 2.5rem);
-            font-size: 0.74rem;
-            font-weight: 600;
-            color: var(--ink-muted);
-            background: rgba(251, 249, 245, 0.75);
-            backdrop-filter: blur(6px);
-            padding: 0.3rem 0.8rem;
-            border-radius: 999px;
-            border: 1px solid var(--border-organic);
-            pointer-events: none;
-            z-index: 4;
-        }
-
-        /* 底部胶囊标签群 */
-        .sticker-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.65rem;
-            align-items: center;
-            z-index: 3;
-        }
-
-        .organic-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--bg-pill);
-            color: var(--ink-main);
-            padding: 0.62rem 1.15rem;
-            border-radius: 999px;
-            font-size: 0.86rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, color 0.2s;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .organic-pill:hover {
-            transform: translateY(-3px) rotate(-1deg) scale(1.02);
-        }
-
-        .organic-pill.github-pill {
-            background: var(--ink-main);
-            color: var(--bg-island);
-            padding: 0.65rem 1.35rem;
-        }
-
-        .organic-pill.github-pill:hover {
+        .earth-view-btn.active {
             background: var(--accent);
             color: #ffffff;
-            transform: translateY(-3px) rotate(1.5deg) scale(1.03);
-        }
-
-        .organic-pill svg {
-            width: 17px;
-            height: 17px;
-            fill: currentColor;
+            box-shadow: 0 2px 10px rgba(223, 90, 73, 0.45);
         }
 
         /* 芬兰拉赫蒂实时时间与气象岛 */
         .sky-island {
             background: var(--bg-island);
-            border-radius: 40px;
-            padding: 1.5rem 2.3rem;
+            border-radius: 36px;
+            padding: 1.35rem 2.1rem;
             border: 1px solid var(--border-organic);
             box-shadow: 0 18px 45px -15px rgba(28, 25, 23, 0.05);
             position: relative;
@@ -442,18 +467,18 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1.2rem;
+            gap: 1rem;
         }
 
         .sky-left {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.15rem;
             z-index: 2;
         }
 
         .sky-date {
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             font-weight: 600;
             color: var(--ink-muted);
             letter-spacing: 0.2px;
@@ -461,7 +486,7 @@
 
         .sky-time {
             font-family: var(--font-serif);
-            font-size: clamp(2.6rem, 3.8vw, 3.6rem);
+            font-size: clamp(2.5rem, 3.6vw, 3.4rem);
             line-height: 1;
             color: var(--ink-main);
             font-variant-numeric: tabular-nums;
@@ -472,24 +497,24 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 0.4rem;
+            gap: 0.35rem;
             z-index: 2;
         }
 
         .weather-badge {
             background: var(--accent-soft);
             color: var(--accent);
-            padding: 0.48rem 1.05rem;
+            padding: 0.45rem 1rem;
             border-radius: 999px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
         }
 
         .weather-sub {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--ink-muted);
             font-weight: 500;
         }
@@ -499,7 +524,7 @@
             bottom: -8px;
             left: 0;
             width: 100%;
-            height: 44px;
+            height: 42px;
             opacity: 0.35;
             pointer-events: none;
         }
@@ -507,14 +532,14 @@
         /* 右侧：温暖便签式留言墙 */
         .guestbook-island {
             background: var(--bg-island);
-            border-radius: 44px;
-            padding: clamp(1.6rem, 2.5vw, 2.4rem);
+            border-radius: 40px;
+            padding: clamp(1.5rem, 2.4vw, 2.2rem);
             border: 1px solid var(--border-organic);
             box-shadow: 0 18px 45px -15px rgba(28, 25, 23, 0.05);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.2rem;
+            gap: 1.1rem;
             height: 100%;
         }
 
@@ -529,7 +554,7 @@
         .gb-title {
             margin: 0;
             font-family: var(--font-serif);
-            font-size: 2.35rem;
+            font-size: 2.3rem;
             font-weight: 400;
             line-height: 1;
         }
@@ -541,14 +566,14 @@
 
         .gb-subtitle {
             margin: 0;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             color: var(--ink-muted);
         }
 
         .gb-form {
             display: flex;
             flex-direction: column;
-            gap: 0.7rem;
+            gap: 0.68rem;
         }
 
         .honeypot-field {
@@ -559,17 +584,17 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0.7rem;
+            gap: 0.68rem;
         }
 
         .organic-input {
             width: 100%;
             background: var(--bg-canvas);
             border: 1.5px solid transparent;
-            border-radius: 22px;
-            padding: 0.85rem 1.2rem;
+            border-radius: 20px;
+            padding: 0.82rem 1.15rem;
             font-family: var(--font-sans);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             color: var(--ink-main);
             transition: all 0.25s ease;
         }
@@ -587,8 +612,8 @@
 
         textarea.organic-input {
             resize: none;
-            height: 80px;
-            border-radius: 24px;
+            height: 78px;
+            border-radius: 22px;
         }
 
         .form-actions {
@@ -600,7 +625,7 @@
         }
 
         .status-pill {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--ink-muted);
         }
@@ -613,9 +638,9 @@
             color: #ffffff;
             border: none;
             border-radius: 999px;
-            padding: 0.75rem 1.6rem;
+            padding: 0.72rem 1.55rem;
             font-family: var(--font-sans);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, opacity 0.2s;
@@ -635,10 +660,10 @@
         .notes-stream {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            max-height: 310px;
+            gap: 0.72rem;
+            max-height: 320px;
             overflow-y: auto;
-            padding: 0.25rem 0.4rem 0.25rem 0.1rem;
+            padding: 0.2rem 0.35rem 0.2rem 0.1rem;
         }
 
         .notes-stream::-webkit-scrollbar {
@@ -651,8 +676,8 @@
 
         .note-bubble {
             background: var(--bg-canvas);
-            border-radius: 26px;
-            padding: 0.95rem 1.3rem;
+            border-radius: 24px;
+            padding: 0.92rem 1.25rem;
             border: 1px solid var(--border-organic);
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -677,8 +702,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.3rem;
-            font-size: 0.8rem;
+            margin-bottom: 0.28rem;
+            font-size: 0.78rem;
         }
 
         .note-author {
@@ -692,13 +717,13 @@
 
         .note-date {
             color: var(--ink-muted);
-            font-size: 0.75rem;
+            font-size: 0.74rem;
         }
 
         .note-content {
             margin: 0;
-            font-size: 0.92rem;
-            line-height: 1.48;
+            font-size: 0.9rem;
+            line-height: 1.46;
             color: var(--ink-main);
             word-wrap: break-word;
         }
@@ -726,16 +751,15 @@
                 grid-template-columns: 1fr;
             }
             .viewport-canvas {
-                padding: 1.2rem;
+                padding: 1rem;
             }
             .hero-island, .sky-island, .guestbook-island {
-                border-radius: 32px;
+                border-radius: 30px;
             }
-            .planet-stage {
-                height: 280px;
-                margin: -0.5rem calc(-1 * clamp(1.5rem, 2.2vw, 2.2rem));
+            .earth-observatory {
+                min-height: 290px;
             }
-            .planet-hint, .sun-tracker-badge {
+            .obs-badge-tr, .obs-hint-bl {
                 display: none;
             }
         }
@@ -761,12 +785,13 @@
             </div>
         </header>
 
-        <!-- 中央全屏有机双栏舞台 -->
+        <!-- 中央全屏双栏舞台 -->
         <main class="stage-grid">
-            <!-- 左侧：个人名片 + 3倍巨型光追星球 + 芬兰天气时钟岛 -->
+            <!-- 左侧：个人信息 + 全幅 3D 真实地球观测舱 + 芬兰实时天气时钟 -->
             <div class="left-stage">
                 <section class="hero-island">
-                    <div class="hero-top">
+                    <!-- 顶部名片与胶囊标签栏 -->
+                    <div class="hero-header-bar">
                         <div class="hero-identity">
                             <div class="blob-avatar-wrap">
                                 <img src="IMG_4999.JPG" class="blob-avatar" alt="Louis">
@@ -777,32 +802,40 @@
                             </div>
                         </div>
 
-                        <div class="sun-tracker-badge" title="Move your cursor anywhere to move the 3D Sun!">
-                            <span class="sun-pulse"></span>
-                            <span>Cursor = 3D Sun Light</span>
+                        <div class="sticker-cloud">
+                            <span class="organic-pill">📍 Lahti, Finland</span>
+                            <span class="organic-pill" id="daylight-pill">✨ Nordic Time</span>
+                            <a href="https://github.com/louis194911" target="_blank" rel="noopener noreferrer" class="organic-pill github-pill">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                                </svg>
+                                <span>GitHub ↗</span>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- 放大 3 倍的 3D 实时光线追踪星球舞台 (含法线凹凸建模与可视化太阳追光) -->
-                    <div class="planet-stage">
-                        <canvas id="planet-canvas"></canvas>
-                        <span class="planet-hint">☀️ Move cursor to aim Sun · ↻ Drag to spin</span>
-                        <div class="planet-hud" role="group" aria-label="Planet Preset">
-                            <button type="button" class="planet-mode-btn active" data-planet="1">🪐 Kronos</button>
-                            <button type="button" class="planet-mode-btn" data-planet="0">🌍 Terra</button>
-                            <button type="button" class="planet-mode-btn" data-planet="2">☀️ Solaris</button>
-                        </div>
-                    </div>
+                    <!-- 全幅铺满的 3D 真实地球观测视窗 (含地形起伏、实时城市灯火、芬兰信标与追光) -->
+                    <div class="earth-observatory">
+                        <canvas id="earth-canvas"></canvas>
 
-                    <div class="sticker-cloud">
-                        <span class="organic-pill">📍 Lahti, Finland</span>
-                        <span class="organic-pill" id="daylight-pill">✨ Nordic Timezone</span>
-                        <a href="https://github.com/louis194911" target="_blank" rel="noopener noreferrer" class="organic-pill github-pill">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                            </svg>
-                            <span>GitHub @louis194911 ↗</span>
-                        </a>
+                        <div class="obs-badge-tl">
+                            <span class="beacon-dot"></span>
+                            <span>LAHTI BEACON · 60.98°N, 25.66°E</span>
+                        </div>
+
+                        <div class="obs-badge-tr">
+                            <span>☀️ Cursor = 3D Sun Light</span>
+                        </div>
+
+                        <div class="obs-hint-bl">
+                            <span>↻ Drag globe to spin · Move cursor to sweep day &amp; night</span>
+                        </div>
+
+                        <div class="earth-controls" role="group" aria-label="Earth Lighting Preset">
+                            <button type="button" class="earth-view-btn active" data-view="finland">🇫🇮 Focus Finland</button>
+                            <button type="button" class="earth-view-btn" data-view="day">☀️ Day Relief</button>
+                            <button type="button" class="earth-view-btn" data-view="night">🌃 Night Lights</button>
+                        </div>
                     </div>
                 </section>
 
@@ -832,7 +865,7 @@
                         <p class="gb-subtitle">Say hi or leave a warm note below</p>
                     </div>
 
-                    <form class="gb-form" id="guestbook-form" style="margin-top: 1rem;">
+                    <form class="gb-form" id="guestbook-form" style="margin-top: 0.9rem;">
                         <input type="text" id="bot-trap" class="honeypot-field" tabindex="-1" autocomplete="off">
                         <div class="form-row">
                             <input type="text" id="guest-name" class="organic-input" placeholder="Your name (optional)" maxlength="30">
@@ -909,11 +942,11 @@
         });
 
         // ==========================================
-        // 3. 电影级 3D 实时光线追踪星球引擎 (放大3倍 + 3D凹凸法线建模 + 强效太阳追光)
+        // 3. 3D 真实地球渲染引擎 (100% WebGL 1.0 兼容 + NASA 卫星地形/城市灯火 + 实时追光)
         // ==========================================
-        (function initPlanetEngine() {
-            const canvas = document.getElementById('planet-canvas');
-            const gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: false });
+        (function initRealEarth() {
+            const canvas = document.getElementById('earth-canvas');
+            const gl = canvas.getContext('webgl', { alpha: true, antialias: true });
             if (!gl) return;
 
             const vsSource = `
@@ -925,6 +958,7 @@
                 }
             `;
 
+            // 严格遵守 GLSL ES 1.00 标准语法 (绝不使用 WebGL2 专属函数)
             const fsSource = `
                 precision highp float;
                 varying vec2 vUv;
@@ -932,7 +966,12 @@
                 uniform float uTime;
                 uniform vec2 uRot;
                 uniform vec2 uLight;
-                uniform float uMode;
+                uniform sampler2D uTexDay;
+                uniform sampler2D uTexNight;
+                uniform sampler2D uTexBump;
+                uniform float uHasRealTex;
+
+                const float PI = 3.14159265359;
 
                 mat3 rotX(float a) {
                     float c = cos(a), s = sin(a);
@@ -942,12 +981,7 @@
                     float c = cos(a), s = sin(a);
                     return mat3(c, 0.0, s, 0.0, 1.0, 0.0, -s, 0.0, c);
                 }
-                mat3 rotZ(float a) {
-                    float c = cos(a), s = sin(a);
-                    return mat3(c, -s, 0.0, s, c, 0.0, 0.0, 0.0, 1.0);
-                }
 
-                // 高精度 3D 哈希与 6 阶分形布朗运动 (FBM)
                 float hash(vec3 p) {
                     p = fract(p * vec3(443.897, 441.423, 437.195));
                     p += dot(p, p.yzx + 19.19);
@@ -957,392 +991,230 @@
                 float noise(vec3 p) {
                     vec3 i = floor(p);
                     vec3 f = fract(p);
-                    f = f * f * f * (f * (f * 6.0 - 15.0) + 10.0); // 五次平滑插值，消除网格感
+                    f = f * f * (3.0 - 2.0 * f);
                     return mix(
-                        mix(mix(hash(i + vec3(0,0,0)), hash(i + vec3(1,0,0)), f.x),
-                            mix(hash(i + vec3(0,1,0)), hash(i + vec3(1,1,0)), f.x), f.y),
-                        mix(mix(hash(i + vec3(0,0,1)), hash(i + vec3(1,0,1)), f.x),
-                            mix(hash(i + vec3(0,1,1)), hash(i + vec3(1,1,1)), f.x), f.y),
+                        mix(mix(hash(i + vec3(0.0,0.0,0.0)), hash(i + vec3(1.0,0.0,0.0)), f.x),
+                            mix(hash(i + vec3(0.0,1.0,0.0)), hash(i + vec3(1.0,1.0,0.0)), f.x), f.y),
+                        mix(mix(hash(i + vec3(0.0,0.0,1.0)), hash(i + vec3(1.0,0.0,1.0)), f.x),
+                            mix(hash(i + vec3(0.0,1.0,1.0)), hash(i + vec3(1.0,1.0,1.0)), f.x), f.y),
                         f.z
                     );
                 }
 
                 float fbm(vec3 p) {
                     float v = 0.0;
-                    float a = 0.52;
-                    for (int i = 0; i < 6; i++) {
+                    float a = 0.5;
+                    for (int i = 0; i < 5; i++) {
                         v += a * noise(p);
-                        p = p * 2.04 + vec3(17.3, 11.7, 9.1);
-                        a *= 0.48;
+                        p = p * 2.03 + vec3(13.7, 9.2, 7.4);
+                        a *= 0.5;
                     }
                     return v;
                 }
 
-                // 3D 表面海拔高度场函数 (用于生成真实 3D 凹凸法线贴图 Bump Mapping)
-                float surfaceHeight(vec3 sPos, float mode) {
-                    if (mode < 0.5) {
-                        // 地球：3D 大陆山脉起伏
-                        float warp = fbm(sPos * 2.2);
-                        float h = fbm(sPos * 3.8 + warp * 0.45);
-                        return smoothstep(0.46, 0.78, h) * h;
-                    } else if (mode < 1.5) {
-                        // 土星：流体力学多级湍流风暴与凹陷气带
-                        float w = fbm(sPos * 3.0 + vec3(uTime * 0.03));
-                        float bands = sin(sPos.y * 24.0 + w * 5.2) * 0.5 + 0.5;
-                        float storm = exp(-length(sPos.xy - vec2(0.28, -0.22)) * 5.0);
-                        return bands * 0.6 + w * 0.4 + storm * 0.8;
-                    } else {
-                        // 恒星：沸腾日冕对流胞与熔岩裂谷
-                        return fbm(sPos * 5.5 + vec3(uTime * 0.22));
-                    }
+                // 将 3D 球面坐标转换为经纬度纹理 UV
+                vec2 sphereToUv(vec3 n) {
+                    float lon = atan(n.x, n.z);
+                    float lat = asin(clamp(n.y, -1.0, 1.0));
+                    return vec2(fract(lon / (2.0 * PI) + 0.5), 0.5 - lat / PI);
                 }
 
-                // 超精细多层冰晶星环采样 (含前向散射、钻石闪耀与实时日食阴影)
-                vec4 sampleRing(vec3 p, vec3 lDir, vec3 viewDir, float r, float R_planet) {
-                    float rMin = 1.24;
-                    float rMax = 2.68;
-                    if (r < rMin || r > rMax) return vec4(0.0);
-
-                    float u = (r - rMin) / (rMax - rMin);
-                    // 多频率精密环纹
-                    float macroBands = sin(u * 75.0) * 0.5 + 0.5;
-                    float microRings = sin(u * 260.0 + sin(u * 35.0) * 3.0) * 0.5 + 0.5;
-                    float angle = atan(p.z, p.x);
-                    float spiral = noise(vec3(r * 45.0, angle * 4.0 - uTime * 0.5, uTime * 0.15));
-
-                    // 真实卡西尼缝 (Cassini) 与恩克环缝 (Encke)
-                    float cassini = smoothstep(0.015, 0.055, abs(u - 0.56));
-                    float encke = smoothstep(0.006, 0.02, abs(u - 0.83));
-                    float innerC = smoothstep(0.0, 0.14, u);
-                    float outerF = smoothstep(1.0, 0.90, u) + exp(-pow((u - 0.96) * 45.0, 2.0)) * 0.6;
-
-                    float density = (0.35 + 0.45 * macroBands + 0.25 * microRings) * (0.75 + 0.25 * spiral) * cassini * encke * innerC * outerF;
-
-                    // 星球本体对星环投射的实时锐利日食阴影 (追随鼠标太阳方向！)
-                    float b = dot(p, lDir);
-                    float c = dot(p, p) - (R_planet * 0.98) * (R_planet * 0.98);
-                    float shadow = 1.0;
-                    if (b < 0.0) {
-                        float disc = b * b - c;
-                        if (disc > 0.0) {
-                            shadow = smoothstep(0.0, 0.11, -sqrt(disc) * 0.32);
-                        }
+                // 获取地形高度（支持 NASA 真实高程图与程序化大陆双重模式）
+                float getElevation(vec3 sPos, vec2 suv) {
+                    if (uHasRealTex > 0.5) {
+                        float topo = texture2D(uTexBump, suv).r;
+                        float micro = fbm(sPos * 18.0) * 0.12;
+                        return topo + micro;
+                    } else {
+                        float warp = fbm(sPos * 2.4);
+                        float h = fbm(sPos * 3.6 + warp * 0.45);
+                        return smoothstep(0.45, 0.80, h);
                     }
-
-                    // 太阳在冰晶环上的高光反射与边缘前向散射 (Henyey-Greenstein)
-                    vec3 ringNorm = vec3(0.0, sign(viewDir.y + 0.0001), 0.0);
-                    vec3 halfV = normalize(lDir + viewDir);
-                    float ringSpec = pow(max(0.0, dot(ringNorm, halfV)), 28.0) * 0.75;
-                    float backScatter = pow(max(0.0, dot(-viewDir, lDir)), 4.0) * 0.85;
-                    float iceSparkle = pow(max(0.0, spiral * microRings), 3.5) * 0.9;
-
-                    vec3 colA = vec3(0.96, 0.88, 0.76);
-                    vec3 colB = vec3(0.86, 0.45, 0.34);
-                    vec3 colC = vec3(0.55, 0.64, 0.75);
-                    if (uMode < 0.5) {
-                        colA = vec3(0.82, 0.94, 1.0);
-                        colB = vec3(0.28, 0.68, 0.92);
-                        colC = vec3(0.15, 0.42, 0.72);
-                        density *= 0.65;
-                    } else if (uMode > 1.5) {
-                        colA = vec3(1.0, 0.92, 0.55);
-                        colB = vec3(0.98, 0.32, 0.10);
-                        colC = vec3(0.65, 0.12, 0.05);
-                    }
-
-                    vec3 rCol = mix(colB, colA, macroBands * 0.65 + microRings * 0.35);
-                    rCol = mix(rCol, colC, (1.0 - cassini) * 0.5);
-
-                    // 极其明显的昼夜追光对比：受光区耀眼闪烁，阴影区深邃幽暗
-                    float litIntensity = abs(lDir.y) * 0.55 + 0.55;
-                    vec3 litRing = rCol * litIntensity + (vec3(1.0, 0.94, 0.82) * (ringSpec + iceSparkle + backScatter));
-                    vec3 darkRing = rCol * 0.09 + vec3(0.04, 0.05, 0.08);
-                    vec3 finalRingCol = mix(darkRing, litRing, shadow);
-
-                    return vec4(finalRingCol, clamp(density * 0.92, 0.0, 0.96));
                 }
 
                 void main() {
-                    // 摄像机拉近 + 广角透视：球体比上一版视觉放大 3 倍！
                     vec2 uv = vUv * vec2(uRes.x / uRes.y, 1.0);
-                    vec3 ro = vec3(0.0, 0.0, 2.52);
-                    vec3 rd = normalize(vec3(uv * 1.06, -1.32));
+                    vec3 ro = vec3(0.0, 0.0, 2.38);
+                    vec3 rd = normalize(vec3(uv * 0.92, -1.35));
 
-                    mat3 camRot = rotZ(-0.24) * rotX(uRot.y);
-                    vec3 lro = camRot * ro;
-                    vec3 lrd = camRot * rd;
-
-                    // 极其明显的 3D 实时太阳追光向量：支持全向 180 度大范围扫光与新月背光！
-                    float sunAzimuth = uLight.x * 2.25;
-                    float sunElevation = uLight.y * 1.45;
-                    vec3 worldLight = normalize(vec3(
-                        sin(sunAzimuth) * cos(sunElevation),
-                        sin(sunElevation),
-                        cos(sunAzimuth) * cos(sunElevation)
+                    // 实时 3D 太阳光源向量 (全向跟随鼠标)
+                    float sunAz = uLight.x * 2.35;
+                    float sunEl = uLight.y * 1.45;
+                    vec3 lDir = normalize(vec3(
+                        sin(sunAz) * cos(sunEl),
+                        sin(sunEl),
+                        cos(sunAz) * cos(sunEl)
                     ));
-                    vec3 lDir = camRot * worldLight;
 
-                    float R = 1.02; // 放大星球核心半径
-                    float b = dot(lro, lrd);
-                    float c = dot(lro, lro) - R * R;
+                    // 背景深空繁星与太阳追光星芒
+                    float starField = pow(hash(vec3(floor(uv * 220.0), 1.0)), 26.0) * 0.65;
+                    vec3 bgCol = vec3(0.04, 0.07, 0.13) + vec3(0.85, 0.92, 1.0) * starField;
+
+                    float R = 1.0;
+                    float b = dot(ro, rd);
+                    float c = dot(ro, ro) - R * R;
                     float disc = b * b - c;
 
-                    // 1. 体积大气层散射光晕 (Volumetric Rayleigh + Mie Halo)
-                    float Ra = 1.18;
-                    float ca = dot(lro, lro) - Ra * Ra;
+                    // 1. 地球外层瑞利散射蔚蓝大气辉光 (Atmospheric Glow)
+                    float Ra = 1.15;
+                    float ca = dot(ro, ro) - Ra * Ra;
                     float discA = b * b - ca;
-                    vec4 atmoHalo = vec4(0.0);
+                    vec3 finalCol = bgCol;
+                    float finalAlpha = 0.0;
+
                     if (discA > 0.0) {
                         float tA = -b - sqrt(discA);
-                        vec3 pA = lro + tA * lrd;
-                        float rimA = clamp((length(pA) - R) / (Ra - R), 0.0, 1.0);
-                        float glow = pow(1.0 - rimA, 2.8);
-                        float sunAlign = smoothstep(-0.4, 0.85, dot(normalize(pA), lDir));
-                        vec3 dayHalo = (uMode < 0.5) ? vec3(0.22, 0.68, 1.0) : ((uMode < 1.5) ? vec3(0.96, 0.58, 0.36) : vec3(1.0, 0.48, 0.12));
-                        vec3 twilightHalo = vec3(0.98, 0.28, 0.15);
-                        vec3 haloCol = mix(twilightHalo, dayHalo, sunAlign) * (0.25 + 0.95 * sunAlign);
-                        atmoHalo = vec4(haloCol, glow * (0.35 + 0.55 * sunAlign));
+                        vec3 pA = ro + tA * rd;
+                        float rim = clamp((length(pA) - R) / (Ra - R), 0.0, 1.0);
+                        float glow = pow(1.0 - rim, 2.8);
+                        float sunSide = smoothstep(-0.45, 0.85, dot(normalize(pA), lDir));
+                        vec3 atmoTint = mix(vec3(0.95, 0.35, 0.15), vec3(0.22, 0.65, 1.0), smoothstep(0.0, 0.55, sunSide));
+                        finalCol += atmoTint * glow * (0.25 + 0.85 * sunSide);
+                        finalAlpha = glow * 0.75;
                     }
 
-                    // 2. 星环实时光线追踪
-                    float tRing = -lro.y / lrd.y;
-                    vec4 ringSample = vec4(0.0);
-                    if (tRing > 0.0) {
-                        vec3 pRing = lro + tRing * lrd;
-                        ringSample = sampleRing(pRing, lDir, normalize(-lrd), length(pRing.xz), R);
-                    }
-
-                    // 3. 星球本体 3D 凹凸法线渲染
-                    vec4 planetCol = vec4(0.0);
-                    float tPlanet = 1e5;
-
+                    // 2. 地球本体表面：3D 地形起伏 + 海洋太阳高光 + 动态云层 + 夜间实时万家灯火
                     if (disc > 0.0) {
-                        tPlanet = -b - sqrt(disc);
-                        vec3 pos = lro + tPlanet * lrd;
+                        float t = -b - sqrt(disc);
+                        vec3 pos = ro + t * rd;
                         vec3 geoNor = normalize(pos);
-                        vec3 viewDir = normalize(-lrd);
+                        vec3 viewDir = normalize(-rd);
 
-                        mat3 spinMat = rotY(-uTime * 0.24 - uRot.x);
-                        vec3 sPos = spinMat * geoNor;
+                        // 地球自转与拖拽倾角变换
+                        mat3 globeMat = rotY(uRot.x) * rotX(uRot.y);
+                        vec3 sPos = globeMat * geoNor;
+                        vec2 suv = sphereToUv(sPos);
 
-                        // 有限差分计算 3D 表面法线凹凸扰动 (Real-Time 3D Normal Mapping)
-                        float eps = 0.005;
-                        float h0 = surfaceHeight(sPos, uMode);
-                        float hx = surfaceHeight(sPos + vec3(eps, 0.0, 0.0), uMode) - h0;
-                        float hy = surfaceHeight(sPos + vec3(0.0, eps, 0.0), uMode) - h0;
-                        float hz = surfaceHeight(sPos + vec3(0.0, 0.0, eps), uMode) - h0;
-                        vec3 grad = transpose(spinMat) * vec3(hx, hy, hz) / eps;
-                        float bumpScale = (uMode < 0.5) ? 0.055 : ((uMode < 1.5) ? 0.032 : 0.065);
-                        vec3 nor = normalize(geoNor - grad * bumpScale);
+                        // 计算 3D 表面切线向量，用于高精度凹凸地形法线 (Normal Mapping)
+                        vec3 tangent = normalize(vec3(sPos.z, 0.0, -sPos.x));
+                        vec3 bitangent = cross(sPos, tangent);
+                        float eps = 0.0045;
+                        vec3 sPosT = normalize(sPos + tangent * eps);
+                        vec3 sPosB = normalize(sPos + bitangent * eps);
 
-                        // 极其鲜明的昼夜追光漫反射 + 晨昏线瑞利红霞带 (Twilight Terminator Band)
-                        float ndotl = dot(nor, lDir);
-                        float geoNdotL = dot(geoNor, lDir);
-                        float diff = smoothstep(-0.08, 0.75, ndotl);
-                        float terminator = exp(-pow((geoNdotL + 0.02) * 5.2, 2.0)) * smoothstep(-0.35, 0.2, ndotl);
-                        float fresnel = pow(1.0 - max(0.0, dot(geoNor, viewDir)), 3.0);
+                        float hCenter = getElevation(sPos, suv);
+                        float hT = getElevation(sPosT, sphereToUv(sPosT));
+                        float hB = getElevation(sPosB, sphereToUv(sPosB));
 
-                        // 星环投射在星球表面的实时条纹阴影
-                        float ringShadow = 1.0;
-                        float ts = -pos.y / lDir.y;
-                        if (ts > 0.0) {
-                            vec3 ps = pos + ts * lDir;
-                            float rs = length(ps.xz);
-                            if (rs > 1.24 && rs < 2.68) {
-                                float us = (rs - 1.24) / (2.68 - 1.24);
-                                float bs = sin(us * 75.0) * 0.5 + 0.5;
-                                float cs = smoothstep(0.015, 0.055, abs(us - 0.56));
-                                ringShadow = 1.0 - 0.72 * (0.4 + 0.6 * bs) * cs;
-                            }
-                        }
-                        float litFactor = diff * ringShadow;
+                        // 将切线空间的地形坡度转换回世界空间 (使用 vec * mat 代替 transpose，100% 兼容 WebGL 1.0)
+                        vec3 worldT = tangent * globeMat;
+                        vec3 worldB = bitangent * globeMat;
+                        float bumpStrength = 2.6;
+                        vec3 bumpedNor = normalize(geoNor - (worldT * (hT - hCenter) + worldB * (hB - hCenter)) * bumpStrength);
 
-                        vec3 surfCol = vec3(0.0);
-                        vec3 halfVec = normalize(lDir + viewDir);
+                        vec3 dayAlbedo;
+                        vec3 nightLights;
+                        float landMask;
 
-                        if (uMode < 0.5) {
-                            // 🌍 模式 0：超写实极光地球 (3D 凹凸大陆 + 耀眼海洋太阳反光 + 立体云影 + 黑夜黄金城市与极光)
-                            float h = fbm(sPos * 3.4);
-                            float land = smoothstep(0.47, 0.505, h);
-                            vec3 deepSea = vec3(0.02, 0.14, 0.32);
-                            vec3 shallowSea = vec3(0.06, 0.48, 0.68);
-                            vec3 ocean = mix(deepSea, shallowSea, smoothstep(0.30, 0.48, h));
-
-                            vec3 forest = vec3(0.14, 0.42, 0.22);
-                            vec3 desert = vec3(0.82, 0.66, 0.45);
-                            vec3 snow = vec3(0.96, 0.98, 1.0);
-                            vec3 continent = mix(forest, desert, smoothstep(0.50, 0.68, h));
-                            continent = mix(continent, snow, smoothstep(0.68, 0.82, h + abs(geoNor.y) * 0.38));
-
-                            // 恢复水面为光滑法线，陆地保留 3D 山脉法线
-                            vec3 activeNor = mix(geoNor, nor, land);
-                            float landDiff = smoothstep(-0.06, 0.75, dot(activeNor, lDir)) * ringShadow;
-
-                            surfCol = mix(ocean, continent, land);
-
-                            // 极其耀眼的太阳镜面海洋高光 (实时追随鼠标！)
-                            float waterSpec = pow(max(0.0, dot(geoNor, halfVec)), 48.0) * (1.0 - land);
-                            float waterGlint = pow(max(0.0, dot(geoNor, halfVec)), 180.0) * (1.0 - land);
-                            surfCol += (vec3(1.0, 0.90, 0.70) * waterSpec * 1.1 + vec3(1.0) * waterGlint * 1.6) * ringShadow * smoothstep(-0.05, 0.3, geoNdotL);
-
-                            // 3D 悬浮云层与地面投射云影
-                            vec3 cPos = rotY(-uTime * 0.34 - uRot.x * 1.08) * geoNor;
-                            vec3 lightOffset = transpose(spinMat) * lDir * 0.022;
-                            float cloudShadow = smoothstep(0.46, 0.68, fbm((cPos - lightOffset) * 4.2 + vec3(0.0, uTime * 0.04, 0.0)));
-                            surfCol *= (1.0 - cloudShadow * 0.45 * landDiff);
-
-                            float clouds = smoothstep(0.46, 0.70, fbm(cPos * 4.2 + vec3(0.0, uTime * 0.04, 0.0)));
-                            float cloudLit = smoothstep(-0.1, 0.7, geoNdotL) * ringShadow;
-                            surfCol = mix(surfCol * (0.06 + 0.98 * landDiff), vec3(0.99, 0.99, 1.0) * (0.08 + 0.98 * cloudLit), clouds * 0.85);
-
-                            // 晨昏线火烧云红霞带
-                            surfCol += vec3(0.98, 0.36, 0.14) * terminator * (0.55 + 0.45 * clouds);
-
-                            // 黑夜侧（背光区）：当鼠标移开时自动亮起黄金城市群与北极圈绿极光！
-                            float nightMask = smoothstep(0.08, -0.28, geoNdotL);
-                            float cityGrid = smoothstep(0.55, 0.61, fbm(sPos * 16.0)) * smoothstep(0.42, 0.58, fbm(sPos * 5.0));
-                            surfCol += vec3(1.0, 0.76, 0.35) * cityGrid * land * (1.0 - clouds * 0.8) * nightMask * 2.1;
-
-                            float auroraLat = exp(-pow((abs(geoNor.y) - 0.74) * 9.0, 2.0));
-                            float auroraCurtain = smoothstep(0.42, 0.78, fbm(vec3(sPos.xz * 7.5, uTime * 0.9)));
-                            surfCol += mix(vec3(0.10, 0.98, 0.62), vec3(0.45, 0.32, 0.98), sPos.y * 0.5 + 0.5) * auroraLat * auroraCurtain * (0.25 + 0.75 * nightMask) * 1.1;
-
-                            // 大气边缘菲涅尔散射光
-                            surfCol += vec3(0.24, 0.72, 1.0) * fresnel * (0.15 + 0.95 * smoothstep(-0.2, 0.7, geoNdotL));
-
-                        } else if (uMode < 1.5) {
-                            // 🪐 模式 1：超写实卡西尼号土星 (3D 旋涡风暴带 + 追光高光 + 晨昏线金红散射 + 暗面极地六边形极光)
-                            float warp1 = fbm(sPos * 2.5 + vec3(uTime * 0.04));
-                            float warp2 = fbm(sPos * 5.2 - vec3(uTime * 0.06, warp1, 0.0));
-                            float zone = sin(geoNor.y * 22.0 + warp1 * 4.5 + warp2 * 1.8) * 0.5 + 0.5;
-
-                            vec3 creamBand = vec3(0.97, 0.89, 0.76);
-                            vec3 ochreBand = vec3(0.88, 0.48, 0.34);
-                            vec3 slateBelt = vec3(0.32, 0.28, 0.38);
-                            vec3 goldJet = vec3(0.94, 0.72, 0.46);
-
-                            surfCol = mix(creamBand, ochreBand, zone);
-                            surfCol = mix(surfCol, goldJet, smoothstep(0.35, 0.65, warp2));
-                            surfCol = mix(surfCol, slateBelt, smoothstep(0.58, 0.86, warp1) * 0.6);
-
-                            // 3D 巨型反气旋大红斑风暴眼
-                            vec2 stormDist = (sPos.xy - vec2(0.26, -0.22)) * vec2(1.0, 1.45);
-                            float stormMask = exp(- dot(stormDist, stormDist) * 14.0);
-                            float swirl = sin(length(stormDist) * 28.0 - atan(stormDist.y, stormDist.x) * 2.0 - uTime * 1.2) * 0.5 + 0.5;
-                            surfCol = mix(surfCol, mix(vec3(0.92, 0.26, 0.18), vec3(0.98, 0.68, 0.52), swirl), stormMask * 0.85);
-
-                            // 高空氨冰晶云层太阳镜面高光 (追随鼠标！)
-                            float gasSpec = pow(max(0.0, dot(nor, halfVec)), 26.0) * 0.48;
-                            surfCol = surfCol * (0.07 + 0.98 * litFactor) + vec3(1.0, 0.92, 0.78) * gasSpec * litFactor;
-
-                            // 晨昏线大气瑞利金红散射
-                            surfCol += vec3(0.98, 0.42, 0.20) * terminator * 0.65;
-
-                            // 背光暗面：极地六边形电离极光与深层风暴闪电
-                            float nightMask = smoothstep(0.05, -0.35, geoNdotL);
-                            float polarHex = exp(-pow((abs(geoNor.y) - 0.86) * 11.0, 2.0)) * fbm(vec3(sPos.xz * 8.0, uTime));
-                            float stormGlow = pow(warp2, 4.0) * 0.45;
-                            surfCol += vec3(0.35, 0.78, 1.0) * polarHex * nightMask * 1.4;
-                            surfCol += vec3(0.98, 0.45, 0.22) * stormGlow * nightMask;
-
-                            // 边缘双色瑞利散射辉光
-                            vec3 rimTint = mix(vec3(0.38, 0.68, 0.98), vec3(0.98, 0.64, 0.42), smoothstep(-0.3, 0.5, geoNdotL));
-                            surfCol += rimTint * fresnel * (0.25 + 0.85 * smoothstep(-0.3, 0.7, geoNdotL));
-
+                        if (uHasRealTex > 0.5) {
+                            dayAlbedo = texture2D(uTexDay, suv).rgb;
+                            nightLights = texture2D(uTexNight, suv).rgb;
+                            // 根据蓝通道与地形高程精准识别海洋与陆地
+                            float isOcean = smoothstep(0.02, 0.14, dayAlbedo.b - max(dayAlbedo.r, dayAlbedo.g)) * (1.0 - smoothstep(0.05, 0.22, hCenter));
+                            landMask = 1.0 - isOcean;
+                            // 增强陆地色彩质感与山脉高光层次
+                            dayAlbedo = mix(dayAlbedo * vec3(0.85, 1.02, 1.15), dayAlbedo * (0.85 + 0.45 * hCenter), landMask);
                         } else {
-                            // ☀️ 模式 2：超新星熔岩日冕核心 (Solaris Magma & Plasma Core)
-                            float cells = fbm(sPos * 5.0 + vec3(uTime * 0.22));
-                            float cracks = pow(1.0 - abs(noise(sPos * 9.5 - vec3(uTime * 0.3)) - 0.5) * 2.0, 3.0);
-                            vec3 crust = vec3(0.16, 0.06, 0.05) * (0.3 + 0.9 * litFactor);
-                            vec3 magma = mix(vec3(0.95, 0.22, 0.05), vec3(1.0, 0.92, 0.55), cracks);
-
-                            // 受光面闪耀金属高光，背光面喷涌炽热熔岩裂谷
-                            float lavaSpec = pow(max(0.0, dot(nor, halfVec)), 36.0);
-                            surfCol = mix(crust, magma, smoothstep(0.32, 0.75, cells * 0.6 + cracks * 0.6));
-                            surfCol += vec3(1.0, 0.85, 0.55) * lavaSpec * litFactor * 0.9;
-                            surfCol += vec3(1.0, 0.42, 0.10) * fresnel * 1.25;
+                            // 零延迟高精程序化大陆兜底
+                            landMask = smoothstep(0.02, 0.08, hCenter);
+                            vec3 ocean = mix(vec3(0.03, 0.16, 0.34), vec3(0.07, 0.44, 0.64), smoothstep(0.0, 0.05, hCenter));
+                            vec3 landCol = mix(vec3(0.16, 0.42, 0.24), vec3(0.78, 0.64, 0.45), smoothstep(0.1, 0.55, hCenter));
+                            landCol = mix(landCol, vec3(0.96, 0.98, 1.0), smoothstep(0.55, 0.85, hCenter + abs(sPos.y) * 0.35));
+                            dayAlbedo = mix(ocean, landCol, landMask);
+                            float procCity = smoothstep(0.54, 0.62, fbm(sPos * 16.0)) * landMask;
+                            nightLights = vec3(1.0, 0.75, 0.35) * procCity;
                         }
 
-                        float edgeAA = smoothstep(0.0, 0.025, sqrt(disc));
-                        planetCol = vec4(surfCol, edgeAA);
+                        // 陆地应用 3D 山脉凹凸法线，海洋保持光滑球面法线
+                        vec3 surfNor = normalize(mix(geoNor, bumpedNor, landMask));
+
+                        // 昼夜漫反射与晨昏线火烧云红霞带
+                        float geoNdotL = dot(geoNor, lDir);
+                        float bumpNdotL = dot(surfNor, lDir);
+                        float dayDiff = smoothstep(-0.06, 0.78, bumpNdotL);
+                        float terminator = exp(-pow((geoNdotL + 0.03) * 5.0, 2.0)) * smoothstep(-0.32, 0.28, bumpNdotL);
+
+                        vec3 surfCol = dayAlbedo * (0.04 + 1.15 * dayDiff);
+
+                        // 海洋实时太阳高光反射 (Sun Glint)
+                        vec3 halfVec = normalize(lDir + viewDir);
+                        float oceanSpec = pow(max(0.0, dot(geoNor, halfVec)), 38.0) * (1.0 - landMask);
+                        float oceanHotspot = pow(max(0.0, dot(geoNor, halfVec)), 160.0) * (1.0 - landMask);
+                        float sunVis = smoothstep(-0.08, 0.25, geoNdotL);
+                        surfCol += (vec3(1.0, 0.88, 0.68) * oceanSpec * 0.95 + vec3(1.0) * oceanHotspot * 1.4) * sunVis;
+
+                        // 动态 3D 大气云层与地面云影
+                        vec3 cloudPos = rotY(uTime * 0.025) * sPos;
+                        float cloudDensity = smoothstep(0.47, 0.72, fbm(cloudPos * 4.2 + vec3(0.0, uTime * 0.015, 0.0)));
+                        float cloudLit = smoothstep(-0.12, 0.75, geoNdotL);
+                        surfCol *= (1.0 - cloudDensity * 0.35 * dayDiff); // 云影
+                        surfCol = mix(surfCol, vec3(0.98, 0.99, 1.0) * (0.06 + 1.05 * cloudLit), cloudDensity * 0.72);
+
+                        // 晨昏线瑞利散射橙红霞光
+                        surfCol += vec3(0.98, 0.38, 0.14) * terminator * (0.6 + 0.4 * cloudDensity);
+
+                        // 黑夜半球：实时万家灯火 (City Lights) + 动态闪烁 + 北极圈绿极光
+                        float nightMask = smoothstep(0.12, -0.26, geoNdotL);
+                        float twinkle = 0.85 + 0.15 * sin(uTime * 4.0 + sPos.x * 35.0 + sPos.z * 35.0);
+                        vec3 cityGlow = pow(nightLights, vec3(1.25)) * vec3(1.35, 0.95, 0.55) * twinkle * 2.4;
+                        surfCol += cityGlow * nightMask * (1.0 - cloudDensity * 0.65);
+
+                        // 北极圈极光带 (经过芬兰上空 60°N - 72°N)
+                        float auroraLat = exp(-pow((abs(sPos.y) - 0.88) * 11.0, 2.0));
+                        float auroraCurtain = smoothstep(0.42, 0.78, fbm(vec3(sPos.xz * 8.0, uTime * 0.65)));
+                        surfCol += vec3(0.15, 0.96, 0.62) * auroraLat * auroraCurtain * (0.3 + 0.7 * nightMask) * 0.95;
+
+                        // 芬兰拉赫蒂 (Lahti: 60.98°N, 25.66°E) 专属 3D 实时脉冲坐标信标！
+                        float lahtiLat = 60.98 * PI / 180.0;
+                        float lahtiLon = 25.66 * PI / 180.0;
+                        vec3 lahtiVec = vec3(
+                            cos(lahtiLat) * sin(lahtiLon),
+                            sin(lahtiLat),
+                            cos(lahtiLat) * cos(lahtiLon)
+                        );
+                        float distLahti = length(sPos - lahtiVec);
+                        float pinCore = smoothstep(0.026, 0.008, distLahti);
+                        float waveR = fract(uTime * 0.65) * 0.11;
+                        float pinRing = smoothstep(0.012, 0.0, abs(distLahti - waveR)) * (1.0 - waveR / 0.11);
+                        surfCol = mix(surfCol, vec3(1.0, 0.38, 0.22), clamp(pinCore + pinRing * 0.85, 0.0, 1.0));
+                        surfCol += vec3(1.0, 0.85, 0.75) * smoothstep(0.012, 0.002, distLahti);
+
+                        // 地球边缘菲涅尔蓝色大气层包裹感
+                        float fresnel = pow(1.0 - max(0.0, dot(geoNor, viewDir)), 3.2);
+                        vec3 rimCol = mix(vec3(0.12, 0.38, 0.75), vec3(0.28, 0.74, 1.0), smoothstep(-0.3, 0.6, geoNdotL));
+                        surfCol += rimCol * fresnel * 0.88;
+
+                        float edgeAA = smoothstep(0.0, 0.02, sqrt(disc));
+                        finalCol = mix(finalCol, surfCol, edgeAA);
+                        finalAlpha = max(finalAlpha, edgeAA);
                     }
 
-                    // 4. 双卫星 3D 环绕系统 (带高光与相位阴影)
-                    float m1Angle = uTime * 0.62;
-                    vec3 m1Pos = vec3(cos(m1Angle) * 1.92, sin(m1Angle * 0.8) * 0.14, sin(m1Angle) * 1.92);
-                    float R_m1 = 0.088;
-                    vec3 m1ro = lro - m1Pos;
-                    float m1b = dot(m1ro, lrd);
-                    float m1c = dot(m1ro, m1ro) - R_m1 * R_m1;
-                    float m1Disc = m1b * m1b - m1c;
-                    vec4 moonCol = vec4(0.0);
-                    float tMoon = 1e5;
-                    if (m1Disc > 0.0) {
-                        tMoon = -m1b - sqrt(m1Disc);
-                        vec3 mp = m1ro + tMoon * lrd;
-                        vec3 mn = normalize(mp);
-                        float mDiff = smoothstep(-0.15, 0.85, dot(mn, lDir));
-                        float mSpec = pow(max(0.0, dot(mn, normalize(lDir - lrd))), 24.0) * 0.5;
-                        vec3 mRGB = mix(vec3(0.14, 0.13, 0.16), vec3(0.96, 0.93, 0.88), mDiff) + mSpec;
-                        moonCol = vec4(mRGB, smoothstep(0.0, 0.012, sqrt(m1Disc)));
-                    }
-
-                    // 5. 真实 3D 深度缓冲排序合成
-                    vec4 outCol = atmoHalo;
-                    if (tRing >= tPlanet && ringSample.a > 0.0) {
-                        outCol = vec4(mix(outCol.rgb, ringSample.rgb, ringSample.a), max(outCol.a, ringSample.a));
-                    }
-                    if (tMoon >= tPlanet && moonCol.a > 0.0) {
-                        outCol = vec4(mix(outCol.rgb, moonCol.rgb, moonCol.a), max(outCol.a, moonCol.a));
-                    }
-                    if (planetCol.a > 0.0) {
-                        outCol = vec4(mix(outCol.rgb, planetCol.rgb, planetCol.a), max(outCol.a, planetCol.a));
-                    }
-                    if (tRing < tPlanet && ringSample.a > 0.0) {
-                        outCol = vec4(mix(outCol.rgb, ringSample.rgb, ringSample.a), max(outCol.a, ringSample.a));
-                    }
-                    if (tMoon < tPlanet && moonCol.a > 0.0) {
-                        outCol = vec4(mix(outCol.rgb, moonCol.rgb, moonCol.a), max(outCol.a, moonCol.a));
-                    }
-
-                    // 6. 可视化实时追光太阳星芒与电影级宽银幕镜头眩光 (Anamorphic Sun Starburst)
-                    vec2 sunScreenPos = vec2(uLight.x * 1.15, uLight.y * 0.72);
-                    vec2 dSun = uv - sunScreenPos;
+                    // 3. 可视化 3D 太阳追光星芒镜头眩光 (实时指示鼠标太阳位置)
+                    vec2 sunScreen = vec2(uLight.x * 1.05, uLight.y * 0.68);
+                    vec2 dSun = uv - sunScreen;
                     float distSun = length(dSun);
-                    float sunCore = exp(-distSun * 9.5) * 0.75;
-                    float anamorphicStreak = exp(-abs(dSun.y) * 42.0) * exp(-abs(dSun.x) * 2.2) * 0.55;
-                    float starRays = exp(-abs(dSun.x * dSun.y) * 450.0) * exp(-distSun * 4.5) * 0.45;
-                    float sunFlareAlpha = clamp(sunCore + anamorphicStreak + starRays, 0.0, 0.88);
+                    float sunOrb = exp(-distSun * 11.0) * 0.65;
+                    float flareStreak = exp(-abs(dSun.y) * 48.0) * exp(-abs(dSun.x) * 2.5) * 0.42;
+                    float flareTotal = (sunOrb + flareStreak) * (1.0 - step(0.0, disc) * 0.75);
+                    finalCol += vec3(1.0, 0.86, 0.62) * flareTotal;
 
-                    // 若太阳处于星球正后方则产生日食遮挡效果
-                    float sunEclipse = (worldLight.z < 0.0 && length(sunScreenPos) < 0.75) ? smoothstep(0.35, 0.75, length(sunScreenPos)) : 1.0;
-                    sunFlareAlpha *= sunEclipse;
-
-                    vec3 sunFlareRGB = mix(vec3(1.0, 0.65, 0.28), vec3(1.0, 0.98, 0.90), clamp(sunCore * 1.5, 0.0, 1.0));
-                    outCol = vec4(mix(outCol.rgb, sunFlareRGB, sunFlareAlpha * (1.0 - planetCol.a * 0.75)), max(outCol.a, sunFlareAlpha * 0.75));
-
-                    // 7. 随太阳方位实时反向偏移的卡片悬浮投影 (Dynamic Light-Driven Drop Shadow)
-                    vec2 shadowOffset = vec2(-uLight.x * 0.22, -0.82 - uLight.y * 0.06);
-                    float shadowEllipse = length((uv - shadowOffset) * vec2(0.55, 4.5));
-                    float dropShadow = smoothstep(0.95, 0.1, shadowEllipse) * 0.16 * (1.0 - outCol.a);
-                    if (dropShadow > 0.001) {
-                        outCol = vec4(mix(vec3(0.12, 0.10, 0.09), outCol.rgb, outCol.a), clamp(outCol.a + dropShadow, 0.0, 1.0));
-                    }
-
-                    gl_FragColor = outCol;
+                    gl_FragColor = vec4(finalCol, 1.0);
                 }
             `;
 
-            function compileShader(type, source) {
+            function createShader(type, src) {
                 const s = gl.createShader(type);
-                gl.shaderSource(s, source);
+                gl.shaderSource(s, src);
                 gl.compileShader(s);
+                if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+                    console.error('Shader error:', gl.getShaderInfoLog(s));
+                }
                 return s;
             }
 
             const prog = gl.createProgram();
-            gl.attachShader(prog, compileShader(gl.VERTEX_SHADER, vsSource));
-            gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, fsSource));
+            gl.attachShader(prog, createShader(gl.VERTEX_SHADER, vsSource));
+            gl.attachShader(prog, createShader(gl.FRAGMENT_SHADER, fsSource));
             gl.linkProgram(prog);
             gl.useProgram(prog);
 
@@ -1358,21 +1230,71 @@
             const uTime = gl.getUniformLocation(prog, 'uTime');
             const uRot = gl.getUniformLocation(prog, 'uRot');
             const uLight = gl.getUniformLocation(prog, 'uLight');
-            const uMode = gl.getUniformLocation(prog, 'uMode');
+            const uHasRealTex = gl.getUniformLocation(prog, 'uHasRealTex');
 
-            let rotX = 0.0, rotY = 0.38;
-            let velX = 0.0, velY = 0.0;
+            gl.uniform1i(gl.getUniformLocation(prog, 'uTexDay'), 0);
+            gl.uniform1i(gl.getUniformLocation(prog, 'uTexNight'), 1);
+            gl.uniform1i(gl.getUniformLocation(prog, 'uTexBump'), 2);
+
+            // 初始化 1x1 占位纹理，确保第 0 帧即可立即渲染绝不白屏
+            function createPlaceholderTex(unit) {
+                const tex = gl.createTexture();
+                gl.activeTexture(gl.TEXTURE0 + unit);
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                return tex;
+            }
+
+            const texDay = createPlaceholderTex(0);
+            const texNight = createPlaceholderTex(1);
+            const texBump = createPlaceholderTex(2);
+            let loadedCount = 0;
+            let hasRealTextures = 0.0;
+
+            function loadEarthTexture(url, texObj, unit) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    gl.activeTexture(gl.TEXTURE0 + unit);
+                    gl.bindTexture(gl.TEXTURE_2D, texObj);
+                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                    loadedCount++;
+                    if (loadedCount >= 3) {
+                        hasRealTextures = 1.0;
+                    }
+                };
+                img.src = url;
+            }
+
+            // 异步加载 NASA 真实全球白昼卫星图、黑夜城市灯光图、全球地形高程图
+            loadEarthTexture('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/example/img/earth-blue-marble.jpg', texDay, 0);
+            loadEarthTexture('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/example/img/earth-night.jpg', texNight, 1);
+            loadEarthTexture('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/example/img/earth-topology.png', texBump, 2);
+
+            // 初始旋转角度：默认将欧洲与芬兰 (25.66°E, 60.98°N) 朝向正前方
+            let rotX = 0.42, rotY = -0.52;
+            let targetRotX = 0.42, targetRotY = -0.52;
+            let autoSpin = true;
             let isDragging = false;
             let lastX = 0, lastY = 0;
-            let lightX = 0.48, lightY = 0.35;
-            let targetLightX = 0.48, targetLightY = 0.35;
-            let currentMode = 1.0;
+
+            // 默认将太阳置于晨昏交界角度，同时展现欧洲立体山脉与夜间万家灯火
+            let lightX = -0.52, lightY = 0.28;
+            let targetLightX = -0.52, targetLightY = 0.28;
 
             function resize() {
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 const rect = canvas.getBoundingClientRect();
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
+                canvas.width = Math.max(1, rect.width * dpr);
+                canvas.height = Math.max(1, rect.height * dpr);
                 gl.viewport(0, 0, canvas.width, canvas.height);
             }
             window.addEventListener('resize', resize);
@@ -1380,59 +1302,72 @@
 
             canvas.addEventListener('pointerdown', (e) => {
                 isDragging = true;
+                autoSpin = false;
                 lastX = e.clientX;
                 lastY = e.clientY;
                 canvas.setPointerCapture(e.pointerId);
             });
 
-            // 实时计算鼠标相对于星球画布中心的精确三维追光坐标
             window.addEventListener('pointermove', (e) => {
                 const rect = canvas.getBoundingClientRect();
-                const centerX = rect.left + rect.width * 0.5;
-                const centerY = rect.top + rect.height * 0.5;
-                targetLightX = Math.max(-1.25, Math.min(1.25, (e.clientX - centerX) / (rect.width * 0.48)));
-                targetLightY = Math.max(-1.15, Math.min(1.15, -(e.clientY - centerY) / (rect.height * 0.48)));
+                const cx = rect.left + rect.width * 0.5;
+                const cy = rect.top + rect.height * 0.5;
+                targetLightX = Math.max(-1.25, Math.min(1.25, (e.clientX - cx) / (rect.width * 0.45)));
+                targetLightY = Math.max(-1.15, Math.min(1.15, -(e.clientY - cy) / (rect.height * 0.45)));
 
                 if (!isDragging) return;
                 const dx = e.clientX - lastX;
                 const dy = e.clientY - lastY;
                 lastX = e.clientX;
                 lastY = e.clientY;
-                velX = dx * 0.012;
-                velY = dy * 0.008;
-                rotX += velX;
-                rotY = Math.max(-0.88, Math.min(0.88, rotY + velY));
+                targetRotX -= dx * 0.008;
+                targetRotY = Math.max(-1.2, Math.min(1.2, targetRotY - dy * 0.008));
             });
 
             window.addEventListener('pointerup', () => {
                 isDragging = false;
             });
 
-            document.querySelectorAll('.planet-mode-btn').forEach(btn => {
+            // 三个快捷地球视角按钮
+            document.querySelectorAll('.earth-view-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    document.querySelectorAll('.planet-mode-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.earth-view-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    currentMode = parseFloat(btn.dataset.planet);
-                    velX += 0.14;
+                    const view = btn.dataset.view;
+                    autoSpin = false;
+                    if (view === 'finland') {
+                        targetRotX = 0.45;
+                        targetRotY = -0.58;
+                        targetLightX = -0.45;
+                        targetLightY = 0.30;
+                    } else if (view === 'day') {
+                        targetRotX = 0.65;
+                        targetRotY = -0.35;
+                        targetLightX = 0.25;
+                        targetLightY = 0.35;
+                    } else if (view === 'night') {
+                        targetRotX = 0.35;
+                        targetRotY = -0.45;
+                        targetLightX = -1.15;
+                        targetLightY = -0.25;
+                    }
                 });
             });
 
             function render(now) {
-                if (!isDragging) {
-                    rotX += velX;
-                    rotY = Math.max(-0.88, Math.min(0.88, rotY + velY));
-                    velX *= 0.94;
-                    velY *= 0.94;
+                if (autoSpin && !isDragging) {
+                    targetRotX += 0.0012;
                 }
-                // 高响应追光阻尼
-                lightX += (targetLightX - lightX) * 0.14;
-                lightY += (targetLightY - lightY) * 0.14;
+                rotX += (targetRotX - rotX) * 0.12;
+                rotY += (targetRotY - rotY) * 0.12;
+                lightX += (targetLightX - lightX) * 0.12;
+                lightY += (targetLightY - lightY) * 0.12;
 
                 gl.uniform2f(uRes, canvas.width, canvas.height);
                 gl.uniform1f(uTime, now * 0.001);
                 gl.uniform2f(uRot, rotX, rotY);
                 gl.uniform2f(uLight, lightX, lightY);
-                gl.uniform1f(uMode, currentMode);
+                gl.uniform1f(uHasRealTex, hasRealTextures);
 
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
                 requestAnimationFrame(render);
@@ -1460,7 +1395,7 @@
 
             const hour = parseInt(timeStr.split(':')[0], 10);
             if (hour >= 6 && hour < 12) {
-                daylightPill.textContent = '☕ Crisp Nordic Morning';
+                daylightPill.textContent = '☕ Crisp Morning';
             } else if (hour >= 12 && hour < 18) {
                 daylightPill.textContent = '☀️ Bright Afternoon';
             } else if (hour >= 18 && hour < 22) {
